@@ -4,7 +4,7 @@
 const CONFIG = {
   API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
     ? 'http://localhost:3002'
-    : 'https://tripofreak.com', // Point this to your Hostinger backend
+    : 'https://api.tripofreak.com', // Point this to your Hostinger backend
 
   UNSPLASH_FALLBACK: 'https://source.unsplash.com/800x500',
 
