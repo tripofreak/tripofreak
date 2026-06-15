@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tripofreak — AI-powered travel itinerary planner for any destination on earth. Launching soon.">
+  <title>Tripofreak — AI Travel Planner | Coming Soon</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:#071510;
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      padding:2rem 1.25rem;
+      text-align:center;
+      background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80');
+      background-size:cover;
+      background-position:center;
+      position:relative;
+    }
+    body::before{
+      content:'';
+      position:absolute;inset:0;
+      background:rgba(7,21,16,0.88);
+    }
+    .content{position:relative;z-index:1;max-width:520px}
+    .logo{
+      font-family:'Playfair Display',serif;
+      font-size:28px;font-weight:600;
+      color:#fff;
+      display:flex;align-items:center;
+      justify-content:center;gap:10px;
+      margin-bottom:1.5rem;
+    }
+    .logo span{color:#E8A830}
+    .logo-icon{
+      width:36px;height:36px;
+      background:#1A7A50;
+      border-radius:10px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:20px;
+    }
+    .badge{
+      display:inline-flex;align-items:center;gap:6px;
+      background:rgba(93,202,165,0.1);
+      border:0.5px solid rgba(93,202,165,0.3);
+      border-radius:20px;
+      padding:4px 14px;
+      font-size:11px;color:#5DCAA5;
+      margin-bottom:1.25rem;
+    }
+    .badge-dot{
+      width:6px;height:6px;
+      border-radius:50%;
+      background:#5DCAA5;
+      animation:pulse 2s infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+    h1{
+      font-family:'Playfair Display',serif;
+      font-size:32px;font-weight:600;
+      line-height:1.15;letter-spacing:-0.5px;
+      margin-bottom:1rem;
+    }
+    h1 em{color:#E8A830;font-style:italic}
+    .sub{
+      font-size:14px;
+      color:rgba(255,255,255,0.55);
+      line-height:1.7;
+      margin-bottom:2rem;
+      max-width:400px;margin-left:auto;margin-right:auto;
+    }
+    .features{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+      margin-bottom:2rem;
+      text-align:left;
+    }
+    .feat{
+      background:rgba(255,255,255,0.04);
+      border:0.5px solid rgba(255,255,255,0.08);
+      border-radius:10px;
+      padding:12px;
+    }
+    .feat-icon{font-size:18px;margin-bottom:6px}
+    .feat-title{font-size:12px;font-weight:500;color:#fff;margin-bottom:2px}
+    .feat-desc{font-size:10px;color:rgba(255,255,255,0.45);line-height:1.5}
+    .notify-form{
+      display:flex;gap:8px;
+      max-width:380px;margin:0 auto 1.5rem;
+    }
+    .notify-input{
+      flex:1;padding:11px 14px;
+      border:0.5px solid rgba(255,255,255,0.15);
+      border-radius:8px;
+      background:rgba(255,255,255,0.06);
+      color:#fff;font-size:13px;
+      font-family:'DM Sans',sans-serif;
+      outline:none;
+    }
+    .notify-input::placeholder{color:rgba(255,255,255,0.3)}
+    .notify-input:focus{border-color:rgba(93,202,165,0.5)}
+    .notify-btn{
+      background:#1A7A50;color:#fff;
+      border:none;padding:11px 18px;
+      border-radius:8px;font-size:12px;font-weight:500;
+      cursor:pointer;white-space:nowrap;
+      font-family:'DM Sans',sans-serif;
+      transition:background .15s;
+    }
+    .notify-btn:hover{background:#0D5538}
+    .business-info{
+      margin-top:2rem;
+      padding-top:1.5rem;
+      border-top:0.5px solid rgba(255,255,255,0.08);
+      font-size:10px;
+      color:rgba(255,255,255,0.25);
+      line-height:1.8;
+    }
+    .business-info a{color:rgba(255,255,255,0.35);text-decoration:none}
+    .countdown{
+      display:flex;gap:16px;justify-content:center;
+      margin-bottom:2rem;
+    }
+    .cd-block{text-align:center}
+    .cd-num{
+      font-family:'Playfair Display',serif;
+      font-size:28px;font-weight:500;color:#fff;
+      line-height:1;margin-bottom:3px;
+    }
+    .cd-label{font-size:9px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.5px}
+    .cd-sep{font-size:24px;color:rgba(255,255,255,0.2);align-self:center;margin-bottom:14px}
+  </style>
+</head>
+<body>
+
+<div class="content">
+
+  <div class="logo">
+    <div class="logo-icon">🗺️</div>
+    Tripo<span>freak</span>
+  </div>
+
+  <div class="badge">
+    <div class="badge-dot"></div>
+    Launching very soon
+  </div>
+
+  <h1>Plan any trip,<br><em>anywhere on earth.</em></h1>
+
+  <p class="sub">
+    AI-powered travel itineraries with contextual reasoning —
+    every activity explained, every risk flagged, every trip better planned.
+  </p>
+
+  <div class="countdown" id="countdown">
+    <div class="cd-block"><div class="cd-num" id="cd-d">02</div><div class="cd-label">Days</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><div class="cd-num" id="cd-h">00</div><div class="cd-label">Hours</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><div class="cd-num" id="cd-m">00</div><div class="cd-label">Mins</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-block"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Secs</div></div>
+  </div>
+
+  <div class="features">
+    <div class="feat">
+      <div class="feat-icon">🧠</div>
+      <div class="feat-title">Contextual reasoning</div>
+      <div class="feat-desc">Every activity explained — why this order, what time saved</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🔍</div>
+      <div class="feat-title">Freaky Finds</div>
+      <div class="feat-desc">Scam alerts, hidden costs, crowd warnings before you go</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">🌍</div>
+      <div class="feat-title">Any destination</div>
+      <div class="feat-desc">Tokyo to Kedarnath. Patagonia to Goa. Anywhere.</div>
+    </div>
+    <div class="feat">
+      <div class="feat-icon">💰</div>
+      <div class="feat-title">Budget tracking</div>
+      <div class="feat-desc">Per-activity costs, daily totals, hidden fee alerts</div>
+    </div>
+  </div>
+
+  <form class="notify-form" onsubmit="handleNotify(event)">
+    <input
+      class="notify-input"
+      type="email"
+      id="notify-email"
+      placeholder="Get notified when we launch"
+      required
+    >
+    <button class="notify-btn" type="submit">Notify me</button>
+  </form>
+
+  <div class="business-info">
+    Tripofreak.com &nbsp;·&nbsp; AI Travel Planning Tool &nbsp;·&nbsp; Not a booking platform<br>
+    All booking links redirect to third-party platforms. Tripofreak earns affiliate commission.<br>
+    <a href="mailto:hello@tripofreak.com">hello@tripofreak.com</a>
+    &nbsp;·&nbsp;
+    <a href="/pages/privacy.html">Privacy Policy</a>
+    &nbsp;·&nbsp;
+    <a href="/pages/terms.html">Terms of Service</a>
+  </div>
+
+</div>
+
+<script>
+// Countdown — set to 48 hours from now
+const launch = new Date(Date.now() + 48 * 60 * 60 * 1000);
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = Math.max(0, launch - now);
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-d').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-h').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent = String(s).padStart(2,'0');
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+// Email capture — stores to localStorage for now
+// Replace with your backend endpoint once live
+function handleNotify(e) {
+  e.preventDefault();
+  const email = document.getElementById('notify-email').value;
+  const btn = e.target.querySelector('button');
+  btn.textContent = '✓ Done!';
+  btn.style.background = '#5DCAA5';
+  btn.style.color = '#071510';
+  // TODO: POST to /api/notify endpoint to save email
+  // fetch('/api/notify', { method: 'POST', body: JSON.stringify({ email }), headers: { 'Content-Type': 'application/json' }})
+  setTimeout(() => {
+    btn.textContent = 'Notify me';
+    btn.style.background = '';
+    btn.style.color = '';
+    document.getElementById('notify-email').value = '';
+  }, 3000);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Trips — Tripofreak</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    .page { padding: 72px 1.25rem 2rem; }
+    .page-title { font-family: var(--font-serif); font-size: 24px; margin-bottom: 4px; }
+    .page-sub { font-size: 12px; color: var(--muted); margin-bottom: 1.5rem; }
+    .trips-grid { display: flex; flex-direction: column; gap: 10px; }
+    .trip-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 14px; overflow: hidden; display: flex; cursor: pointer; transition: border-color .15s; text-decoration: none; }
+    .trip-card:hover { border-color: var(--aqua); }
+    .trip-thumb { width: 90px; min-width: 90px; height: 90px; object-fit: cover; }
+    .trip-thumb-placeholder { width: 90px; min-width: 90px; height: 90px; background: var(--forest2); display: flex; align-items: center; justify-content: center; font-size: 24px; }
+    .trip-body { padding: 12px; flex: 1; }
+    .trip-dest { font-family: var(--font-serif); font-size: 15px; color: var(--text); margin-bottom: 2px; }
+    .trip-meta { font-size: 10px; color: var(--muted); margin-bottom: 6px; }
+    .trip-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+    .trip-tag { font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+    .tag-premium { background: #FFF8D0; color: #8A6800; }
+    .tag-free { background: var(--bg); color: var(--muted); }
+    .tag-days { background: #D0EEE2; color: var(--forest2); }
+    .trip-date { font-size: 9px; color: var(--muted); margin-top: 4px; }
+    .trip-arrow { display: flex; align-items: center; padding: 0 12px; color: var(--aqua); font-size: 18px; }
+    .empty-state { text-align: center; padding: 3rem 1rem; }
+    .empty-icon { font-size: 48px; color: var(--sand); margin-bottom: 1rem; }
+    .empty-title { font-family: var(--font-serif); font-size: 18px; margin-bottom: 6px; }
+    .empty-sub { font-size: 12px; color: var(--muted); margin-bottom: 1.5rem; }
+    .empty-btn { background: var(--forest); color: #fff; border: none; padding: 11px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: var(--font-sans); }
+    .loading-trips { text-align: center; padding: 2rem; color: var(--muted); font-size: 12px; }
+  </style>
+</head>
+<body>
+
+<nav class="nav scrolled" id="nav">
+  <a href="/" class="nav-logo"><i class="ti ti-map-2"></i>Tripo<span>freak</span></a>
+  <div class="nav-r">
+    <a href="/">Home</a>
+    <a href="blog.html">Blog</a>
+    <a href="#" id="nav-premium" class="nav-cta">Get premium</a>
+  </div>
+</nav>
+
+<main class="page">
+  <h1 class="page-title">My Trips</h1>
+  <p class="page-sub" id="page-sub">Loading your trips...</p>
+
+  <div id="trips-container">
+    <div class="loading-trips">
+      <div class="loading-spinner" style="width:32px;height:32px;margin:0 auto 8px"></div>
+      Loading your trips...
+    </div>
+  </div>
+</main>
+
+<!-- Supabase CDN -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="../js/config.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+(async () => {
+  // Require login to view this page
+  const user = await TF_AUTH.init();
+  if (!user) {
+    TF_AUTH.showLoginModal(async (loggedInUser) => {
+      TF_AUTH.updateNavUser(loggedInUser);
+      await loadTrips(loggedInUser);
+    });
+    return;
+  }
+
+  TF_AUTH.updateNavUser(user);
+  await loadTrips(user);
+})();
+
+async function loadTrips(user) {
+  const info = TF_AUTH.getUserInfo();
+  document.getElementById('page-sub').textContent =
+    `All itineraries saved to ${info.email}`;
+
+  try {
+    const session = await TF_AUTH.supabase.auth.getSession();
+    const token = session.data.session?.access_token;
+
+    const res = await fetch(`${CONFIG.API_URL}/api/itinerary/my-trips`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+
+    renderTrips(data.trips);
+  } catch (err) {
+    document.getElementById('trips-container').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="ti ti-alert-circle"></i></div>
+        <div class="empty-title">Couldn't load trips</div>
+        <div class="empty-sub">${err.message}</div>
+        <button class="empty-btn" onclick="location.reload()">Try again</button>
+      </div>
+    `;
+  }
+}
+
+function renderTrips(trips) {
+  const container = document.getElementById('trips-container');
+
+  if (!trips.length) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon"><i class="ti ti-map-off"></i></div>
+        <div class="empty-title">No trips yet</div>
+        <div class="empty-sub">Plan your first trip and it will appear here.</div>
+        <button class="empty-btn" onclick="window.location.href='/'">Plan a trip</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `
+    <div class="trips-grid">
+      ${trips.map(trip => `
+        <a class="trip-card" href="/itinerary.html?id=${trip.id}">
+          ${trip.hero_image_url
+            ? `<img class="trip-thumb" src="${trip.hero_image_url}" alt="${trip.destination}" loading="lazy">`
+            : `<div class="trip-thumb-placeholder">🗺️</div>`
+          }
+          <div class="trip-body">
+            <div class="trip-dest">${trip.destination}</div>
+            <div class="trip-meta">${trip.days} days · ${capitalise(trip.budget_category)} · ${capitalise(trip.pace)}</div>
+            <div class="trip-tags">
+              <span class="trip-tag ${trip.is_premium ? 'tag-premium' : 'tag-free'}">
+                ${trip.is_premium ? '⭐ Premium' : 'Free — Day 1'}
+              </span>
+              <span class="trip-tag tag-days">${trip.days} days</span>
+            </div>
+            <div class="trip-date">Planned ${formatDate(trip.created_at)}</div>
+          </div>
+          <div class="trip-arrow"><i class="ti ti-chevron-right"></i></div>
+        </a>
+      `).join('')}
+    </div>
+  `;
+}
+
+function capitalise(str) {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
+function formatDate(iso) {
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+</script>
+</body>
+</html>

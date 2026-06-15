@@ -1,0 +1,73 @@
+/* ─── Hero ───────────────────────────────────────────────────────────── */
+.hero {
+  position: relative;
+  height: 100svh;
+  max-height: 620px;
+  min-height: 500px;
+  overflow: hidden;
+}
+.hero-slides { position: absolute; inset: 0; }
+.slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.4s ease; background-size: cover; background-position: center; }
+.slide.active { opacity: 1; }
+.s1 { background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=85'); }
+.s2 { background-image: url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1400&q=85'); }
+.s3 { background-image: url('https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1400&q=85'); }
+.s4 { background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1400&q=85'); }
+.s5 { background-image: url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1400&q=85'); }
+.hero-grad { position: absolute; inset: 0; background: linear-gradient(to top, rgba(4,10,7,0.97) 0%, rgba(4,10,7,0.45) 50%, rgba(4,10,7,0.2) 100%); }
+.hero-body { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem 1.25rem 2rem; }
+
+.dest-label { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.dest-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--aqua); animation: pulse 2s infinite; flex-shrink: 0; }
+@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.3} }
+.dest-name { font-size: 11px; color: var(--aqua); font-weight: 500; letter-spacing: 0.3px; }
+
+.hero-title { font-family: var(--font-serif); font-size: 32px; color: #fff; font-weight: 600; line-height: 1.1; letter-spacing: -0.5px; margin-bottom: 8px; max-width: 380px; }
+.hero-title em { color: var(--gold); font-style: italic; }
+.hero-sub { font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 20px; max-width: 320px; line-height: 1.6; }
+
+.search-bar { display: flex; align-items: center; background: rgba(255,255,255,0.97); border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(4,10,7,0.5); max-width: 440px; border: none; }
+.search-icon { padding: 0 8px 0 14px; color: #8BA898; font-size: 16px; flex-shrink: 0; }
+.search-input { flex: 1; padding: 14px 8px; border: none; outline: none; font-family: var(--font-sans); font-size: 13px; color: var(--text); background: transparent; }
+.search-input::placeholder { color: #8BA898; }
+.search-btn { background: var(--forest); color: #fff; border: none; padding: 14px 16px; font-size: 12px; font-weight: 500; cursor: pointer; font-family: var(--font-sans); display: flex; align-items: center; gap: 5px; white-space: nowrap; transition: background .15s; }
+.search-btn:hover { background: var(--forest2); }
+
+.hero-hint { font-size: 10px; color: rgba(255,255,255,0.28); margin-top: 9px; display: flex; align-items: center; gap: 4px; }
+.hero-hint .ti { font-size: 11px; }
+
+.slide-dots { display: flex; gap: 5px; margin-top: 14px; }
+.dot { width: 20px; height: 2px; border-radius: 2px; background: rgba(255,255,255,0.2); border: none; padding: 0; transition: all .3s; cursor: pointer; }
+.dot.active { background: var(--aqua); width: 32px; }
+
+/* ─── Ticker ─────────────────────────────────────────────────────────── */
+.ticker-wrap { background: rgba(7,21,16,0.96); border-bottom: 0.5px solid rgba(93,202,165,0.12); padding: 9px 0; overflow: hidden; position: relative; }
+.ticker-label { position: absolute; left: 0; top: 0; bottom: 0; background: var(--forest2); padding: 0 12px; display: flex; align-items: center; gap: 5px; font-size: 10px; color: var(--aqua); font-weight: 500; z-index: 2; white-space: nowrap; border-right: 0.5px solid rgba(93,202,165,0.15); }
+.ticker-outer { overflow: hidden; padding-left: 110px; }
+.ticker-track { display: flex; animation: ticker 50s linear infinite; width: max-content; }
+.ticker-track:hover { animation-play-state: paused; }
+@keyframes ticker { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+.tick-item { display: inline-flex; align-items: center; gap: 6px; padding: 0 18px; font-size: 11px; color: rgba(255,255,255,0.5); white-space: nowrap; cursor: pointer; border-left: 0.5px solid rgba(255,255,255,0.06); transition: color .15s; }
+.tick-item:hover { color: var(--aqua); }
+.tick-flag { font-size: 13px; }
+.tick-vol { font-size: 9px; color: rgba(255,255,255,0.22); margin-left: 2px; }
+
+/* ─── Form expansion ─────────────────────────────────────────────────── */
+.form-expansion { padding: 1rem 1.25rem 0; }
+.form-card { background: var(--card); border: 0.5px solid var(--border); border-radius: 16px; padding: 1.25rem; }
+.form-dest-display { font-family: var(--font-serif); font-size: 17px; color: var(--text); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid var(--border); }
+.form-dest-display span { color: var(--forest); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.form-field label { font-size: 10px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 4px; }
+.f-input { width: 100%; padding: 8px 10px; border: 0.5px solid var(--border); border-radius: 8px; font-family: var(--font-sans); font-size: 12px; color: var(--text); background: var(--bg); outline: none; transition: border-color .15s; }
+.f-input:focus { border-color: var(--aqua); }
+
+.interest-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+.ichip { padding: 5px 11px; border-radius: 20px; border: 0.5px solid var(--border); background: var(--bg); font-size: 11px; color: var(--muted); cursor: pointer; transition: all .15s; }
+.ichip.active { background: var(--forest); color: #fff; border-color: var(--forest); }
+
+.generate-btn { width: 100%; padding: 13px; background: var(--forest); color: #fff; border: none; border-radius: 10px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; transition: background .15s; margin-bottom: 8px; }
+.generate-btn:hover { background: var(--forest2); }
+.generate-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.form-note { font-size: 10px; color: var(--muted); text-align: center; }
