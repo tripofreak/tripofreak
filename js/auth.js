@@ -19,8 +19,8 @@
 
 // Your Supabase project credentials (safe to expose — RLS protects data)
 // Replace these with your actual values from Supabase dashboard → Settings → API
-const SUPABASE_URL = https://zzbmtijiqfunvngbrbso.supabase.co/rest/v1/;
-const SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6Ym10aWppcWZ1bnZuZ2JyYnNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQzMDMsImV4cCI6MjA5NzAzMDMwM30.x3iiz5nmnIG0tMe_tCLeOOMs7jvx3miZxLXf1rhgZBk;
+const SUPABASE_URL = 'https://zzbmtijiqfunvngbrbso.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6Ym10aWppcWZ1bnZuZ2JyYnNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQzMDMsImV4cCI6MjA5NzAzMDMwM30.x3iiz5nmnIG0tMe_tCLeOOMs7jvx3miZxLXf1rhgZBk';
 
 // Load Supabase client from CDN (loaded in HTML before this script)
 const { createClient } = supabase;
