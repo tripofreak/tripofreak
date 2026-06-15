@@ -694,9 +694,9 @@ function handleSignIn(e) {
   if (typeof TF_AUTH === 'undefined') return;
   await TF_AUTH.init();
   // Restore pending destination after OAuth redirect
-  const pending = sessionStorage.getItem('tf_pending_dest');
-  if (pending && TF_AUTH.isLoggedIn()) {
-    sessionStorage.removeItem('tf_pending_dest');
+  const pending = localStorage.getItem('tf_pending_dest');
+if (pending && TF_AUTH.isLoggedIn()) {
+  localStorage.removeItem('tf_pending_dest');
     document.getElementById('dest-input').value = pending;
     openForm(pending);
   }
@@ -708,7 +708,7 @@ async function generateItinerary() {
   if (!dest) return;
 
   if (typeof TF_AUTH !== 'undefined' && !TF_AUTH.isLoggedIn()) {
-    sessionStorage.setItem('tf_pending_dest', dest);
+    localStorage.setItem('tf_pending_dest', dest);
     TF_AUTH.showLoginModal(async () => { TF_AUTH.closeLoginModal(); await generateItinerary(); });
     return;
   }
