@@ -5,7 +5,7 @@
 */
 
 const SUPABASE_URL = 'https://zzbmtijiqfunvngbrbso.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_REAL_ANON_KEY_HERE';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6Ym10aWppcWZ1bnZuZ2JyYnNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0NTQzMDMsImV4cCI6MjA5NzAzMDMwM30.x3iiz5nmnIG0tMe_tCLeOOMs7jvx3miZxLXf1rhgZBk';
 
 const { createClient } = supabase;
 const _supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
