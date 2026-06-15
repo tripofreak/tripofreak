@@ -36,7 +36,7 @@ async function signInWithGoogle() {
   const { data, error } = await _supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin + window.location.pathname,
+      redirectTo: 'https://tripofreak.com',
       queryParams: { access_type: 'offline', prompt: 'consent' }
     }
   });
