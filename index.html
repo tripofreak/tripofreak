@@ -568,13 +568,17 @@ document.getElementById('nav-signin').addEventListener('click', function(e){
     var btn = document.getElementById('continue-btn');
     destSpan.textContent = pending;
     bar.classList.add('show');
-    btn.onclick = function(){
-      localStorage.removeItem('tf_pending_dest');
-      bar.classList.remove('show');
-      document.getElementById('dest-input').value = pending;
-      openForm(pending);
-      setTimeout(generateItinerary, 400);
-    };
+    
+    btn.onclick = async function(){
+  localStorage.removeItem('tf_pending_dest');
+  bar.classList.remove('show');
+  document.getElementById('dest-input').value = pending;
+  openForm(pending);
+  var token = await TF_AUTH.getAccessToken();
+  if (!token) { TF_AUTH.showLoginModal(); return; }
+  generateItinerary();
+};
+    
   }
 })();
 
@@ -618,10 +622,9 @@ async function generateItinerary() {
     var headers = {'Content-Type':'application/json'};
 
     if (typeof TF_AUTH !== 'undefined' && TF_AUTH.isLoggedIn()) {
-      var session = await TF_AUTH.supabase.auth.getSession();
-      var token = session.data.session && session.data.session.access_token;
-      if (token) headers['Authorization'] = 'Bearer ' + token;
-    }
+  var token = await TF_AUTH.getAccessToken();
+  if (token) headers['Authorization'] = 'Bearer ' + token;
+}
 
     var res = await fetch(API + '/api/itinerary/generate', {
       method: 'POST', headers: headers, body: JSON.stringify(params)
