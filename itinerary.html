@@ -329,7 +329,7 @@
 
   <!-- HERO -->
   <div class="hero">
-    <img id="hero-img" src="" alt="" loading="eager" onerror="this.style.display='none'">
+    <img id="hero-img" alt="" loading="eager" style="display:none">
     <div class="hero-grad"></div>
     <div class="hero-body">
       <div class="hero-eyebrow">
@@ -750,8 +750,13 @@ function renderItinerary() {
 
   // Nearby
   document.getElementById('nearby-scroll').innerHTML = (d.nearby_day_trips || []).map(nb => {
+    const hasImg = !!nb.image_url;
     return `<div class="nb-card" onclick="window.location.href='/?dest=${encodeURIComponent(nb.name)}'">
-      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1A1A14,#2A2A1E);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px">
+      ${hasImg
+        ? `<img src="${nb.image_url}" alt="${esc(nb.name)}" style="width:100%;height:100%;object-fit:cover"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : ''}
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1A1A14,#2A2A1E);display:${hasImg ? 'none' : 'flex'};align-items:center;justify-content:center;flex-direction:column;gap:6px">
         <i class="ti ti-map-pin" style="font-size:22px;color:rgba(232,197,71,0.4)"></i>
         <span style="font-size:10px;color:rgba(255,255,255,0.3)">${esc(nb.name)}</span>
       </div>
