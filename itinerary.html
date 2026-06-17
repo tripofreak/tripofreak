@@ -556,7 +556,14 @@ window.addEventListener('DOMContentLoaded', async () => {
 // ── FETCH BY ID ───────────────────────────────────────────────────────
 async function fetchAndRender(id) {
   try {
-    const res = await fetch(`${API_URL}/api/itinerary/${id}`);
+    let token = null;
+    if (window.TF_AUTH) {
+      await TF_AUTH.init();
+      token = await TF_AUTH.getAccessToken();
+    }
+    const res = await fetch(`${API_URL}/api/itinerary/${id}`, {
+      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+    });
     const data = await res.json();
     if (!data.success) throw new Error(data.error);
     itineraryData = data.itinerary;
@@ -567,7 +574,6 @@ async function fetchAndRender(id) {
     showError(err.message);
   }
 }
-
 // ── RENDER ────────────────────────────────────────────────────────────
 function renderItinerary() {
   const d = itineraryData;
@@ -985,5 +991,6 @@ function showError(msg) {
   `;
 }
 </script>
+  <script src="/js/auth.js"></script>
 </body>
 </html>
