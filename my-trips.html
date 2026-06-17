@@ -253,9 +253,7 @@ window.addEventListener('DOMContentLoaded', async () => {
         accessToken = await TF_AUTH.getAccessToken();
         if (accessToken) { showSkeletons(); await loadTrips(); }
       });
-    } else {
-      window.location.href = '/';
-    }
+    } 
     return;
   }
 
