@@ -400,10 +400,14 @@ function renderCard(trip) {
 }
 
 // ── OPEN TRIP ─────────────────────────────────────────────────────────
-function openTrip(id) {
+async function openTrip(id) {
+  // Store token in sessionStorage so itinerary.html can use it immediately
+  try {
+    const token = await TF_AUTH.getAccessToken();
+    if (token) sessionStorage.setItem('tf_token', token);
+  } catch (e) {}
   window.location.href = `/itinerary.html?id=${id}`;
 }
-
 // ── DELETE ────────────────────────────────────────────────────────────
 function askDelete(id, destName) {
   deleteTargetId = id;
