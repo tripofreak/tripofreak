@@ -514,33 +514,29 @@ window.addEventListener('DOMContentLoaded', async () => {
   }, 1800);
 
   try {
-    const stored = sessionStorage.getItem('tf_itinerary');
-    const storedParams = sessionStorage.getItem('tf_params');
+    const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get('id');
 
-    if (stored) {
-      const data = JSON.parse(stored);
-      itineraryData = data.itinerary;
-      heroImageUrl = data.heroImage?.url || '';
-      moodImages = data.moodImages || [];
-      params = storedParams ? JSON.parse(storedParams) : {};
-      if (itineraryData?.destination) {
-        document.getElementById('loading-dest-label').textContent =
-          `Planning your trip to ${itineraryData.destination}...`;
-      }
-      await new Promise(r => setTimeout(r, 1200));
-      clearInterval(stepTimer);
-      renderItinerary();
-    } else {
-      const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get('id');
-      if (id) {
-        await fetchAndRender(id);
-        clearInterval(stepTimer);
-      } else {
-        clearInterval(stepTimer);
-        showError('No itinerary found. Please generate a new trip.');
-      }
-    }
+if (id) {
+  // Always fetch by ID — ignore sessionStorage
+  await fetchAndRender(id);
+  clearInterval(stepTimer);
+} else {
+  const stored = sessionStorage.getItem('tf_itinerary');
+  if (stored) {
+    const data = JSON.parse(stored);
+    itineraryData = data.itinerary;
+    heroImageUrl = data.heroImage?.url || '';
+    moodImages = data.moodImages || [];
+    params = storedParams ? JSON.parse(storedParams) : {};
+    await new Promise(r => setTimeout(r, 1200));
+    clearInterval(stepTimer);
+    renderItinerary();
+  } else {
+    clearInterval(stepTimer);
+    showError('No itinerary found. Please generate a new trip.');
+  }
+}
   } catch (err) {
     clearInterval(stepTimer);
     showError(err.message || 'Something went wrong. Please try again.');
