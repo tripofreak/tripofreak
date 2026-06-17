@@ -559,10 +559,11 @@ async function fetchAndRender(id) {
     let token = null;
     if (window.TF_AUTH) {
       await TF_AUTH.init();
-      token = await TF_AUTH.getAccessToken();
+      token = await TF_AUTH.getAccessToken(10, 600);
     }
+    if (!token) throw new Error('Authentication required. Please sign in.');
     const res = await fetch(`${API_URL}/api/itinerary/${id}`, {
-      headers: token ? { 'Authorization': `Bearer ${token}` } : {}
+      headers: { 'Authorization': `Bearer ${token}` }
     });
     const data = await res.json();
     if (!data.success) throw new Error(data.error);
