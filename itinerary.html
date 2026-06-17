@@ -556,8 +556,8 @@ window.addEventListener('DOMContentLoaded', async () => {
 // ── FETCH BY ID ───────────────────────────────────────────────────────
 async function fetchAndRender(id) {
   try {
-    let token = null;
-    if (window.TF_AUTH) {
+    let token = sessionStorage.getItem('tf_token') || null;
+    if (!token && window.TF_AUTH) {
       await TF_AUTH.init();
       token = await TF_AUTH.getAccessToken(10, 600);
     }
