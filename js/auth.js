@@ -204,7 +204,7 @@ function updateNavUser(user) {
     const info = getUserInfo();
     const firstName = info.name.split(' ')[0];
     signinBtn.textContent = firstName;
-    signinBtn.href = '/pages/my-trips.html';
+    signinBtn.href = '/my-trips.html';
     signinBtn.onclick = null;
     if (tripsBtn) tripsBtn.style.display = 'inline';
     // Add sign out if not present
