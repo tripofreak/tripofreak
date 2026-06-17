@@ -239,13 +239,12 @@ let deleteTargetId = null;
 let accessToken = null;
 
 // ── INIT ──────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', async () => {
-  // Use TF_AUTH from auth.js
+window.addEventListener('load', async () => {
+  // 'load' fires after defer scripts — TF_AUTH guaranteed to exist
   if (window.TF_AUTH) {
     await TF_AUTH.init();
-    accessToken = await TF_AUTH.getAccessToken();
+    accessToken = await TF_AUTH.getAccessToken(10, 500);
   }
-
   if (!accessToken) {
     // Show login modal — redirect after sign in
     if (window.TF_AUTH) {
