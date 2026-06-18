@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your AI-planned travel itinerary from Tripofreak — every decision explained, every risk flagged.">
+  <title>Your Itinerary — Tripofreak</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="/js/auth.js"></script>
+  <style>
+    :root{
+      --black:#0C0C0A;--gold:#E8C547;--terra:#C84B2A;--forest:#2A5C3A;
+      --ivory:#F5F0E8;--cream:#FAF7F2;--card:#FFFFFF;--muted:#7A6A52;
+      --border:rgba(12,12,10,0.07);--sand:rgba(232,197,71,0.12);
+      --serif:'Cormorant Garamond',Georgia,serif;
+      --sans:'Inter',system-ui,sans-serif;
+      --grotesk:'Space Grotesk',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--sans);background:var(--cream);color:var(--black);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    button{font-family:var(--sans);cursor:pointer}
+
+    /* ── NAV ── */
+    .nav{background:var(--black);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;border-bottom:0.5px solid rgba(232,197,71,0.12)}
+    .nav-logo{font-family:var(--grotesk);color:#fff;font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px;letter-spacing:-0.3px}
+    .nav-logo-mark{display:flex;flex-direction:column;gap:3px}
+    .nav-logo-sep{width:1px;height:18px;background:rgba(255,255,255,0.15)}
+    .nav-r{display:flex;align-items:center;gap:10px}
+    .nav-back{font-size:13px;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:4px;transition:color .2s}
+    .nav-back:hover{color:rgba(255,255,255,0.8)}
+    .nav-share{background:var(--gold);color:var(--black);border:none;padding:7px 16px;border-radius:4px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;letter-spacing:0.3px}
+
+    /* ── HERO ── */
+    .hero-credit{position:absolute;bottom:8px;right:10px;font-size:10px;color:rgba(255,255,255,0.35);z-index:10;letter-spacing:0.3px}
+    .hero-credit a{color:rgba(255,255,255,0.35);text-decoration:none}
+    .hero-credit a:hover{color:rgba(255,255,255,0.7)}
+    .hero{position:relative;height:420px;overflow:hidden}
+    .hero-img{width:100%;height:100%;object-fit:cover;object-position:center center;transition:transform 8s ease}
+    .hero:hover .hero-img{transform:scale(1.04)}
+    .hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,12,10,0.96) 0%,rgba(12,12,10,0.5) 50%,rgba(12,12,10,0.1) 100%)}
+    .hero-body{position:absolute;bottom:0;left:0;right:0;padding:2rem 1.5rem 1.75rem}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:6px;margin-bottom:1rem;background:rgba(232,197,71,0.12);border:0.5px solid rgba(232,197,71,0.25);border-radius:20px;padding:4px 12px}
+    .hero-eyebrow-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);animation:blink 2s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    .hero-eyebrow-txt{font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:600}
+    .hero-title{font-family:var(--serif);font-size:clamp(38px,7vw,64px);color:#fff;font-weight:600;line-height:1.05;letter-spacing:-1px;margin-bottom:0.5rem}
+    .hero-title em{color:var(--gold);font-style:italic}
+    .hero-season{font-size:14px;color:rgba(255,255,255,0.45);margin-bottom:1rem;letter-spacing:0.3px}
+    .hero-chips{display:flex;gap:7px;flex-wrap:wrap}
+    .hchip{font-size:13px;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.12);border-radius:20px;padding:4px 12px}
+
+    /* ── STATS BAR ── */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);background:var(--black);border-bottom:0.5px solid rgba(255,255,255,0.06)}
+    .stat{padding:14px 6px;text-align:center;border-right:0.5px solid rgba(255,255,255,0.06)}
+    .stat:last-child{border-right:none}
+    .stat-n{font-family:var(--serif);font-size:24px;color:#fff;line-height:1;margin-bottom:4px}
+    .stat-n.gold{color:var(--gold)}
+    .stat-l{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.3);font-weight:600}
+
+    /* ── EMERGENCY STRIP ── */
+    .emergency{background:rgba(12,12,10,0.97);border-bottom:0.5px solid rgba(232,197,71,0.1);padding:9px 1.5rem;display:flex;align-items:center;gap:10px;overflow-x:auto}
+    .emergency::-webkit-scrollbar{display:none}
+    .em-label{font-size:10px;color:var(--gold);font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:5px;flex-shrink:0;letter-spacing:0.5px;text-transform:uppercase}
+    .em-item{font-size:13px;color:rgba(255,255,255,0.4);white-space:nowrap;padding:0 12px;border-left:0.5px solid rgba(255,255,255,0.08)}
+
+    /* ── ARRIVAL CARD ── */
+    .arrival{background:var(--black);margin:1.5rem;border-radius:12px;padding:1.25rem;display:flex;gap:12px;border:0.5px solid rgba(232,197,71,0.15)}
+    .arrival-icon{width:40px;height:40px;border-radius:10px;background:rgba(232,197,71,0.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .arrival-icon .ti{font-size:20px;color:var(--gold)}
+    .arrival-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:5px}
+    .arrival-text{font-size:14px;color:rgba(255,255,255,0.5);line-height:1.65}
+
+    /* ── MAIN WRAP ── */
+    .wrap{max-width:800px;margin:0 auto;padding:0 1.5rem 3rem}
+
+    /* ── SECTION HEADERS ── */
+    .sec{margin:2.5rem 0 1.25rem}
+    .sec-eyebrow{font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:6px}
+    .sec-title{font-family:var(--serif);font-size:32px;color:var(--black);font-weight:600;line-height:1.1}
+    .sec-divider{height:0.5px;background:var(--border);margin:2rem 0}
+
+    /* ── FREAKY FINDS ── */
+    .ff-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-bottom:0.5rem}
+    .ffc{border-radius:12px;padding:1.25rem;border:0.5px solid}
+    .ffc-r{background:#100404;border-color:rgba(200,75,42,0.2)}
+    .ffc-a{background:#0E0A00;border-color:rgba(232,197,71,0.2)}
+    .ffc-g{background:#020F07;border-color:rgba(42,92,58,0.3)}
+    .ffc-icon{font-size:20px;margin-bottom:10px;display:block}
+    .ffc-r .ffc-icon{color:#F09090}
+    .ffc-a .ffc-icon{color:var(--gold)}
+    .ffc-g .ffc-icon{color:#5DC68A}
+    .ffc-t{font-size:15px;font-weight:600;margin-bottom:6px;line-height:1.3}
+    .ffc-r .ffc-t{color:#F7BFBF}
+    .ffc-a .ffc-t{color:#FAD870}
+    .ffc-g .ffc-t{color:#A8E6C0}
+    .ffc-d{font-size:13px;line-height:1.6}
+    .ffc-r .ffc-d{color:rgba(247,191,191,0.5)}
+    .ffc-a .ffc-d{color:rgba(250,216,112,0.5)}
+    .ffc-g .ffc-d{color:rgba(168,230,192,0.5)}
+
+    /* ── MOOD STRIP ── */
+    .mood-strip{display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;margin-bottom:0.5rem;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory}
+    .mood-strip::-webkit-scrollbar{height:3px}
+    .mood-strip::-webkit-scrollbar-track{background:var(--ivory)}
+    .mood-strip::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+    .mood-img{border-radius:14px;overflow:hidden;height:200px;min-width:260px;position:relative;background:var(--black);flex-shrink:0;scroll-snap-align:start;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease}
+    .mood-img:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 16px 40px rgba(12,12,10,0.2)}
+    .mood-img img{width:100%;height:100%;object-fit:cover}
+    .mood-img-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.75) 0%,rgba(0,0,0,0.1) 60%)}
+    .mood-lbl{position:absolute;bottom:0;left:0;right:0;padding:16px 14px 14px}
+    .mood-lbl-title{font-family:var(--serif);font-size:18px;color:#fff;font-weight:600;line-height:1.2;margin-bottom:3px;letter-spacing:0.2px}
+    .mood-lbl-sub{font-size:11px;color:rgba(255,255,255,0.55);letter-spacing:1.5px;text-transform:uppercase;font-weight:500}
+    .mood-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1A1A14,#2A2A1E);gap:6px}
+    .mood-placeholder .ti{font-size:22px;color:rgba(232,197,71,0.4)}
+    .mood-placeholder span{font-size:10px;color:rgba(255,255,255,0.3);text-align:center;padding:0 6px}
+
+    /* ── DAY OVERVIEW GRID ── */
+    .day-overview{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:0.5rem}
+    .dc{border-radius:12px;overflow:hidden;position:relative;height:110px;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1),box-shadow .3s ease;background:var(--black)}
+    .dc:hover{transform:translateY(-6px) scale(1.02);box-shadow:0 16px 40px rgba(12,12,10,0.2)}
+    .dc img{width:100%;height:100%;object-fit:cover}
+    .dc-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,12,10,0.95) 0%,rgba(12,12,10,0.15) 60%)}
+    .dc-body{position:absolute;bottom:0;left:0;right:0;padding:10px 12px}
+    .dc-day{font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+    .dc-name{font-family:var(--serif);font-size:15px;color:#fff;line-height:1.2}
+    .dc-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#1A1A14,#2A2A1E);gap:6px;position:absolute;inset:0}
+    .dc-placeholder .ti{font-size:24px;color:rgba(232,197,71,0.35)}
+    .dc-placeholder span{font-size:10px;color:rgba(255,255,255,0.25);text-align:center;padding:0 8px}
+
+    /* ── BUDGET ── */
+    .budget-card{background:var(--card);border:0.5px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:0.5rem}
+    .budget-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem}
+    .budget-total{font-family:var(--serif);font-size:34px;color:var(--black);font-weight:600}
+    .budget-label{font-size:13px;color:var(--muted)}
+    .budget-track{height:5px;background:var(--ivory);border-radius:3px;overflow:hidden;margin-bottom:1rem}
+    .budget-fill{height:100%;background:linear-gradient(to right,var(--forest),#5DC68A);border-radius:3px;transition:width .8s ease}
+    .budget-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+    .budget-cat{text-align:center;padding:10px 6px;background:var(--ivory);border-radius:8px}
+    .budget-cat-n{font-size:15px;font-weight:600;color:var(--black);margin-bottom:3px}
+    .budget-cat-l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+
+    /* ── DAY SECTION ── */
+    .day-block{margin-bottom:3rem}
+    .day-header{display:flex;align-items:center;gap:14px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:0.5px solid var(--border)}
+    .day-num{width:44px;height:44px;border-radius:12px;background:var(--black);color:var(--gold);font-family:var(--serif);font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .day-info{}
+    .day-title{font-family:var(--serif);font-size:28px;color:var(--black);font-weight:600;line-height:1.1;margin-bottom:3px}
+    .day-reasoning{font-size:14px;color:var(--muted);line-height:1.7;font-style:italic;margin-bottom:1.25rem}
+
+    /* ── TIME OF DAY LABEL ── */
+    .tod-label{display:flex;align-items:center;gap:10px;margin:1.25rem 0 0.75rem}
+    .tod-txt{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+    .tod-line{flex:1;height:0.5px;background:var(--border)}
+
+    /* ── ACTIVITY CARD ── */
+    .act{display:flex;gap:12px;margin-bottom:10px;align-items:flex-start}
+    .act-l{display:flex;flex-direction:column;align-items:center;gap:4px;width:38px;flex-shrink:0;padding-top:3px}
+    .act-time{font-size:11px;color:var(--muted);text-align:center;line-height:1.3;font-weight:600;letter-spacing:0.2px}
+    .act-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+    .act-vl{width:1px;flex:1;min-height:16px;background:var(--border);margin-top:4px}
+    .is{background:#EAF5EE;color:var(--forest)}
+    .if{background:#FEF3EC;color:var(--terra)}
+    .ih{background:#EEF0FB;color:#3C4AB7}
+    .it{background:var(--ivory);color:var(--muted)}
+    .isp{background:#F8EEF8;color:#7D3C98}
+    .act-card{flex:1;background:var(--card);border-radius:14px;overflow:hidden;border:0.5px solid var(--border);transition:box-shadow .2s}
+    .act-card:hover{box-shadow:0 6px 24px rgba(12,12,10,0.07)}
+    .act-photo{width:100%;height:130px;object-fit:cover;display:block}
+    .act-body{padding:12px 14px}
+    .act-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+    .act-name{font-family:var(--serif);font-size:20px;color:var(--black);font-weight:500;line-height:1.2}
+    .act-cost{font-size:13px;padding:4px 12px;border-radius:20px;background:var(--ivory);color:var(--muted);white-space:nowrap;flex-shrink:0;font-weight:600}
+    .act-why{font-size:14px;color:#3A5A48;line-height:1.7;margin-bottom:8px;padding:10px 14px;background:#F0FAF4;border-radius:8px;border-left:2.5px solid var(--forest)}
+    .act-skip{font-size:13px;color:var(--terra);background:#FEF3EC;border-radius:8px;padding:6px 10px;margin-bottom:8px;display:flex;align-items:flex-start;gap:5px;line-height:1.5;border:0.5px solid rgba(200,75,42,0.15)}
+    .act-cost-note{font-size:13px;color:var(--terra);margin-bottom:8px;display:flex;align-items:flex-start;gap:5px;line-height:1.5}
+    .act-foot{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .atag{font-size:12px;padding:4px 11px;border-radius:20px;font-weight:500}
+    .ts{background:#EAF5EE;color:#0D5538}
+    .tf{background:#FEF3EC;color:#7A3010}
+    .th{background:#EEF0FB;color:#3C4AB7}
+    .tt{background:var(--ivory);color:var(--muted)}
+    .tsp{background:#F8EEF8;color:#7D3C98}
+    .aff{margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:13px;color:var(--forest);border:0.5px solid rgba(42,92,58,0.25);border-radius:6px;padding:3px 10px;background:#EAF5EE;flex-shrink:0;font-weight:500}
+
+    /* ── FOOD GUIDE ── */
+    .eat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .eat-card{background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:14px;display:flex;gap:12px;transition:border-color .2s}
+    .eat-card:hover{border-color:var(--gold)}
+    .eat-emoji{font-size:28px;flex-shrink:0;line-height:1}
+    .eat-name{font-family:var(--serif);font-size:18px;font-weight:500;margin-bottom:4px;color:var(--black)}
+    .eat-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:5px}
+    .eat-meta{display:flex;align-items:center;gap:8px}
+    .eat-price{font-size:13px;color:var(--forest);font-weight:600}
+    .eat-when{font-size:12px;color:rgba(122,106,82,0.6);background:var(--ivory);padding:2px 8px;border-radius:20px}
+
+    /* ── PACKING ── */
+    .pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .pack-item{background:var(--card);border:0.5px solid var(--border);border-radius:9px;padding:10px 12px;display:flex;align-items:center;gap:8px;font-size:14px;color:var(--black)}
+    .pack-item .ti{font-size:14px;color:var(--forest);flex-shrink:0}
+
+    /* ── PHRASES ── */
+    .phrase-list{display:flex;flex-direction:column;gap:6px}
+    .phrase{background:var(--card);border:0.5px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px;transition:border-color .2s}
+    .phrase:hover{border-color:rgba(232,197,71,0.4)}
+    .phrase-eng{font-size:14px;color:var(--muted)}
+    .phrase-local{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--black)}
+
+    /* ── NEARBY ── */
+    .nearby-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+    .nearby-scroll::-webkit-scrollbar{height:3px}
+    .nearby-scroll::-webkit-scrollbar-track{background:var(--ivory)}
+    .nearby-scroll::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+    .nb-card{min-width:150px;border-radius:12px;overflow:hidden;position:relative;height:100px;flex-shrink:0;cursor:pointer;transition:transform .25s}
+    .nb-card:hover{transform:translateY(-3px)}
+    .nb-card img{width:100%;height:100%;object-fit:cover}
+    .nb-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,12,10,0.9),transparent 55%)}
+    .nb-body{position:absolute;bottom:0;left:0;right:0;padding:8px 10px}
+    .nb-name{font-family:var(--serif);font-size:15px;font-weight:500;color:#fff;margin-bottom:2px}
+    .nb-dist{font-size:12px;color:rgba(255,255,255,0.45)}
+
+    /* ── SHARE ── */
+    .share-section{background:var(--black);border-radius:16px;padding:1.5rem;margin-top:0.5rem;border:0.5px solid rgba(232,197,71,0.15)}
+    .share-title{font-family:var(--serif);font-size:28px;color:#fff;margin-bottom:5px;font-weight:500}
+    .share-sub{font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:1.25rem;line-height:1.6}
+    .share-btns{display:flex;gap:8px;flex-wrap:wrap}
+    .share-btn{display:flex;align-items:center;gap:7px;padding:11px 18px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:var(--sans);letter-spacing:0.3px}
+    .share-wa{background:#25D366;color:#fff}
+    .share-x{background:#fff;color:#000}
+    .share-copy{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);border:0.5px solid rgba(255,255,255,0.12)!important}
+    .share-new{background:var(--gold);color:var(--black)}
+
+    /* ── EMAIL CAPTURE ── */
+    .email-capture{background:var(--ivory);border:0.5px solid rgba(232,197,71,0.3);border-radius:16px;padding:1.5rem;margin-top:2rem}
+    .ec-title{font-family:var(--serif);font-size:26px;color:var(--black);margin-bottom:5px;font-weight:500}
+    .ec-sub{font-size:14px;color:var(--muted);margin-bottom:1rem;line-height:1.6}
+    .ec-form{display:flex;gap:8px}
+    .ec-input{flex:1;padding:10px 14px;border:1.5px solid rgba(12,12,10,0.1);border-radius:8px;font-family:var(--sans);font-size:15px;background:#fff;outline:none;color:var(--black);transition:border-color .2s}
+    .ec-input:focus{border-color:var(--gold)}
+    .ec-btn{background:var(--black);color:var(--gold);border:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;letter-spacing:0.3px}
+    .ec-note{font-size:10px;color:rgba(122,106,82,0.6);margin-top:8px}
+
+    /* ── DISCLAIMER ── */
+    .disc{font-size:12px;color:rgba(122,106,82,0.6);text-align:center;padding:2rem 1rem;line-height:2;border-top:0.5px solid var(--border);margin-top:1rem}
+    .disc a{color:var(--muted)}
+
+    /* ── LOADING ── */
+    .loading-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:var(--black);gap:1.25rem;padding:2rem}
+    .loading-logo{font-family:var(--grotesk);color:var(--gold);font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px}
+    .loading-logo-mark{display:flex;flex-direction:column;gap:3px}
+    .loading-logo-sep{width:1px;height:18px;background:rgba(255,255,255,0.15)}
+    .loading-spinner{width:44px;height:44px;border-radius:50%;border:2px solid rgba(232,197,71,0.15);border-top-color:var(--gold);animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loading-dest{font-family:var(--serif);font-size:18px;color:#fff;font-weight:400}
+    .loading-steps{display:flex;flex-direction:column;gap:7px;align-items:center;margin-top:0.25rem}
+    .ls{font-size:11px;color:rgba(255,255,255,0.25);transition:color .4s;letter-spacing:0.3px}
+    .ls.active{color:var(--gold)}
+
+    /* ── ERROR ── */
+    .error-state{text-align:center;padding:4rem 1.5rem}
+    .error-icon{font-size:52px;color:var(--ivory);margin-bottom:1.25rem}
+    .error-title{font-family:var(--serif);font-size:24px;margin-bottom:8px;font-weight:500}
+    .error-sub{font-size:13px;color:var(--muted);margin-bottom:2rem;line-height:1.7}
+    .error-btn{background:var(--black);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(100px);background:var(--black);color:#fff;padding:11px 20px;border-radius:10px;font-size:12px;z-index:999;transition:transform .3s cubic-bezier(.34,1.56,.64,1);border:0.5px solid rgba(232,197,71,0.2);display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 12px 40px rgba(0,0,0,0.3)}
+    .toast.show{transform:translateX(-50%) translateY(0)}
+
+    /* ── SKELETON ── */
+    .skeleton{animation:shimmer 1.5s infinite;background:linear-gradient(90deg,var(--ivory) 25%,#EDE8DF 50%,var(--ivory) 75%);background-size:200% 100%;border-radius:8px}
+    @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+    /* ── MOBILE ── */
+    @media(max-width:600px){
+      .hero{height:320px}
+      .ff-grid{grid-template-columns:1fr}
+      /* mood-strip is now carousel on all sizes */
+      .day-overview{grid-template-columns:repeat(2,1fr)}
+      .budget-cats{grid-template-columns:repeat(2,1fr)}
+      .eat-grid{grid-template-columns:1fr}
+      .pack-grid{grid-template-columns:1fr}
+      .share-btns{flex-direction:column}
+      .ec-form{flex-direction:column}
+    }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal{opacity:0;transform:translateY(20px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+  </style>
+</head>
+<body>
+
+<!-- LOADING STATE -->
+<div id="loading-page" class="loading-page">
+  <div class="loading-logo">
+    <div class="loading-logo-mark">
+      <div style="width:6px;height:6px;border-radius:50%;background:#E8C547"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:rgba(232,197,71,0.4)"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:#C84B2A"></div>
+    </div>
+    <div class="loading-logo-sep"></div>
+    Tripofreak
+  </div>
+  <div class="loading-spinner"></div>
+  <div class="loading-dest" id="loading-dest-label">Planning your trip...</div>
+  <div class="loading-steps">
+    <div class="ls active" id="ls1">Analysing your destination...</div>
+    <div class="ls" id="ls2">Clustering activities by proximity...</div>
+    <div class="ls" id="ls3">Detecting Freaky Finds...</div>
+    <div class="ls" id="ls4">Writing your itinerary...</div>
+  </div>
+</div>
+
+<!-- MAIN PAGE -->
+<div id="main-page" style="display:none">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="/" class="nav-logo">
+      <div class="nav-logo-mark">
+        <div style="width:5px;height:5px;border-radius:50%;background:#E8C547"></div>
+        <div style="width:5px;height:5px;border-radius:50%;background:rgba(232,197,71,0.4)"></div>
+        <div style="width:5px;height:5px;border-radius:50%;background:#C84B2A"></div>
+      </div>
+      <div class="nav-logo-sep"></div>
+      Tripofreak
+    </a>
+    <div class="nav-r">
+      <a href="/" class="nav-back"><i class="ti ti-arrow-left" style="font-size:13px"></i> New trip</a>
+      <button class="nav-share" onclick="shareWhatsApp()"><i class="ti ti-share" style="font-size:13px"></i> Share</button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <img id="hero-img" alt="" loading="eager" style="display:none">
+    <div class="hero-grad"></div>
+    <div class="hero-credit" id="hero-credit"></div>
+    <div class="hero-body">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-dot"></div>
+        <span class="hero-eyebrow-txt">AI-planned itinerary</span>
+      </div>
+      <h1 class="hero-title" id="hero-title">Loading...</h1>
+      <div class="hero-season" id="hero-season"></div>
+      <div class="hero-chips" id="hero-chips"></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="stat-total">—</div><div class="stat-l">Est. Total</div></div>
+    <div class="stat"><div class="stat-n" id="stat-per">—</div><div class="stat-l">Per Person</div></div>
+    <div class="stat"><div class="stat-n" id="stat-acts">—</div><div class="stat-l">Activities</div></div>
+    <div class="stat"><div class="stat-n gold" id="stat-ff">—</div><div class="stat-l">Freaky Finds</div></div>
+  </div>
+
+  <!-- EMERGENCY -->
+  <div class="emergency" id="emergency-strip">
+    <div class="em-label"><i class="ti ti-phone-call"></i>Emergency</div>
+  </div>
+
+  <!-- ARRIVAL -->
+  <div class="arrival" id="arrival-card" style="display:none">
+    <div class="arrival-icon"><i class="ti ti-plane-arrival"></i></div>
+    <div>
+      <div class="arrival-title" id="arrival-title"></div>
+      <div class="arrival-text" id="arrival-text"></div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="wrap">
+
+    <!-- FREAKY FINDS -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Know before you go</div>
+      <div class="sec-title">Freaky Finds</div>
+    </div>
+    <div class="ff-grid reveal" id="ff-grid"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- MOOD STRIP -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Trip mood</div>
+      <div class="sec-title" id="mood-label">What it looks like</div>
+    </div>
+    <div class="mood-strip reveal" id="mood-strip"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- DAY OVERVIEW -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">At a glance</div>
+      <div class="sec-title" id="days-overview-title">Your days</div>
+    </div>
+    <div class="day-overview reveal" id="day-grid"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- BUDGET -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Budget breakdown</div>
+      <div class="sec-title">What to expect to spend</div>
+    </div>
+    <div class="budget-card reveal">
+      <div class="budget-top">
+        <div>
+          <div class="budget-total" id="bt-total">—</div>
+          <div class="budget-label">Estimated total for the trip</div>
+        </div>
+        <div id="bt-per" style="font-family:var(--serif);font-size:20px;color:var(--muted);text-align:right"></div>
+      </div>
+      <div class="budget-track"><div class="budget-fill" id="bt-fill" style="width:0%"></div></div>
+      <div class="budget-cats" id="bt-cats"></div>
+    </div>
+
+    <div class="sec-divider"></div>
+
+    <!-- ITINERARY DAYS -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Day by day</div>
+      <div class="sec-title">Your full itinerary</div>
+    </div>
+    <div id="days-container"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- FOOD GUIDE -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Food guide</div>
+      <div class="sec-title" id="food-label">What to eat</div>
+    </div>
+    <div class="eat-grid reveal" id="eat-grid"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- PACKING -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Pack smart</div>
+      <div class="sec-title">For this specific trip</div>
+    </div>
+    <div class="pack-grid reveal" id="pack-grid"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- PHRASES -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Local phrases</div>
+      <div class="sec-title" id="phrases-label">Useful to know</div>
+    </div>
+    <div class="phrase-list reveal" id="phrase-list"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- NEARBY -->
+    <div class="sec reveal">
+      <div class="sec-eyebrow">Nearby</div>
+      <div class="sec-title">If you have an extra day</div>
+    </div>
+    <div class="nearby-scroll reveal" id="nearby-scroll"></div>
+
+    <div class="sec-divider"></div>
+
+    <!-- EMAIL CAPTURE -->
+    <div class="email-capture reveal" id="email-capture">
+      <div class="ec-title">Get weekly travel ideas</div>
+      <div class="ec-sub">One email per week — a destination deep-dive, a Freaky Find, or a travel hack. No spam ever.</div>
+      <div class="ec-form">
+        <input class="ec-input" type="email" id="ec-email" placeholder="your@email.com">
+        <button class="ec-btn" onclick="subscribeEmail()">Subscribe</button>
+      </div>
+      <div class="ec-note">Free · Unsubscribe any time</div>
+    </div>
+
+    <!-- SHARE -->
+    <div class="share-section reveal">
+      <div class="share-title">Share your trip plan</div>
+      <div class="share-sub">Send it to your travel group or post it on social.</div>
+      <div class="share-btns">
+        <button class="share-btn share-wa" onclick="shareWhatsApp()"><i class="ti ti-brand-whatsapp"></i>WhatsApp</button>
+        <button class="share-btn share-x" onclick="shareX()"><i class="ti ti-brand-x"></i>Post on X</button>
+        <button class="share-btn share-copy" onclick="copyLink()"><i class="ti ti-link"></i>Copy link</button>
+        <button class="share-btn share-new" onclick="window.location.href='/'"><i class="ti ti-plus"></i>New trip</button>
+      </div>
+    </div>
+
+  </div><!-- /wrap -->
+
+  <div class="disc">
+    Tripofreak is a travel planning tool, not a booking platform. All booking links redirect to third-party platforms.<br>
+    Tripofreak earns affiliate commission at no extra cost to you. Cost estimates are approximate and indicative only.<br>
+    <a href="/pages/terms.html">Terms</a> · <a href="/pages/privacy.html">Privacy</a> · <a href="/">Home</a>
+  </div>
+
+</div><!-- /main-page -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? 'http://localhost:3002'
+  : 'https://api.tripofreak.com';
+
+let itineraryData = null;
+let heroImageUrl = '';
+let heroImageCredit = null;
+let moodImages = [];
+let params = {};
+
+// ── INIT ──────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', async () => {
+  const steps = ['ls1','ls2','ls3','ls4'];
+  let si = 0;
+  const stepTimer = setInterval(() => {
+    document.getElementById(steps[si])?.classList.remove('active');
+    si = Math.min(si + 1, steps.length - 1);
+    document.getElementById(steps[si])?.classList.add('active');
+  }, 1800);
+
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+
+    if (id) {
+      // Always fetch by ID — ignore sessionStorage
+      await fetchAndRender(id);
+      clearInterval(stepTimer);
+    } else {
+      const stored = sessionStorage.getItem('tf_itinerary');
+      const storedParams = sessionStorage.getItem('tf_params');
+      if (stored) {
+        const data = JSON.parse(stored);
+        itineraryData = data.itinerary;
+        heroImageUrl = data.heroImage?.url || '';
+        heroImageCredit = data.heroImage?.credit || null;
+        moodImages = data.moodImages || [];
+        params = storedParams ? JSON.parse(storedParams) : {};
+        await new Promise(r => setTimeout(r, 1200));
+        clearInterval(stepTimer);
+        renderItinerary();
+      } else {
+        clearInterval(stepTimer);
+        showError('No itinerary found. Please generate a new trip.');
+      }
+    }
+  } catch (err) {
+    clearInterval(stepTimer);
+    showError(err.message || 'Something went wrong. Please try again.');
+  }
+
+  // Reveal animations
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+});
+
+// ── FETCH BY ID ───────────────────────────────────────────────────────
+async function fetchAndRender(id) {
+  try {
+    let token = sessionStorage.getItem('tf_token') || null;
+    if (!token && window.TF_AUTH) {
+      await TF_AUTH.init();
+      token = await TF_AUTH.getAccessToken(10, 600);
+      if (token) sessionStorage.setItem('tf_token', token);
+    }
+    if (!token) {
+      // Show login modal and retry after sign in
+      if (window.TF_AUTH) {
+        TF_AUTH.showLoginModal(async () => {
+          const t = await TF_AUTH.getAccessToken(10, 600);
+          if (t) { sessionStorage.setItem('tf_token', t); await fetchAndRender(id); }
+        });
+      } else {
+        showError('Please sign in to view this itinerary.');
+      }
+      return;
+    }
+    const res = await fetch(`${API_URL}/api/itinerary/${id}`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error(data.error);
+    itineraryData = data.itinerary;
+    heroImageUrl = data.heroImage?.url || '';
+    heroImageCredit = data.heroImage?.credit || null;
+    moodImages = data.moodImages || [];
+    renderItinerary();
+  } catch (err) {
+    showError(err.message);
+  }
+}
+// ── RENDER ────────────────────────────────────────────────────────────
+function renderItinerary() {
+  const d = itineraryData;
+  if (!d) { showError('Itinerary data missing.'); return; }
+
+  // Hero image
+  const heroImg = document.getElementById('hero-img');
+  if (heroImageUrl) {
+    heroImg.src = heroImageUrl;
+    heroImg.alt = d.destination;
+    heroImg.style.display = 'block';
+    heroImg.onerror = function(){
+      this.style.display='none';
+      document.querySelector('.hero').style.background='linear-gradient(135deg,#1A1A14,#0C0C0A)';
+    };
+    if (heroImageCredit?.name) {
+      const creditEl = document.getElementById('hero-credit');
+      if (creditEl) creditEl.innerHTML = `📷 <a href="${heroImageCredit.link}?utm_source=tripofreak&utm_medium=referral" target="_blank" rel="noopener">${esc(heroImageCredit.name)}</a> on <a href="https://unsplash.com?utm_source=tripofreak&utm_medium=referral" target="_blank" rel="noopener">Unsplash</a>`;
+    }
+  } else {
+    heroImg.style.display = 'none';
+    document.querySelector('.hero').style.background = 'linear-gradient(135deg,#1A1A14,#0C0C0A)';
+  }
+
+  // Hero title
+  const parts = (d.destination || '').split(',');
+  document.getElementById('hero-title').innerHTML = parts.length > 1
+    ? `${parts[0]}, <em>${parts.slice(1).join(',').trim()}</em>`
+    : (d.destination || 'Your Trip');
+
+  document.getElementById('hero-season').textContent = d.season_note || '';
+
+  // Hero chips
+  const chipsData = [
+    params.days ? `${params.days} days` : null,
+    params.groupType ? cap(params.groupType) : null,
+    params.budgetCategory ? cap(params.budgetCategory) : null,
+    params.pace ? cap(params.pace) + ' pace' : null,
+  ].filter(Boolean);
+  document.getElementById('hero-chips').innerHTML = chipsData.map(c =>
+    `<span class="hchip">${c}</span>`
+  ).join('');
+
+  // Stats
+  const budget = d.budget_summary || {};
+  document.getElementById('stat-total').textContent = budget.total_estimated || '—';
+  const totalActs = (d.days || []).reduce((acc, day) =>
+    acc + (day.sections || []).reduce((a, s) => a + (s.activities || []).length, 0), 0);
+  document.getElementById('stat-acts').textContent = totalActs || '—';
+  document.getElementById('stat-ff').textContent = (d.freaky_finds || []).length || '—';
+  document.getElementById('stat-per').textContent =
+    budget.total_estimated && params.groupSize
+      ? calcPerPerson(budget.total_estimated, params.groupSize) : '—';
+
+  // Emergency
+  const emStrip = document.getElementById('emergency-strip');
+  const emergencyItems = getEmergencyContacts(d.country);
+  emStrip.innerHTML = `<div class="em-label"><i class="ti ti-phone-call"></i>Emergency</div>` +
+    emergencyItems.map(e => `<div class="em-item">${e}</div>`).join('');
+
+  // Arrival
+  if (d.arrival_guide) {
+    document.getElementById('arrival-title').textContent = d.arrival_guide.title || 'Getting to your hotel';
+    document.getElementById('arrival-text').textContent = d.arrival_guide.description || '';
+    document.getElementById('arrival-card').style.display = 'flex';
+  }
+
+  // Freaky Finds
+  document.getElementById('ff-grid').innerHTML = (d.freaky_finds || []).map(ff => {
+    const cls = ff.type === 'scam' || ff.type === 'health' ? 'ffc-r' :
+                ff.type === 'timing' || ff.type === 'crowd' ? 'ffc-a' : 'ffc-g';
+    const icon = ff.type === 'scam' ? 'ti-alert-circle' :
+                 ff.type === 'timing' || ff.type === 'crowd' ? 'ti-clock' :
+                 ff.type === 'hidden_cost' ? 'ti-coin' :
+                 ff.type === 'weather' ? 'ti-cloud-rain' : 'ti-info-circle';
+    return `<div class="ffc ${cls}">
+      <i class="ti ${icon} ffc-icon"></i>
+      <div class="ffc-t">${esc(ff.title)}</div>
+      <div class="ffc-d">${esc(ff.description)}</div>
+    </div>`;
+  }).join('');
+
+  // Mood label
+  document.getElementById('mood-label').textContent = `What ${d.destination?.split(',')[0]} looks like`;
+
+  // Mood strip
+  const moodEl = document.getElementById('mood-strip');
+  const dest = d.destination?.split(',')[0] || d.destination;
+  const vibes = [
+    { title: 'The Landscape', sub: 'Where it all begins' },
+    { title: 'Food & Flavour', sub: 'Eat like a local' },
+    { title: 'Street Life', sub: 'The real pulse of the city' },
+    { title: 'Hidden Side', sub: 'What most tourists miss' }
+  ];
+  if (moodImages && moodImages.length) {
+    moodEl.innerHTML = moodImages.slice(0, 4).map((img, i) => {
+      const vibe = vibes[i] || vibes[0];
+      const credit = img.credit?.name ? `<a href="${img.credit.link}?utm_source=tripofreak&utm_medium=referral" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.3);text-decoration:none;font-size:9px;position:absolute;top:6px;right:8px;z-index:2">📷 ${esc(img.credit.name)}</a>` : '';
+      return `
+      <div class="mood-img">
+        <img src="${img.url}" alt="${esc(dest)}" loading="lazy"
+          onerror="this.style.display='none';this.parentElement.querySelector('.mood-placeholder').style.display='flex'">
+        <div class="mood-img-grad"></div>
+        ${credit}
+        <div class="mood-lbl">
+          <div class="mood-lbl-title">${vibe.title}</div>
+          <div class="mood-lbl-sub">${esc(dest)} · ${vibe.sub}</div>
+        </div>
+        <div class="mood-placeholder" style="display:none">
+          <i class="ti ti-photo"></i>
+          <span>${esc(dest)}</span>
+        </div>
+      </div>`;
+    }).join('');
+  } else {
+    moodEl.innerHTML = vibes.map(v => `
+      <div class="mood-img">
+        <div class="mood-placeholder" style="display:flex">
+          <i class="ti ti-camera"></i>
+          <span>${esc(dest)}</span>
+        </div>
+        <div class="mood-img-grad"></div>
+        <div class="mood-lbl">
+          <div class="mood-lbl-title">${v.title}</div>
+          <div class="mood-lbl-sub">${esc(dest)} · ${v.sub}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // Day overview title
+  document.getElementById('days-overview-title').textContent = `Your ${(d.days || []).length} days`;
+
+  // Day overview grid
+  document.getElementById('day-grid').innerHTML = (d.days || []).map((day, i) => {
+    // Use first activity image from this day as card image
+    let imgSrc = '';
+    for (const section of day.sections || []) {
+      for (const act of section.activities || []) {
+        if (act.image_url) { imgSrc = act.image_url; break; }
+      }
+      if (imgSrc) break;
+    }
+    const hasImg = !!imgSrc;
+    return `<div class="dc" onclick="scrollToDay(${i})">
+      ${hasImg ? `<img src="${imgSrc}" alt="${esc(day.day_title)}" loading="lazy"
+        onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` : ''}
+      <div class="dc-placeholder" style="display:${hasImg ? 'none' : 'flex'}">
+        <i class="ti ti-map-2"></i>
+        <span>${esc(day.day_title)}</span>
+      </div>
+      <div class="dc-grad"></div>
+      <div class="dc-body">
+        <div class="dc-day">Day ${day.day_number}</div>
+        <div class="dc-name">${esc(day.day_title)}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Budget
+  document.getElementById('bt-total').textContent = budget.total_estimated || '—';
+  if (budget.total_estimated && params.groupSize) {
+    document.getElementById('bt-per').innerHTML = `
+      <div style="font-size:13px;color:var(--muted);margin-bottom:4px">Per person</div>
+      <div>${calcPerPerson(budget.total_estimated, params.groupSize)}</div>
+    `;
+  }
+  document.getElementById('bt-fill').style.width = budget.total_estimated ? '65%' : '0%';
+  document.getElementById('bt-cats').innerHTML = [
+    { n: budget.accommodation_per_night || '—', l: 'Stay/night' },
+    { n: budget.food_per_day || '—', l: 'Food/day' },
+    { n: budget.transport_per_day || '—', l: 'Transport' },
+    { n: budget.activities_total || '—', l: 'Activities' }
+  ].map(c => `<div class="budget-cat"><div class="budget-cat-n">${esc(c.n)}</div><div class="budget-cat-l">${c.l}</div></div>`).join('');
+
+  // All days timeline — ALL DAYS rendered
+  document.getElementById('days-container').innerHTML = (d.days || []).map((day, di) => renderDay(day, di)).join('');
+
+  // Food
+  document.getElementById('food-label').textContent = `What to eat in ${d.destination?.split(',')[0]}`;
+  document.getElementById('eat-grid').innerHTML = (d.what_to_eat || []).map(f => `
+    <div class="eat-card">
+      <div class="eat-emoji">${f.emoji || '🍽️'}</div>
+      <div style="flex:1">
+        <div class="eat-name">${esc(f.dish)}</div>
+        <div class="eat-desc">${esc(f.description)}</div>
+        <div class="eat-meta">
+          <span class="eat-price">${esc(f.price_range)}</span>
+          <span class="eat-when">${esc(f.when)}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  // Packing
+  document.getElementById('pack-grid').innerHTML = (d.packing_list || []).map(p => `
+    <div class="pack-item"><i class="ti ti-check"></i>${esc(p.item)}</div>
+  `).join('');
+
+  // Phrases
+  document.getElementById('phrases-label').textContent = d.language_note || 'Useful local phrases';
+  document.getElementById('phrase-list').innerHTML = (d.local_phrases || []).map(p => `
+    <div class="phrase">
+      <span class="phrase-eng">${esc(p.english)}</span>
+      <span class="phrase-local">${esc(p.local)}</span>
+    </div>
+  `).join('');
+
+  // Nearby
+  document.getElementById('nearby-scroll').innerHTML = (d.nearby_day_trips || []).map(nb => {
+    const hasImg = !!nb.image_url;
+    return `<div class="nb-card" onclick="window.location.href='/?dest=${encodeURIComponent(nb.name)}'">
+      ${hasImg
+        ? `<img src="${nb.image_url}" alt="${esc(nb.name)}" style="width:100%;height:100%;object-fit:cover"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+        : ''}
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#1A1A14,#2A2A1E);display:${hasImg ? 'none' : 'flex'};align-items:center;justify-content:center;flex-direction:column;gap:6px">
+        <i class="ti ti-map-pin" style="font-size:22px;color:rgba(232,197,71,0.4)"></i>
+        <span style="font-size:10px;color:rgba(255,255,255,0.3)">${esc(nb.name)}</span>
+      </div>
+      <div class="nb-grad"></div>
+      <div class="nb-body">
+        <div class="nb-name">${esc(nb.name)}</div>
+        <div class="nb-dist">${esc(nb.distance)}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Page title
+  document.title = `${d.destination} Itinerary — Tripofreak`;
+
+  // Show page
+  document.getElementById('loading-page').style.display = 'none';
+  document.getElementById('main-page').style.display = 'block';
+}
+
+// ── RENDER DAY ────────────────────────────────────────────────────────
+function renderDay(day, di) {
+  const timeOfDayGroups = {};
+  (day.sections || []).forEach(s => {
+    timeOfDayGroups[s.time_of_day] = s.activities || [];
+  });
+
+  const timeOrder = ['Morning', 'Mid-morning', 'Afternoon', 'Evening', 'Night'];
+  const sectionsHtml = timeOrder
+    .filter(t => timeOfDayGroups[t]?.length)
+    .map(t => `
+      <div class="tod-label">
+        <span class="tod-txt">${t}</span>
+        <div class="tod-line"></div>
+      </div>
+      ${timeOfDayGroups[t].map(act => renderActivity(act)).join('')}
+    `).join('');
+
+  return `
+    <div class="day-block reveal" id="day-${di}">
+      <div class="day-header">
+        <div class="day-num">${day.day_number}</div>
+        <div class="day-info">
+          <div class="day-title">${esc(day.day_title)}</div>
+        </div>
+      </div>
+      ${day.day_reasoning ? `<p class="day-reasoning">${esc(day.day_reasoning)}</p>` : ''}
+      ${sectionsHtml}
+    </div>
+  `;
+}
+
+// ── RENDER ACTIVITY ───────────────────────────────────────────────────
+function renderActivity(act) {
+  const iconMap = {
+    sightseeing: { cls: 'is', icon: 'ti-building-arch' },
+    food:        { cls: 'if', icon: 'ti-tools-kitchen-2' },
+    stay:        { cls: 'ih', icon: 'ti-bed' },
+    transit:     { cls: 'it', icon: 'ti-car' },
+    shopping:    { cls: 'if', icon: 'ti-shopping-bag' },
+    spiritual:   { cls: 'isp', icon: 'ti-pray' },
+    adventure:   { cls: 'is', icon: 'ti-mountain' },
+    nightlife:   { cls: 'ih', icon: 'ti-moon' }
+  };
+  const iconData = iconMap[act.type] || { cls: 'is', icon: 'ti-map-pin' };
+
+  const tagMap = {
+    sightseeing: 'ts', food: 'tf', stay: 'th',
+    transit: 'tt', spiritual: 'tsp', adventure: 'ts',
+    shopping: 'tf', nightlife: 'th'
+  };
+
+  const affiliateHtml = ''; // Affiliate links disabled until post-launch
+
+  const tagsHtml = (act.tags || []).slice(0, 2).map(tag =>
+    `<span class="atag ${tagMap[act.type] || 'tt'}">${esc(tag)}</span>`
+  ).join('');
+
+  const durationHtml = act.duration
+    ? `<span class="atag tt"><i class="ti ti-clock" style="font-size:10px"></i> ${esc(act.duration)}</span>` : '';
+
+  return `
+    <div class="act">
+      <div class="act-l">
+        <div class="act-time">${esc(act.time || '').replace(' ', '<br>')}</div>
+        <div class="act-icon ${iconData.cls}"><i class="ti ${iconData.icon}"></i></div>
+        <div class="act-vl"></div>
+      </div>
+      <div class="act-card">
+        ${act.image_url ? `<img class="act-photo" src="${act.image_url}" alt="${esc(act.name)}" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="act-body">
+          <div class="act-top">
+            <div class="act-name">${esc(act.name)}</div>
+            <div class="act-cost">${esc(act.cost_local || 'Free')}</div>
+          </div>
+          ${act.why ? `<div class="act-why">${esc(act.why)}</div>` : ''}
+          ${act.skip_if ? `<div class="act-skip"><i class="ti ti-info-circle" style="font-size:12px;margin-top:1px;flex-shrink:0"></i>${esc(act.skip_if)}</div>` : ''}
+          ${act.cost_note ? `<div class="act-cost-note"><i class="ti ti-alert-triangle" style="font-size:12px;margin-top:1px;flex-shrink:0"></i>${esc(act.cost_note)}</div>` : ''}
+          <div class="act-foot">
+            ${tagsHtml}
+            ${durationHtml}
+            ${affiliateHtml}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ── SHARE ─────────────────────────────────────────────────────────────
+function shareWhatsApp() {
+  const dest = itineraryData?.destination || 'my trip';
+  const text = `Check out my AI-planned itinerary for ${dest} on Tripofreak 🗺️\n\nEvery activity explained. Freaky Finds included.\n\n${window.location.href}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function shareX() {
+  const dest = itineraryData?.destination || 'my trip';
+  const text = `Just planned my trip to ${dest} with @Tripofreak AI 🗺️\n\nEvery activity explained. Every risk flagged.\n\n${window.location.href}\n\n#Tripofreak #TravelPlanning #AI`;
+  window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => showToast('✓ Link copied to clipboard'));
+}
+
+// ── EMAIL SUBSCRIBE ───────────────────────────────────────────────────
+async function subscribeEmail() {
+  const email = document.getElementById('ec-email').value.trim();
+  if (!email || !email.includes('@')) { showToast('Please enter a valid email'); return; }
+  const btn = document.querySelector('.ec-btn');
+  btn.textContent = '...'; btn.disabled = true;
+  try {
+    await fetch(`${API_URL}/api/email/subscribe`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, source: 'itinerary_page', destination: itineraryData?.destination })
+    });
+    document.getElementById('email-capture').innerHTML = `
+      <div style="text-align:center;padding:1rem">
+        <div style="font-size:28px;margin-bottom:10px">✓</div>
+        <div style="font-family:var(--serif);font-size:18px;color:var(--black);margin-bottom:5px">You're in</div>
+        <div style="font-size:12px;color:var(--muted)">One travel email per week. Unsubscribe any time.</div>
+      </div>
+    `;
+  } catch {
+    btn.textContent = 'Subscribe'; btn.disabled = false;
+    showToast('Something went wrong. Try again.');
+  }
+}
+
+// ── AFFILIATE ─────────────────────────────────────────────────────────
+function trackAffiliate(label) {
+  showToast('Opening booking partner...');
+  setTimeout(() => window.open('about:blank', '_blank'), 500);
+}
+
+// ── SCROLL TO DAY ─────────────────────────────────────────────────────
+function scrollToDay(index) {
+  const el = document.getElementById(`day-${index}`);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────
+function esc(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function cap(str) {
+  return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+}
+
+function calcPerPerson(total, groupSize) {
+  const num = parseInt(String(total).replace(/[^0-9]/g, ''));
+  if (!num || !groupSize) return '—';
+  const per = Math.round(num / groupSize);
+  return String(total).includes('₹') ? `₹${per.toLocaleString('en-IN')}` : `$${per}`;
+}
+
+function getEmergencyContacts(country) {
+  const contacts = {
+    'India': ['Police · 100', 'Ambulance · 108', 'Tourist Helpline · 1800-11-1363'],
+    'Japan': ['Police · 110', 'Ambulance · 119'],
+    'USA': ['Emergency · 911'],
+    'UK': ['Emergency · 999'],
+    'France': ['Emergency · 112', 'Police · 17'],
+    'Thailand': ['Tourist Police · 1155', 'Emergency · 191'],
+    'UAE': ['Police · 999', 'Ambulance · 998'],
+    'Australia': ['Emergency · 000'],
+    'default': ['Emergency · 112 (works in most countries)', 'Local police · check locally']
+  };
+  return contacts[country] || contacts['default'];
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function showError(msg) {
+  document.getElementById('loading-page').style.display = 'none';
+  document.getElementById('main-page').style.display = 'block';
+  document.getElementById('main-page').innerHTML = `
+    <nav class="nav">
+      <a href="/" class="nav-logo">
+        <div class="nav-logo-mark">
+          <div style="width:5px;height:5px;border-radius:50%;background:#E8C547"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:rgba(232,197,71,0.4)"></div>
+          <div style="width:5px;height:5px;border-radius:50%;background:#C84B2A"></div>
+        </div>
+        <div class="nav-logo-sep"></div>
+        Tripofreak
+      </a>
+    </nav>
+    <div class="error-state">
+      <div class="error-icon"><i class="ti ti-map-off"></i></div>
+      <div class="error-title">Couldn't load itinerary</div>
+      <div class="error-sub">${msg}</div>
+      <button class="error-btn" onclick="window.location.href='/'">Plan a new trip</button>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>
