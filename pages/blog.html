@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary SEO -->
+  <title>Travel Blog — Tripofreak</title>
+  <meta name="description" content="Honest travel stories from Tripofreak — destination deep-dives, real insights, no sponsored fluff. Starting with Krabi, Thailand.">
+  <link rel="canonical" href="https://tripofreak.com/pages/blog.html">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Travel Blog — Tripofreak">
+  <meta property="og:description" content="Real travel. Real insights. No sponsored fluff. Honest stories from the road.">
+  <meta property="og:image" content="https://tripofreak.com/assets/og-image.jpg">
+  <meta property="og:url" content="https://tripofreak.com/pages/blog.html">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Travel Blog — Tripofreak">
+  <meta name="twitter:description" content="Real travel. Real insights. No sponsored fluff.">
+  <meta name="twitter:image" content="https://tripofreak.com/assets/og-image.jpg">
+
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --black: #0C0C0A;
+      --gold: #E8C547;
+      --terra: #C84B2A;
+      --forest: #2A5C3A;
+      --ivory: #F5F0E8;
+      --cream: #FAF7F2;
+      --muted: #7A6A52;
+      --border: #E2D9CC;
+      --serif: 'Cormorant Garamond', serif;
+      --sans: 'Inter', sans-serif;
+      --grotesk: 'Space Grotesk', sans-serif;
+    }
+    body { font-family: var(--sans); background: var(--cream); color: var(--black); -webkit-font-smoothing: antialiased; }
+
+    /* NAV */
+    .nav { background: var(--black); padding: 0 2rem; height: 60px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-logo { font-family: var(--grotesk); font-size: 20px; font-weight: 700; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 10px; letter-spacing: -0.5px; }
+    .nav-dots { display: flex; flex-direction: column; gap: 3px; }
+    .nav-dots span:nth-child(1) { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); display: block; }
+    .nav-dots span:nth-child(2) { width: 6px; height: 6px; border-radius: 50%; background: rgba(232,197,71,0.4); display: block; }
+    .nav-dots span:nth-child(3) { width: 6px; height: 6px; border-radius: 50%; background: var(--terra); display: block; }
+    .nav-divider { width: 1px; height: 22px; background: rgba(255,255,255,0.15); }
+    .nav-r a { font-size: 13px; color: rgba(255,255,255,0.6); text-decoration: none; margin-left: 1.5rem; }
+    .nav-r a:hover { color: #fff; }
+
+    /* HERO */
+    .hero { background: var(--black); padding: 5rem 2rem 4rem; text-align: center; }
+    .hero-eyebrow { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--terra); font-weight: 700; margin-bottom: 1rem; }
+    .hero-title { font-family: var(--serif); font-size: clamp(36px, 6vw, 60px); color: #fff; font-weight: 600; line-height: 1.1; margin-bottom: 1rem; }
+    .hero-title em { color: var(--gold); font-style: italic; }
+    .hero-sub { font-size: 14px; color: rgba(255,255,255,0.45); max-width: 400px; margin: 0 auto; line-height: 1.7; font-weight: 300; }
+
+    /* BLOG GRID */
+    .blog-section { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+
+    .section-label {
+      font-family: var(--grotesk);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* FEATURED POST CARD */
+    .post-featured {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      background: var(--black);
+      border-radius: 4px;
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      transition: opacity 0.2s;
+      margin-bottom: 3rem;
+    }
+    .post-featured:hover { opacity: 0.92; }
+
+    .post-featured-img {
+      position: relative;
+      overflow: hidden;
+      min-height: 320px;
+    }
+    .post-featured-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.85;
+    }
+    .post-featured-img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, transparent 60%, var(--black));
+    }
+
+    .post-featured-content {
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .post-tag {
+      display: inline-block;
+      font-family: var(--grotesk);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+    }
+
+    .post-featured-title {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--ivory);
+      line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .post-featured-title em { font-style: italic; color: var(--gold); }
+
+    .post-featured-excerpt {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.75;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 11px;
+      color: rgba(255,255,255,0.3);
+      font-family: var(--grotesk);
+      letter-spacing: 0.5px;
+      margin-bottom: 1.5rem;
+    }
+    .post-meta-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+
+    .post-verdict {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(42,92,58,0.2);
+      border: 1px solid rgba(42,92,58,0.4);
+      border-radius: 100px;
+      padding: 0.35rem 0.9rem;
+      font-family: var(--grotesk);
+      font-size: 11px;
+      font-weight: 500;
+      color: #6fcf8a;
+      margin-bottom: 1.5rem;
+    }
+    .verdict-dot { width: 6px; height: 6px; border-radius: 50%; background: #6fcf8a; }
+
+    .read-link {
+      font-family: var(--grotesk);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* COMING SOON STRIP */
+    .coming-strip {
+      border: 1.5px dashed var(--border);
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+
+    .coming-strip h3 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 0.5rem;
+    }
+
+    .coming-strip p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .coming-topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .coming-topic {
+      padding: 6px 14px;
+      border-radius: 4px;
+      border: 1.5px solid rgba(12,12,10,0.1);
+      background: #fff;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* NOTIFY FORM */
+    .notify-wrap { max-width: 360px; margin: 0 auto; }
+    .notify-label { font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+    .notify-form { display: flex; gap: 8px; }
+    .notify-input { flex: 1; padding: 12px 14px; border: 1.5px solid rgba(12,12,10,0.1); border-radius: 5px; font-family: var(--sans); font-size: 13px; color: var(--black); background: #fff; outline: none; }
+    .notify-input:focus { border-color: var(--gold); }
+    .notify-btn { background: var(--black); color: var(--gold); border: none; padding: 12px 18px; border-radius: 5px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--sans); white-space: nowrap; letter-spacing: 0.5px; }
+    .notify-note { font-size: 11px; color: var(--muted); margin-top: 8px; text-align: center; }
+
+    /* FOOTER */
+    .footer { background: var(--black); padding: 2rem; text-align: center; margin-top: 4rem; }
+    .footer p { font-size: 11px; color: rgba(255,255,255,0.3); }
+    .footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+
+    /* RESPONSIVE */
+    @media (max-width: 640px) {
+      .post-featured { grid-template-columns: 1fr; }
+      .post-featured-img { min-height: 220px; }
+      .post-featured-img-overlay { background: linear-gradient(to bottom, transparent 50%, var(--black)); }
+      .post-featured-content { padding: 1.5rem; }
+      .blog-section { padding: 2.5rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="/" class="nav-logo">
+    <div class="nav-dots">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="nav-divider"></div>
+    Tripofreak
+  </a>
+  <div class="nav-r">
+    <a href="/">Home</a>
+    <a href="/my-trips.html">My Trips</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Travel desk</div>
+  <h1 class="hero-title">Stories from<br><em>the road.</em></h1>
+  <p class="hero-sub">Real travel. Real insights. No sponsored fluff.</p>
+</div>
+
+<div class="blog-section">
+
+  <div class="section-label">Latest Story</div>
+
+  <!-- FEATURED POST -->
+  <a href="/pages/blog/krabi-would-i-go-back.html" class="post-featured">
+    <div class="post-featured-img">
+      <img src="/assets/blog/krabi-night-market.jpg" alt="Mango smoothies at Krabi night market" loading="lazy" />
+      <div class="post-featured-img-overlay"></div>
+    </div>
+    <div class="post-featured-content">
+      <span class="post-tag">Krabi, Thailand &nbsp;·&nbsp; Honest Review</span>
+      <h2 class="post-featured-title">Would I Go Back to <em>Krabi?</em></h2>
+      <div class="post-verdict">
+        <span class="verdict-dot"></span>
+        Verdict: Yes — without hesitation
+      </div>
+      <p class="post-featured-excerpt">Not the cliffs. Not the drone shot of Phi Phi. The real Krabi — two mango smoothies at a night market, the sun that nearly killed me on a jet boat, and the islands that actually look like the photos.</p>
+      <div class="post-meta">
+        <span>5 min read</span>
+        <span class="post-meta-dot"></span>
+        <span>June 2026</span>
+        <span class="post-meta-dot"></span>
+        <span>Couple Travel</span>
+      </div>
+      <span class="read-link">Read the story →</span>
+    </div>
+  </a>
+
+  <!-- COMING SOON -->
+  <div class="coming-strip">
+    <h3>More stories coming soon</h3>
+    <p>Honest accounts from Jaipur, Bangkok, Baku, Darjeeling and beyond.<br>No filler. No sponsored fluff. Just real travel.</p>
+    <div class="coming-topics">
+      <div class="coming-topic">🇮🇳 Jaipur deep-dive</div>
+      <div class="coming-topic">🇹🇭 Bangkok honest review</div>
+      <div class="coming-topic">🇦🇿 Baku — worth it?</div>
+      <div class="coming-topic">🏔️ Darjeeling scorecard</div>
+      <div class="coming-topic">🤖 AI planned my trip</div>
+    </div>
+    <div class="notify-wrap">
+      <div class="notify-label">Get notified when we publish</div>
+      <div class="notify-form">
+        <input class="notify-input" type="email" id="blog-email" placeholder="your@email.com">
+        <button class="notify-btn" onclick="notifyMe()">Notify me</button>
+      </div>
+      <div class="notify-note">One email per post. No spam.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <p>© 2026 Tripofreak · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a></p>
+</footer>
+
+<script>
+function notifyMe() {
+  const email = document.getElementById('blog-email').value.trim();
+  if (!email || !email.includes('@')) return;
+  const btn = document.querySelector('.notify-btn');
+  btn.textContent = '✓ Done!';
+  btn.style.background = '#2A5C3A';
+  document.getElementById('blog-email').value = '';
+  setTimeout(() => { btn.textContent = 'Notify me'; btn.style.background = ''; }, 3000);
+}
+</script>
+
+</body>
+</html>
