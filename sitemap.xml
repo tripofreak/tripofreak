@@ -16,6 +16,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://tripofreak.com/pages/blog/malaysia-what-nobody-tells-you.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://tripofreak.com/pages/terms.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
