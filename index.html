@@ -307,76 +307,7 @@
     .continue-bar-text{color:#fff;font-size:14px}
     .continue-bar-text span{color:var(--gold);font-family:var(--serif);font-size:16px;font-weight:600;font-style:italic}
     .continue-bar-btn{background:var(--gold);color:var(--black);border:none;padding:12px 24px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:0.5px;white-space:nowrap}
-<!-- FAQ HTML SECTION â€” paste just before <footer class="footer"> -->
-<section class="faq-s reveal">
-  <div style="max-width:800px;margin:0 auto;padding:5rem 2rem">
-    <div class="sey">FAQ</div>
-    <h2 class="sh2">Questions people<br><em>actually ask.</em></h2>
-    <div class="faq-list" style="margin-top:2.5rem;display:flex;flex-direction:column;gap:0">
-
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span>What is Tripofreak?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-a">Tripofreak is a free AI travel planner that builds personalised day-by-day itineraries for any destination on earth â€” with insider tips, hidden gems, budget breakdowns, and Freaky Finds alerts built in.</div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span>Is Tripofreak free to use?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-a">Tripofreak is free to get started â€” sign in with Google, enter your destination, and get your itinerary in seconds. No credit card required to begin.</div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span>How long does it take to generate an itinerary?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-a">About 30 seconds. Enter your destination, choose your travel style, and Tripofreak builds your complete day-by-day plan instantly.</div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span>Can Tripofreak plan trips to any destination?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-a">Yes â€” any country, city, town, or village on earth. From Jaipur to Tokyo, Ladakh to Patagonia, Kedarnath to Santorini. If it exists, Tripofreak can plan it.</div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span>How is Tripofreak different from ChatGPT or Google?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-a">ChatGPT gives you a wall of text. Google gives you links. Tripofreak gives you a structured, visual, day-by-day itinerary â€” saved to your account, shareable in one tap, and built around your specific budget, pace, and travel style.</div>
-      </div>
-
-      <div class="faq-item" onclick="toggleFaq(this)">
-        <div class="faq-q">
-          <span>Do I need to create an account?</span>
-          <span class="faq-icon">+</span>
-        </div>
-        <div class="faq-a">You sign in with your existing Google account â€” no new account or password needed. Your trips are saved automatically so you can access them from any device.</div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-
-.faq-s { background: var(--cream); }
-.faq-item { border-bottom: 0.5px solid var(--border); cursor: pointer; }
-.faq-item:first-child { border-top: 0.5px solid var(--border); }
-.faq-q { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; font-size: 15px; font-weight: 500; color: var(--black); gap: 1rem; }
-.faq-icon { font-size: 22px; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; font-weight: 300; }
-.faq-a { font-size: 14px; color: var(--muted); line-height: 1.8; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0; font-weight: 300; }
-.faq-item.open .faq-a { max-height: 200px; padding-bottom: 1.25rem; }
-.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--black); }
-
-    @media(max-width:600px){
+@media(max-width:600px){
       .nav{padding:0 1.25rem}
       .hero-h1{font-size:36px}
       .frow{grid-template-columns:1fr}
@@ -387,6 +318,15 @@
       .fleft{max-width:100%}
       .fright{gap:2rem}
     }
+    .faq-s { background: var(--cream); }
+.faq-item { border-bottom: 0.5px solid var(--border); cursor: pointer; }
+.faq-item:first-child { border-top: 0.5px solid var(--border); }
+.faq-q { display: flex; align-items: center; justify-content: space-between; padding: 1.25rem 0; font-size: 15px; font-weight: 500; color: var(--black); gap: 1rem; }
+.faq-icon { font-size: 22px; color: var(--muted); flex-shrink: 0; transition: transform 0.2s; font-weight: 300; }
+.faq-a { font-size: 14px; color: var(--muted); line-height: 1.8; max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; padding: 0; font-weight: 300; }
+.faq-item.open .faq-a { max-height: 200px; padding-bottom: 1.25rem; }
+.faq-item.open .faq-icon { transform: rotate(45deg); color: var(--black); }
+
   </style>
 </head>
 <body>
@@ -598,6 +538,39 @@
     <a class="bc" href="pages/blog.html"><div class="bc-img"><img src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&q=75" alt="Kyoto" loading="lazy"><span class="photo-credit" onclick="event.preventDefault();event.stopPropagation();window.open('https://unsplash.com/photos/people-walking-on-road-near-well-lit-buildings-layMbSJ3YOE?utm_source=tripofreak&utm_medium=referral&utm_campaign=api-credit','_blank')">📷 Jezael Melgoza / Unsplash</span></div><div class="bc-b"><div class="bc-tag">Japan</div><div class="bc-tit">Kyoto on ₹40,000 — a complete 5-day breakdown</div><div class="bc-meta">6 min read</div></div></a>
     <a class="bc" href="pages/blog.html"><div class="bc-img"><img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=400&q=75" alt="Dubai" loading="lazy"><span class="photo-credit" onclick="event.preventDefault();event.stopPropagation();window.open('https://unsplash.com/photos/aerial-photo-of-city-highway-surrounded-by-high-rise-buildings-Fr6zexbmjmc?utm_source=tripofreak&utm_medium=referral&utm_campaign=api-credit','_blank')">📷 David Rodrigo / Unsplash</span></div><div class="bc-b"><div class="bc-tag">Middle East</div><div class="bc-tit">Dubai in 3 days — what to skip and what's unmissable</div><div class="bc-meta">5 min read</div></div></a>
     <a class="bc" href="pages/blog.html"><div class="bc-img"><img src="https://images.unsplash.com/photo-1501854140801-50d01698950b?w=400&q=75" alt="Travel" loading="lazy"><span class="photo-credit" onclick="event.preventDefault();event.stopPropagation();window.open('https://unsplash.com/photos/birds-eye-view-photograph-of-green-mountains-01_igFr7hd4?utm_source=tripofreak&utm_medium=referral&utm_campaign=api-credit','_blank')">📷 Qingbao Meng / Unsplash</span></div><div class="bc-b"><div class="bc-tag">Budget travel</div><div class="bc-tit">How to travel 30 days on a shoestring without suffering</div><div class="bc-meta">7 min read</div></div></a>
+  </div>
+</section>
+
+<section class="faq-s reveal">
+  <div style="max-width:800px;margin:0 auto;padding:5rem 2rem">
+    <div class="sey">FAQ</div>
+    <h2 class="sh2">Questions people<br><em>actually ask.</em></h2>
+    <div class="faq-list" style="margin-top:2.5rem;display:flex;flex-direction:column;gap:0">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>What is Tripofreak?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a">Tripofreak is a free AI travel planner that builds personalised day-by-day itineraries for any destination on earth — with insider tips, hidden gems, budget breakdowns, and Freaky Finds alerts built in.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Is Tripofreak free to use?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a">Tripofreak is free to get started — sign in with Google, enter your destination, and get your itinerary in seconds. No credit card required to begin.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How long does it take to generate an itinerary?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a">About 30 seconds. Enter your destination, choose your travel style, and Tripofreak builds your complete day-by-day plan instantly.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Can Tripofreak plan trips to any destination?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a">Yes — any country, city, town, or village on earth. From Jaipur to Tokyo, Ladakh to Patagonia, Kedarnath to Santorini. If it exists, Tripofreak can plan it.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>How is Tripofreak different from ChatGPT or Google?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a">ChatGPT gives you a wall of text. Google gives you links. Tripofreak gives you a structured, visual, day-by-day itinerary — saved to your account, shareable in one tap, and built around your specific budget, pace, and travel style.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q"><span>Do I need to create an account?</span><span class="faq-icon">+</span></div>
+        <div class="faq-a">You sign in with your existing Google account — no new account or password needed. Your trips are saved automatically so you can access them from any device.</div>
+      </div>
+    </div>
   </div>
 </section>
 
