@@ -31,6 +31,7 @@ async function initAuth() {
       // Return to itinerary if user signed in from the itinerary page
       if (localStorage.getItem('tf_return_to_itinerary')) {
         localStorage.removeItem('tf_return_to_itinerary');
+        localStorage.setItem('tf_just_signed_in', '1');
         const saved = localStorage.getItem('tf_return_itinerary');
         const savedParams = localStorage.getItem('tf_return_params');
         if (saved) {
