@@ -342,7 +342,7 @@
   <!-- Save banner — shown to guests only -->
   <div id="save-banner" style="display:none;background:var(--gold);padding:10px 1.5rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
     <span style="font-size:13px;font-weight:600;color:var(--black)">Sign in to save this trip to your account</span>
-    <button onclick="TF_AUTH.showLoginModal()" style="background:var(--black);color:var(--gold);border:none;padding:8px 20px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:0.5px;white-space:nowrap">Sign in free</button>
+    <button onclick="signInAndReturn()" style="background:var(--black);color:var(--gold);border:none;padding:8px 20px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:0.5px;white-space:nowrap">Sign in free</button>
   </div>
 
   <nav class="nav">
@@ -963,6 +963,18 @@ function renderActivity(act) {
 }
 
 // ── SHARE ─────────────────────────────────────────────────────────────
+function signInAndReturn() {
+  // Save itinerary to localStorage so it survives the OAuth redirect
+  const stored = sessionStorage.getItem('tf_itinerary');
+  const storedParams = sessionStorage.getItem('tf_params');
+  if (stored) {
+    localStorage.setItem('tf_return_itinerary', stored);
+    if (storedParams) localStorage.setItem('tf_return_params', storedParams);
+  }
+  localStorage.setItem('tf_return_to_itinerary', '1');
+  TF_AUTH.showLoginModal();
+}
+
 function shareWhatsApp() {
   const dest = itineraryData?.destination || 'my trip';
   const text = `Check out my AI-planned itinerary for ${dest} on Tripofreak 🗺️\n\nEvery activity explained. Freaky Finds included.\n\n${window.location.href}`;
