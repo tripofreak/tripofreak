@@ -356,6 +356,7 @@
       Tripofreak
     </a>
     <div class="nav-r">
+      <a href="/my-trips.html" class="nav-back" id="nav-mytrips" style="display:none">My Trips</a>
       <a href="/" class="nav-back"><i class="ti ti-arrow-left" style="font-size:13px"></i> New trip</a>
       <button class="nav-share" onclick="shareWhatsApp()"><i class="ti ti-share" style="font-size:13px"></i> Share</button>
     </div>
@@ -868,8 +869,10 @@ function renderItinerary() {
   document.getElementById('loading-page').style.display = 'none';
   document.getElementById('main-page').style.display = 'block';
 
-  // Show save banner for guests
-  if (window.TF_AUTH && !TF_AUTH.isLoggedIn()) {
+  // Show/hide nav elements based on auth state
+  if (window.TF_AUTH && TF_AUTH.isLoggedIn()) {
+    document.getElementById('nav-mytrips').style.display = 'inline-flex';
+  } else {
     document.getElementById('save-banner').style.display = 'flex';
   }
 
