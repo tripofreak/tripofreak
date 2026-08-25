@@ -567,6 +567,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         heroImageCredit = data.heroImage?.credit || null;
         moodImages = data.moodImages || [];
         params = storedParams ? JSON.parse(storedParams) : {};
+        // Init auth so we know if user is logged in
+        if (window.TF_AUTH) await TF_AUTH.init();
         await new Promise(r => setTimeout(r, 1200));
         clearInterval(stepTimer);
         renderItinerary();
