@@ -870,6 +870,30 @@ function renderItinerary() {
   if (window.TF_AUTH && !TF_AUTH.isLoggedIn()) {
     document.getElementById('save-banner').style.display = 'flex';
   }
+
+  // Auto-save if user just signed in from itinerary page
+  if (window.TF_AUTH && TF_AUTH.isLoggedIn() && localStorage.getItem('tf_just_signed_in')) {
+    localStorage.removeItem('tf_just_signed_in');
+    autoSaveTrip();
+  }
+}
+
+async function autoSaveTrip() {
+  try {
+    const token = await TF_AUTH.getAccessToken();
+    if (!token || !itineraryData) return;
+    const storedParams = sessionStorage.getItem('tf_params');
+    const p = storedParams ? JSON.parse(storedParams) : {};
+    const res = await fetch(API_URL + '/api/itinerary/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+      body: JSON.stringify({ itineraryData, params: p, heroImageUrl })
+    });
+    const data = await res.json();
+    if (data.success) showToast('Trip saved to your account ✓');
+  } catch (e) {
+    console.warn('[AutoSave] Failed:', e.message);
+  }
 }
 
 // ── RENDER DAY ────────────────────────────────────────────────────────
