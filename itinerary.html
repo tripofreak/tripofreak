@@ -339,6 +339,12 @@
 <div id="main-page" style="display:none">
 
   <!-- NAV -->
+  <!-- Save banner — shown to guests only -->
+  <div id="save-banner" style="display:none;background:var(--gold);padding:10px 1.5rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+    <span style="font-size:13px;font-weight:600;color:var(--black)">Sign in to save this trip to your account</span>
+    <button onclick="TF_AUTH.showLoginModal()" style="background:var(--black);color:var(--gold);border:none;padding:8px 20px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:0.5px;white-space:nowrap">Sign in free</button>
+  </div>
+
   <nav class="nav">
     <a href="/" class="nav-logo">
       <div class="nav-logo-mark">
@@ -859,6 +865,11 @@ function renderItinerary() {
   // Show page
   document.getElementById('loading-page').style.display = 'none';
   document.getElementById('main-page').style.display = 'block';
+
+  // Show save banner for guests
+  if (window.TF_AUTH && !TF_AUTH.isLoggedIn()) {
+    document.getElementById('save-banner').style.display = 'flex';
+  }
 }
 
 // ── RENDER DAY ────────────────────────────────────────────────────────
