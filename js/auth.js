@@ -27,10 +27,26 @@ async function initAuth() {
 
     if (event === 'SIGNED_IN') {
       closeLoginModal();
+
+      // Return to itinerary if user signed in from the itinerary page
+      if (localStorage.getItem('tf_return_to_itinerary')) {
+        localStorage.removeItem('tf_return_to_itinerary');
+        const saved = localStorage.getItem('tf_return_itinerary');
+        const savedParams = localStorage.getItem('tf_return_params');
+        if (saved) {
+          sessionStorage.setItem('tf_itinerary', saved);
+          localStorage.removeItem('tf_return_itinerary');
+        }
+        if (savedParams) {
+          sessionStorage.setItem('tf_params', savedParams);
+          localStorage.removeItem('tf_return_params');
+        }
+        window.location.href = '/itinerary.html';
+        return;
+      }
+
       const pending = localStorage.getItem('tf_pending_dest');
       if (pending) {
-        // Don't remove yet — let the page handle it
-        // Show a "Continue planning" toast
         setTimeout(() => showContinueToast(pending), 800);
       }
       if (window._authSuccessCallback) {
