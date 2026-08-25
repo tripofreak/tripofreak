@@ -782,12 +782,6 @@ async function generateItinerary() {
   var dest = document.getElementById('dest-input').value.trim();
   if (!dest) return;
 
-  if (typeof TF_AUTH !== 'undefined' && !TF_AUTH.isLoggedIn()) {
-    localStorage.setItem('tf_pending_dest', dest);
-    TF_AUTH.showLoginModal();
-    return;
-  }
-
   var params = {
     destination: dest,
     startDate: document.getElementById('f-date').value || null,
@@ -831,7 +825,9 @@ async function generateItinerary() {
     sessionStorage.setItem('tf_itinerary', JSON.stringify(data));
     sessionStorage.setItem('tf_params', JSON.stringify(params));
     clearInterval(st);
-    window.location.href = '/itinerary.html?id=' + data.itineraryId;
+    window.location.href = data.itineraryId
+      ? '/itinerary.html?id=' + data.itineraryId
+      : '/itinerary.html';
 
   } catch(err) {
     clearInterval(st);
