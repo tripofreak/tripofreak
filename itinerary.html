@@ -567,7 +567,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     if (id) {
       // Always fetch by ID — ignore sessionStorage
       await fetchAndRender(id);
-      clearInterval(stepTimer);
+      // stepTimer removed
     } else {
       const stored = sessionStorage.getItem('tf_itinerary');
       const storedParams = sessionStorage.getItem('tf_params');
@@ -581,15 +581,15 @@ window.addEventListener('DOMContentLoaded', async () => {
         // Init auth so we know if user is logged in
         if (window.TF_AUTH) await TF_AUTH.init();
         await new Promise(r => setTimeout(r, 1200));
-        clearInterval(stepTimer);
+        // stepTimer removed
         renderItinerary();
       } else {
-        clearInterval(stepTimer);
+        // stepTimer removed
         showError('No itinerary found. Please generate a new trip.');
       }
     }
   } catch (err) {
-    clearInterval(stepTimer);
+    // stepTimer removed
     showError(err.message || 'Something went wrong. Please try again.');
   }
 
