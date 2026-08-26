@@ -268,16 +268,24 @@
     .disc a{color:var(--muted)}
 
     /* ── LOADING ── */
-    .loading-page{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;background:var(--black);gap:1.25rem;padding:2rem}
-    .loading-logo{font-family:var(--grotesk);color:var(--gold);font-size:22px;font-weight:700;display:flex;align-items:center;gap:10px}
-    .loading-logo-mark{display:flex;flex-direction:column;gap:3px}
-    .loading-logo-sep{width:1px;height:18px;background:rgba(255,255,255,0.15)}
-    .loading-spinner{width:44px;height:44px;border-radius:50%;border:2px solid rgba(232,197,71,0.15);border-top-color:var(--gold);animation:spin .8s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-    .loading-dest{font-family:var(--serif);font-size:18px;color:#fff;font-weight:400}
-    .loading-steps{display:flex;flex-direction:column;gap:7px;align-items:center;margin-top:0.25rem}
-    .ls{font-size:11px;color:rgba(255,255,255,0.25);transition:color .4s;letter-spacing:0.3px}
-    .ls.active{color:var(--gold)}
+    .loading-page{position:fixed;inset:0;z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0C0C0A;overflow:hidden}
+    .loading-page::after{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,71,0.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:lo-glow2 3s ease-in-out infinite alternate}
+    @keyframes lo-glow2{0%{transform:translate(-50%,-50%) scale(1);opacity:.6}100%{transform:translate(-50%,-50%) scale(1.2);opacity:1}}
+    .lp-ring{position:absolute;border-radius:50%;border:0.5px solid rgba(232,197,71,0.06);top:50%;left:50%;pointer-events:none}
+    .lp-ring1{width:520px;height:520px;transform:translate(-50%,-50%);animation:spin 20s linear infinite}
+    .lp-ring2{width:360px;height:360px;transform:translate(-50%,-50%);animation:spin 14s linear infinite reverse}
+    .lp-dots{display:flex;gap:8px;align-items:center;margin-bottom:2rem;position:relative;z-index:2}
+    .lp-dot{border-radius:50%;animation:lp-pulse 1.6s ease-in-out infinite}
+    .lp-dot:nth-child(1){width:10px;height:10px;background:#E8C547;animation-delay:0s}
+    .lp-dot:nth-child(2){width:10px;height:10px;background:rgba(232,197,71,0.35);animation-delay:.2s}
+    .lp-dot:nth-child(3){width:10px;height:10px;background:#C84B2A;animation-delay:.4s}
+    @keyframes lp-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.7);opacity:.8}}
+    .lp-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1rem;font-weight:700;position:relative;z-index:2}
+    .lp-dest{font-family:var(--serif);font-size:clamp(40px,9vw,80px);color:#fff;font-weight:600;text-align:center;letter-spacing:-2px;line-height:1;margin-bottom:2.5rem;position:relative;z-index:2;min-height:1.1em}
+    .lp-dest .lp-char{display:inline-block;opacity:0;transform:translateY(20px);transition:opacity .35s ease,transform .35s ease}
+    .lp-dest .lp-char.in{opacity:1;transform:translateY(0)}
+    .lp-brand{position:absolute;bottom:2rem;font-family:var(--grotesk);font-size:11px;color:rgba(255,255,255,0.12);letter-spacing:2px;font-weight:700;z-index:2}
 
     /* ── ERROR ── */
     .error-state{text-align:center;padding:4rem 1.5rem}
@@ -316,23 +324,16 @@
 
 <!-- LOADING STATE -->
 <div id="loading-page" class="loading-page">
-  <div class="loading-logo">
-    <div class="loading-logo-mark">
-      <div style="width:6px;height:6px;border-radius:50%;background:#E8C547"></div>
-      <div style="width:6px;height:6px;border-radius:50%;background:rgba(232,197,71,0.4)"></div>
-      <div style="width:6px;height:6px;border-radius:50%;background:#C84B2A"></div>
-    </div>
-    <div class="loading-logo-sep"></div>
-    Tripofreak
+  <div class="lp-ring lp-ring1"></div>
+  <div class="lp-ring lp-ring2"></div>
+  <div class="lp-dots">
+    <div class="lp-dot"></div>
+    <div class="lp-dot"></div>
+    <div class="lp-dot"></div>
   </div>
-  <div class="loading-spinner"></div>
-  <div class="loading-dest" id="loading-dest-label">Planning your trip...</div>
-  <div class="loading-steps">
-    <div class="ls active" id="ls1">Analysing your destination...</div>
-    <div class="ls" id="ls2">Clustering activities by proximity...</div>
-    <div class="ls" id="ls3">Detecting Freaky Finds...</div>
-    <div class="ls" id="ls4">Writing your itinerary...</div>
-  </div>
+  <div class="lp-eyebrow">AI-PLANNED ITINERARY</div>
+  <div class="lp-dest" id="lp-dest"></div>
+  <div class="lp-brand">TRIPOFREAK</div>
 </div>
 
 <!-- MAIN PAGE -->
@@ -542,13 +543,22 @@ let params = {};
 
 // ── INIT ──────────────────────────────────────────────────────────────
 window.addEventListener('DOMContentLoaded', async () => {
-  const steps = ['ls1','ls2','ls3','ls4'];
-  let si = 0;
-  const stepTimer = setInterval(() => {
-    document.getElementById(steps[si])?.classList.remove('active');
-    si = Math.min(si + 1, steps.length - 1);
-    document.getElementById(steps[si])?.classList.add('active');
-  }, 1800);
+  // Animate destination name on loading screen
+  (function() {
+    var destEl = document.getElementById('lp-dest');
+    var cityName = 'Your destination';
+    try {
+      var sp = sessionStorage.getItem('tf_params');
+      if (sp) { var p = JSON.parse(sp); if (p.destination) cityName = p.destination.split(',')[0].trim(); }
+    } catch(e) {}
+    destEl.innerHTML = cityName.split('').map(function(ch){
+      return ch === ' ' ? '<span class="lp-char in" style="opacity:1;transform:none">&nbsp;</span>'
+                        : '<span class="lp-char">' + ch + '</span>';
+    }).join('');
+    destEl.querySelectorAll('.lp-char:not([style*="opacity:1"])').forEach(function(c,i){
+      setTimeout(function(){ c.classList.add('in'); }, 80 + i * 55);
+    });
+  })();
 
   try {
     const urlParams = new URLSearchParams(window.location.search);
