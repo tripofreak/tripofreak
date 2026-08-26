@@ -201,33 +201,37 @@
     .tick-vol{font-size:10px;color:rgba(255,255,255,0.4);margin-left:2px}
 
     .form-section{overflow:hidden;max-height:0;transition:max-height .5s cubic-bezier(.4,0,.2,1),opacity .4s ease;opacity:0}
-    .form-section.open{max-height:1400px;opacity:1}
+    .form-section.open{max-height:1600px;opacity:1}
     .form-inner{background:var(--ivory);border-bottom:0.5px solid var(--border);padding:2.5rem 2rem}
+    .form-wrap{max-width:520px;margin:0 auto}
     .form-back{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);cursor:pointer;border:none;background:none;padding:0;margin-bottom:1.5rem;font-family:var(--sans);transition:color .2s}
     .form-back:hover{color:var(--black)}
-    .form-dest-label{font-family:var(--serif);font-size:26px;color:var(--black);margin-bottom:2rem;padding-bottom:1rem;border-bottom:0.5px solid var(--border)}
+    .form-dest-label{font-family:var(--serif);font-size:28px;color:var(--black);margin-bottom:2rem}
     .form-dest-label span{color:var(--terra);font-style:italic}
-    .flabel{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:block}
-    .frow{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
-    .ffield{margin-bottom:1.5rem}
-    .cselect{display:flex;gap:7px;flex-wrap:wrap}
-    .ccard{padding:9px 15px;border-radius:5px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:12px;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:6px;font-weight:500}
-    .ccard:hover{border-color:var(--gold);color:var(--black)}
-    .ccard.active{background:var(--black);border-color:var(--black);color:var(--gold);font-weight:700}
-    .finput{width:100%;padding:11px 14px;border:1.5px solid var(--border);border-radius:5px;background:var(--card);color:var(--black);font-family:var(--sans);font-size:13px;outline:none;transition:border-color .2s}
-    .finput:focus{border-color:var(--gold)}
-    .igrid{display:flex;gap:7px;flex-wrap:wrap}
-    .ichip{padding:8px 14px;border-radius:5px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:12px;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:5px;font-weight:500}
-    .ichip:hover{border-color:var(--gold);color:var(--black)}
-    .ichip.active{background:var(--black);border-color:var(--black);color:var(--gold)}
-    .adv-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 0;cursor:pointer;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-top:0.5px solid var(--border);margin-top:0.5rem;user-select:none;transition:color .2s}
+    .fgroup{margin-bottom:1.4rem}
+    .flabel{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:10px;display:block}
+    .pill-row{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{padding:10px 20px;border-radius:100px;border:1.5px solid var(--border);background:transparent;cursor:pointer;font-size:13px;color:var(--black);transition:all .18s;display:inline-flex;align-items:center;gap:6px;font-weight:500;font-family:var(--sans);white-space:nowrap}
+    .pill:hover{border-color:var(--black);background:rgba(12,12,10,0.04)}
+    .pill.active{background:var(--black);border-color:var(--black);color:var(--gold);font-weight:600}
+    .date-row{display:flex;align-items:center;gap:10px;margin-bottom:1.4rem}
+    .date-label{font-size:13px;color:var(--muted);white-space:nowrap;font-weight:500}
+    .finput{padding:10px 14px;border:1.5px solid var(--border);border-radius:100px;background:transparent;color:var(--black);font-family:var(--sans);font-size:13px;outline:none;transition:border-color .2s;width:160px}
+    .finput:focus{border-color:var(--black)}
+    .adv-toggle{display:inline-flex;align-items:center;gap:6px;padding:0;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);background:none;border:none;font-family:var(--sans);margin-bottom:1.4rem;transition:color .2s;user-select:none}
     .adv-toggle:hover{color:var(--black)}
-    .adv-icon{font-size:18px;font-weight:300;transition:transform .3s}
+    .adv-icon{font-size:16px;font-weight:300;transition:transform .3s;display:inline-block}
     .adv-toggle.open .adv-icon{transform:rotate(45deg)}
     .adv-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
-    .adv-body.open{max-height:800px}
-    .genbtn{width:100%;padding:16px;background:var(--black);color:var(--gold);border:none;border-radius:5px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:2rem;transition:all .2s;text-transform:uppercase}
-    .genbtn:hover:not(:disabled){background:#1A1A14;transform:translateY(-1px)}
+    .adv-body.open{max-height:900px}
+    .ichip{padding:9px 16px;border-radius:100px;border:1.5px solid var(--border);background:transparent;cursor:pointer;font-size:13px;color:var(--black);transition:all .18s;display:inline-flex;align-items:center;gap:5px;font-weight:500}
+    .ichip:hover{border-color:var(--black);background:rgba(12,12,10,0.04)}
+    .ichip.active{background:var(--black);border-color:var(--black);color:var(--gold)}
+    .igrid{display:flex;gap:8px;flex-wrap:wrap}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.4rem}
+    .ffield{margin-bottom:1.4rem}
+    .genbtn{width:100%;padding:16px;background:var(--gold);color:var(--black);border:none;border-radius:100px;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:0.3px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:1.5rem;transition:all .2s}
+    .genbtn:hover:not(:disabled){background:#d4b03c;transform:translateY(-1px)}
     .genbtn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
     .fnote{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
 
@@ -416,98 +420,96 @@
 
 <div class="form-section" id="form-section">
   <div class="form-inner">
-    <button class="form-back" onclick="closeForm()">
-      <i class="ti ti-arrow-left" style="font-size:14px"></i> Change destination
-    </button>
-    <div class="form-dest-label">Planning your trip to <span id="form-dest-name"></span></div>
+    <div class="form-wrap">
+      <button class="form-back" onclick="closeForm()">
+        <i class="ti ti-arrow-left" style="font-size:14px"></i> Change destination
+      </button>
+      <div class="form-dest-label">Planning your trip to <span id="form-dest-name"></span></div>
 
-    <div class="frow">
-      <div>
-        <label class="flabel">Number of days</label>
-        <div class="cselect">
-          <div class="ccard active" data-group="days" data-val="1">1 day</div>
-          <div class="ccard" data-group="days" data-val="2">2 days</div>
-          <div class="ccard" data-group="days" data-val="3">3 days</div>
+      <div class="fgroup">
+        <div class="flabel">How many days?</div>
+        <div class="pill-row">
+          <div class="pill active" data-group="days" data-val="1">1 day</div>
+          <div class="pill" data-group="days" data-val="2">2 days</div>
+          <div class="pill" data-group="days" data-val="3">3 days</div>
         </div>
       </div>
-      <div>
-        <label class="flabel">Start date <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+
+      <div class="fgroup">
+        <div class="flabel">What's your budget?</div>
+        <div class="pill-row">
+          <div class="pill" data-group="budget" data-val="budget">🎒 Budget</div>
+          <div class="pill active" data-group="budget" data-val="moderate">✈️ Moderate</div>
+          <div class="pill" data-group="budget" data-val="luxury">💎 Luxury</div>
+        </div>
+      </div>
+
+      <div class="fgroup">
+        <div class="flabel">What's your pace?</div>
+        <div class="pill-row">
+          <div class="pill active" data-group="pace" data-val="relaxed">☕ Relaxed</div>
+          <div class="pill" data-group="pace" data-val="moderate">🚶 Moderate</div>
+          <div class="pill" data-group="pace" data-val="packed">⚡ Packed</div>
+        </div>
+      </div>
+
+      <div class="date-row">
+        <span class="date-label">Start date</span>
         <input type="date" class="finput" id="f-date">
+        <span style="font-size:12px;color:var(--muted)">(optional)</span>
       </div>
-    </div>
 
-    <div class="ffield">
-      <label class="flabel">Budget</label>
-      <div class="cselect">
-        <div class="ccard" data-group="budget" data-val="budget">🎒 Budget</div>
-        <div class="ccard active" data-group="budget" data-val="moderate">✈️ Moderate</div>
-        <div class="ccard" data-group="budget" data-val="luxury">💎 Luxury</div>
-      </div>
-    </div>
-
-    <div class="ffield">
-      <label class="flabel">Pace</label>
-      <div class="cselect">
-        <div class="ccard active" data-group="pace" data-val="relaxed">☕ Relaxed</div>
-        <div class="ccard" data-group="pace" data-val="moderate">🚶 Moderate</div>
-        <div class="ccard" data-group="pace" data-val="packed">⚡ Packed</div>
-      </div>
-    </div>
-
-    <!-- Advanced accordion -->
-    <div class="adv-toggle" onclick="toggleAdvanced(this)">
-      <span>Customise further</span>
-      <span class="adv-icon">+</span>
-    </div>
-    <div class="adv-body" id="adv-body">
-      <div class="ffield">
-        <label class="flabel">Travelling as</label>
-        <div class="cselect">
-          <div class="ccard" data-group="group" data-val="solo">🧍 Solo</div>
-          <div class="ccard active" data-group="group" data-val="couple">💑 Couple</div>
-          <div class="ccard" data-group="group" data-val="family">👨‍👩‍👧 Family</div>
-          <div class="ccard" data-group="group" data-val="friends">👥 Friends</div>
-          <div class="ccard" data-group="group" data-val="pilgrimage">🛕 Pilgrimage</div>
-        </div>
-      </div>
-      <div class="ffield">
-        <label class="flabel">Interests</label>
-        <div class="igrid">
-          <div class="ichip active" data-val="culture">🏛️ Culture</div>
-          <div class="ichip active" data-val="food">🍜 Food</div>
-          <div class="ichip" data-val="adventure">🧗 Adventure</div>
-          <div class="ichip" data-val="nature">🌿 Nature</div>
-          <div class="ichip" data-val="spiritual">🙏 Spiritual</div>
-          <div class="ichip" data-val="honeymoon">💑 Romance</div>
-          <div class="ichip" data-val="shopping">🛍️ Shopping</div>
-          <div class="ichip" data-val="photography">📸 Photography</div>
-          <div class="ichip" data-val="wellness">🧘 Wellness</div>
-          <div class="ichip" data-val="nightlife">🌙 Nightlife</div>
-        </div>
-      </div>
-      <div class="frow">
-        <div class="ffield" style="margin-bottom:0">
-          <label class="flabel">Dietary</label>
-          <div class="cselect" style="flex-wrap:wrap">
-            <div class="ccard active" data-group="diet" data-val="none">No restriction</div>
-            <div class="ccard" data-group="diet" data-val="veg">🥗 Veg</div>
-            <div class="ccard" data-group="diet" data-val="vegan">🌱 Vegan</div>
-            <div class="ccard" data-group="diet" data-val="jain">Jain</div>
-            <div class="ccard" data-group="diet" data-val="halal">Halal</div>
+      <button class="adv-toggle" onclick="toggleAdvanced(this)">
+        <span class="adv-icon">+</span> Customise further
+      </button>
+      <div class="adv-body" id="adv-body">
+        <div class="fgroup">
+          <div class="flabel">Travelling as</div>
+          <div class="pill-row">
+            <div class="pill" data-group="group" data-val="solo">🧍 Solo</div>
+            <div class="pill active" data-group="group" data-val="couple">💑 Couple</div>
+            <div class="pill" data-group="group" data-val="family">👨‍👩‍👧 Family</div>
+            <div class="pill" data-group="group" data-val="friends">👥 Friends</div>
+            <div class="pill" data-group="group" data-val="pilgrimage">🛕 Pilgrimage</div>
           </div>
         </div>
-        <div class="ffield" style="margin-bottom:0">
-          <label class="flabel">Mobility</label>
-          <div class="cselect">
-            <div class="ccard active" data-group="mobility" data-val="full">Full mobility</div>
-            <div class="ccard" data-group="mobility" data-val="limited">Limited</div>
+        <div class="fgroup">
+          <div class="flabel">Interests</div>
+          <div class="igrid">
+            <div class="ichip active" data-val="culture">🏛️ Culture</div>
+            <div class="ichip active" data-val="food">🍜 Food</div>
+            <div class="ichip" data-val="adventure">🧗 Adventure</div>
+            <div class="ichip" data-val="nature">🌿 Nature</div>
+            <div class="ichip" data-val="spiritual">🙏 Spiritual</div>
+            <div class="ichip" data-val="honeymoon">💑 Romance</div>
+            <div class="ichip" data-val="shopping">🛍️ Shopping</div>
+            <div class="ichip" data-val="photography">📸 Photography</div>
+            <div class="ichip" data-val="wellness">🧘 Wellness</div>
+            <div class="ichip" data-val="nightlife">🌙 Nightlife</div>
+          </div>
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Dietary</div>
+          <div class="pill-row">
+            <div class="pill active" data-group="diet" data-val="none">No restriction</div>
+            <div class="pill" data-group="diet" data-val="veg">🥗 Veg</div>
+            <div class="pill" data-group="diet" data-val="vegan">🌱 Vegan</div>
+            <div class="pill" data-group="diet" data-val="jain">Jain</div>
+            <div class="pill" data-group="diet" data-val="halal">Halal</div>
+          </div>
+        </div>
+        <div class="fgroup">
+          <div class="flabel">Mobility</div>
+          <div class="pill-row">
+            <div class="pill active" data-group="mobility" data-val="full">Full mobility</div>
+            <div class="pill" data-group="mobility" data-val="limited">Limited</div>
           </div>
         </div>
       </div>
-    </div>
 
-    <button class="genbtn" id="gen-btn" onclick="generateItinerary()">✦ Generate my itinerary — free</button>
-    <div class="fnote">Free · No credit card · About 10 seconds</div>
+      <button class="genbtn" id="gen-btn" onclick="generateItinerary()">Generate my itinerary →</button>
+      <div class="fnote">Free · No credit card · About 10 seconds</div>
+    </div>
   </div>
 </div>
 
@@ -727,9 +729,9 @@ var items = TRENDING.concat(TRENDING).map(function(t){
 }).join('');
 track.innerHTML = items;
 
-document.querySelectorAll('.ccard').forEach(function(c){
+document.querySelectorAll('.pill').forEach(function(c){
   c.addEventListener('click', function(){
-    document.querySelectorAll('.ccard[data-group="' + c.dataset.group + '"]').forEach(function(x){ x.classList.remove('active'); });
+    document.querySelectorAll('.pill[data-group="' + c.dataset.group + '"]').forEach(function(x){ x.classList.remove('active'); });
     c.classList.add('active');
   });
 });
@@ -808,12 +810,12 @@ async function generateItinerary() {
   var params = {
     destination: dest,
     startDate: document.getElementById('f-date').value || null,
-    days: parseInt(document.querySelector('.ccard.active[data-group="days"]').dataset.val || '3'),
-    budgetCategory: document.querySelector('.ccard.active[data-group="budget"]').dataset.val || 'moderate',
-    pace: document.querySelector('.ccard.active[data-group="pace"]').dataset.val || 'relaxed',
-    groupType: document.querySelector('.ccard.active[data-group="group"]').dataset.val || 'couple',
-    dietary: document.querySelector('.ccard.active[data-group="diet"]').dataset.val || 'none',
-    mobility: document.querySelector('.ccard.active[data-group="mobility"]').dataset.val || 'full',
+    days: parseInt(document.querySelector('.pill.active[data-group="days"]')?.dataset.val || '1'),
+    budgetCategory: document.querySelector('.pill.active[data-group="budget"]')?.dataset.val || 'moderate',
+    pace: document.querySelector('.pill.active[data-group="pace"]')?.dataset.val || 'relaxed',
+    groupType: document.querySelector('.pill.active[data-group="group"]')?.dataset.val || 'couple',
+    dietary: document.querySelector('.pill.active[data-group="diet"]')?.dataset.val || 'none',
+    mobility: document.querySelector('.pill.active[data-group="mobility"]')?.dataset.val || 'full',
     interests: Array.from(document.querySelectorAll('.ichip.active')).map(function(c){ return c.dataset.val; })
   };
 
