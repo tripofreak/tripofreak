@@ -564,29 +564,24 @@ window.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get('id');
 
-    if (id) {
-      // Always fetch by ID — ignore sessionStorage
+    const stored = sessionStorage.getItem('tf_itinerary');
+    const storedParams = sessionStorage.getItem('tf_params');
+
+    if (stored) {
+      // Use cached data from generation — fastest path, works for guests and logged-in users
+      const data = JSON.parse(stored);
+      itineraryData = data.itinerary;
+      heroImageUrl = data.heroImage?.url || '';
+      heroImageCredit = data.heroImage?.credit || null;
+      moodImages = data.moodImages || [];
+      params = storedParams ? JSON.parse(storedParams) : {};
+      if (window.TF_AUTH) await TF_AUTH.init();
+      renderItinerary();
+    } else if (id) {
+      // No sessionStorage — shared link or bookmark, fetch from API
       await fetchAndRender(id);
-      // stepTimer removed
     } else {
-      const stored = sessionStorage.getItem('tf_itinerary');
-      const storedParams = sessionStorage.getItem('tf_params');
-      if (stored) {
-        const data = JSON.parse(stored);
-        itineraryData = data.itinerary;
-        heroImageUrl = data.heroImage?.url || '';
-        heroImageCredit = data.heroImage?.credit || null;
-        moodImages = data.moodImages || [];
-        params = storedParams ? JSON.parse(storedParams) : {};
-        // Init auth so we know if user is logged in
-        if (window.TF_AUTH) await TF_AUTH.init();
-        await new Promise(r => setTimeout(r, 1200));
-        // stepTimer removed
-        renderItinerary();
-      } else {
-        // stepTimer removed
-        showError('No itinerary found. Please generate a new trip.');
-      }
+      showError('No itinerary found. Please generate a new trip.');
     }
   } catch (err) {
     // stepTimer removed
