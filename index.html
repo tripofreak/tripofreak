@@ -317,30 +317,37 @@
     .fcopy-l a:hover{color:var(--gold)}
 
     .loading-ov{position:fixed;inset:0;z-index:1000;background:#0C0C0A;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem;overflow:hidden}
-    /* subtle grain texture */
-    .loading-ov::before{content:'';position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");opacity:0.4;pointer-events:none}
-    /* logo mark — 3 dots */
-    .lo-mark{display:flex;gap:6px;align-items:center;margin-bottom:2.5rem}
-    .lo-dot{width:8px;height:8px;border-radius:50%;animation:lo-pulse 1.8s ease-in-out infinite}
-    .lo-dot:nth-child(1){background:#E8C547;animation-delay:0s}
-    .lo-dot:nth-child(2){background:rgba(232,197,71,0.4);animation-delay:.2s}
-    .lo-dot:nth-child(3){background:#C84B2A;animation-delay:.4s}
-    @keyframes lo-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:0.7}}
-    /* destination name */
-    .lo-dest-name{font-family:var(--serif);font-size:clamp(36px,8vw,72px);color:#fff;font-weight:600;text-align:center;letter-spacing:-1px;margin-bottom:0.5rem;line-height:1.1}
-    .lo-dest-name em{color:var(--gold);font-style:italic}
-    .lo-eyebrow{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:3rem;font-weight:600}
+    /* radial glow */
+    .loading-ov::after{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,71,0.07) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;animation:lo-glow 3s ease-in-out infinite alternate}
+    @keyframes lo-glow{0%{transform:translate(-50%,-50%) scale(1);opacity:0.6}100%{transform:translate(-50%,-50%) scale(1.2);opacity:1}}
+    /* large decorative ring */
+    .lo-ring{position:absolute;width:520px;height:520px;border-radius:50%;border:0.5px solid rgba(232,197,71,0.06);top:50%;left:50%;transform:translate(-50%,-50%);animation:lo-spin-slow 20s linear infinite;pointer-events:none}
+    .lo-ring2{position:absolute;width:360px;height:360px;border-radius:50%;border:0.5px solid rgba(232,197,71,0.1);top:50%;left:50%;transform:translate(-50%,-50%);animation:lo-spin-slow 14s linear infinite reverse;pointer-events:none}
+    @keyframes lo-spin-slow{to{transform:translate(-50%,-50%) rotate(360deg)}}
+    /* logo dots */
+    .lo-mark{display:flex;gap:8px;align-items:center;margin-bottom:2rem;position:relative;z-index:2}
+    .lo-dot{border-radius:50%;animation:lo-pulse 1.6s ease-in-out infinite}
+    .lo-dot:nth-child(1){width:10px;height:10px;background:#E8C547;animation-delay:0s}
+    .lo-dot:nth-child(2){width:10px;height:10px;background:rgba(232,197,71,0.35);animation-delay:.2s}
+    .lo-dot:nth-child(3){width:10px;height:10px;background:#C84B2A;animation-delay:.4s}
+    @keyframes lo-pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.7);opacity:0.8}}
+    /* eyebrow */
+    .lo-eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-bottom:1rem;font-weight:700;position:relative;z-index:2}
+    /* destination name — chars revealed one by one via JS */
+    .lo-dest-name{font-family:var(--serif);font-size:clamp(40px,9vw,88px);color:#fff;font-weight:600;text-align:center;letter-spacing:-2px;line-height:1;margin-bottom:2.5rem;position:relative;z-index:2;min-height:1.1em}
+    .lo-dest-name .lo-char{display:inline-block;opacity:0;transform:translateY(20px);transition:opacity .35s ease,transform .35s ease}
+    .lo-dest-name .lo-char.in{opacity:1;transform:translateY(0)}
     /* rotating message */
-    .lo-msg-wrap{height:22px;overflow:hidden;margin-bottom:2.5rem;position:relative}
-    .lo-msg{font-size:13px;color:rgba(255,255,255,0.5);text-align:center;letter-spacing:0.3px;position:absolute;width:100%;left:0;top:0;transition:opacity .5s ease,transform .5s ease}
+    .lo-msg-wrap{height:20px;overflow:hidden;margin-bottom:2rem;position:relative;z-index:2;width:100%;text-align:center}
+    .lo-msg{font-size:12px;color:rgba(255,255,255,0.38);letter-spacing:0.5px;position:absolute;width:100%;left:0;top:0;transition:opacity .4s ease,transform .4s ease}
     .lo-msg.visible{opacity:1;transform:translateY(0)}
-    .lo-msg.hidden-above{opacity:0;transform:translateY(-16px)}
-    .lo-msg.hidden-below{opacity:0;transform:translateY(16px)}
+    .lo-msg.hidden-above{opacity:0;transform:translateY(-14px)}
+    .lo-msg.hidden-below{opacity:0;transform:translateY(14px)}
     /* progress bar */
-    .lo-bar-wrap{width:200px;height:2px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
-    .lo-bar{height:100%;background:linear-gradient(to right,var(--gold),#C84B2A);border-radius:2px;width:0%;transition:width 1s cubic-bezier(.4,0,.2,1)}
-    /* brand name small */
-    .lo-brand{position:absolute;bottom:2rem;font-family:var(--grotesk);font-size:12px;color:rgba(255,255,255,0.18);letter-spacing:1px;font-weight:700}
+    .lo-bar-wrap{width:160px;height:1.5px;background:rgba(255,255,255,0.07);border-radius:2px;overflow:hidden;position:relative;z-index:2}
+    .lo-bar{height:100%;background:linear-gradient(to right,var(--gold),#C84B2A);border-radius:2px;width:0%;transition:width .8s cubic-bezier(.4,0,.2,1)}
+    /* brand */
+    .lo-brand{position:absolute;bottom:2rem;font-family:var(--grotesk);font-size:11px;color:rgba(255,255,255,0.12);letter-spacing:2px;font-weight:700;z-index:2}
     @keyframes spin{to{transform:rotate(360deg)}}
 
     .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
@@ -682,13 +689,15 @@
 </div>
 
 <div class="loading-ov" id="loading-ov">
+  <div class="lo-ring"></div>
+  <div class="lo-ring2"></div>
   <div class="lo-mark">
     <div class="lo-dot"></div>
     <div class="lo-dot"></div>
     <div class="lo-dot"></div>
   </div>
   <div class="lo-eyebrow">AI-PLANNED ITINERARY</div>
-  <div class="lo-dest-name" id="lo-dest-name">Your destination</div>
+  <div class="lo-dest-name" id="lo-dest-name"></div>
   <div class="lo-msg-wrap">
     <div class="lo-msg visible" id="lo-msg">Mapping the best routes...</div>
   </div>
@@ -841,7 +850,14 @@ async function generateItinerary() {
   };
 
   var cityName = dest.split(',')[0].trim();
-  document.getElementById('lo-dest-name').innerHTML = cityName;
+  // Animate city name letter by letter
+  var destEl = document.getElementById('lo-dest-name');
+  destEl.innerHTML = cityName.split('').map(function(ch){
+    return ch === ' ' ? '<span class="lo-char in" style="opacity:1;transform:none">&nbsp;</span>'
+                      : '<span class="lo-char">' + ch + '</span>';
+  }).join('');
+  var chars = destEl.querySelectorAll('.lo-char:not([style*="opacity:1"])');
+  chars.forEach(function(c, i){ setTimeout(function(){ c.classList.add('in'); }, 80 + i * 60); });
   document.getElementById('loading-ov').style.display = 'flex';
   document.getElementById('gen-btn').disabled = true;
 
