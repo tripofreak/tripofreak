@@ -220,6 +220,12 @@
     .ichip{padding:8px 14px;border-radius:5px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;font-size:12px;color:var(--muted);transition:all .2s;display:flex;align-items:center;gap:5px;font-weight:500}
     .ichip:hover{border-color:var(--gold);color:var(--black)}
     .ichip.active{background:var(--black);border-color:var(--black);color:var(--gold)}
+    .adv-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 0;cursor:pointer;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-top:0.5px solid var(--border);margin-top:0.5rem;user-select:none;transition:color .2s}
+    .adv-toggle:hover{color:var(--black)}
+    .adv-icon{font-size:18px;font-weight:300;transition:transform .3s}
+    .adv-toggle.open .adv-icon{transform:rotate(45deg)}
+    .adv-body{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+    .adv-body.open{max-height:800px}
     .genbtn{width:100%;padding:16px;background:var(--black);color:var(--gold);border:none;border-radius:5px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:1px;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:2rem;transition:all .2s;text-transform:uppercase}
     .genbtn:hover:not(:disabled){background:#1A1A14;transform:translateY(-1px)}
     .genbtn:disabled{opacity:0.5;cursor:not-allowed;transform:none}
@@ -414,20 +420,22 @@
       <i class="ti ti-arrow-left" style="font-size:14px"></i> Change destination
     </button>
     <div class="form-dest-label">Planning your trip to <span id="form-dest-name"></span></div>
+
     <div class="frow">
-      <div>
-        <label class="flabel">Start date</label>
-        <input type="date" class="finput" id="f-date">
-      </div>
       <div>
         <label class="flabel">Number of days</label>
         <div class="cselect">
-          <div class="ccard active" data-group="days" data-val="1">1</div>
-          <div class="ccard" data-group="days" data-val="2">2</div>
-          <div class="ccard" data-group="days" data-val="3">3</div>
+          <div class="ccard active" data-group="days" data-val="1">1 day</div>
+          <div class="ccard" data-group="days" data-val="2">2 days</div>
+          <div class="ccard" data-group="days" data-val="3">3 days</div>
         </div>
       </div>
+      <div>
+        <label class="flabel">Start date <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+        <input type="date" class="finput" id="f-date">
+      </div>
     </div>
+
     <div class="ffield">
       <label class="flabel">Budget</label>
       <div class="cselect">
@@ -436,6 +444,7 @@
         <div class="ccard" data-group="budget" data-val="luxury">💎 Luxury</div>
       </div>
     </div>
+
     <div class="ffield">
       <label class="flabel">Pace</label>
       <div class="cselect">
@@ -444,52 +453,61 @@
         <div class="ccard" data-group="pace" data-val="packed">⚡ Packed</div>
       </div>
     </div>
-    <div class="ffield">
-      <label class="flabel">Travelling as</label>
-      <div class="cselect">
-        <div class="ccard" data-group="group" data-val="solo">🧍 Solo</div>
-        <div class="ccard active" data-group="group" data-val="couple">💑 Couple</div>
-        <div class="ccard" data-group="group" data-val="family">👨‍👩‍👧 Family</div>
-        <div class="ccard" data-group="group" data-val="friends">👥 Friends</div>
-        <div class="ccard" data-group="group" data-val="pilgrimage">🛕 Pilgrimage</div>
-      </div>
+
+    <!-- Advanced accordion -->
+    <div class="adv-toggle" onclick="toggleAdvanced(this)">
+      <span>Customise further</span>
+      <span class="adv-icon">+</span>
     </div>
-    <div class="ffield">
-      <label class="flabel">Interests</label>
-      <div class="igrid">
-        <div class="ichip active" data-val="culture">🏛️ Culture</div>
-        <div class="ichip active" data-val="food">🍜 Food</div>
-        <div class="ichip" data-val="adventure">🧗 Adventure</div>
-        <div class="ichip" data-val="nature">🌿 Nature</div>
-        <div class="ichip" data-val="spiritual">🙏 Spiritual</div>
-        <div class="ichip" data-val="honeymoon">💑 Romance</div>
-        <div class="ichip" data-val="shopping">🛍️ Shopping</div>
-        <div class="ichip" data-val="photography">📸 Photography</div>
-        <div class="ichip" data-val="wellness">🧘 Wellness</div>
-        <div class="ichip" data-val="nightlife">🌙 Nightlife</div>
-      </div>
-    </div>
-    <div class="frow">
-      <div class="ffield" style="margin-bottom:0">
-        <label class="flabel">Dietary</label>
-        <div class="cselect" style="flex-wrap:wrap">
-          <div class="ccard active" data-group="diet" data-val="none">No restriction</div>
-          <div class="ccard" data-group="diet" data-val="veg">🥗 Veg</div>
-          <div class="ccard" data-group="diet" data-val="vegan">🌱 Vegan</div>
-          <div class="ccard" data-group="diet" data-val="jain">Jain</div>
-          <div class="ccard" data-group="diet" data-val="halal">Halal</div>
-        </div>
-      </div>
-      <div class="ffield" style="margin-bottom:0">
-        <label class="flabel">Mobility</label>
+    <div class="adv-body" id="adv-body">
+      <div class="ffield">
+        <label class="flabel">Travelling as</label>
         <div class="cselect">
-          <div class="ccard active" data-group="mobility" data-val="full">Full mobility</div>
-          <div class="ccard" data-group="mobility" data-val="limited">Limited</div>
+          <div class="ccard" data-group="group" data-val="solo">🧍 Solo</div>
+          <div class="ccard active" data-group="group" data-val="couple">💑 Couple</div>
+          <div class="ccard" data-group="group" data-val="family">👨‍👩‍👧 Family</div>
+          <div class="ccard" data-group="group" data-val="friends">👥 Friends</div>
+          <div class="ccard" data-group="group" data-val="pilgrimage">🛕 Pilgrimage</div>
+        </div>
+      </div>
+      <div class="ffield">
+        <label class="flabel">Interests</label>
+        <div class="igrid">
+          <div class="ichip active" data-val="culture">🏛️ Culture</div>
+          <div class="ichip active" data-val="food">🍜 Food</div>
+          <div class="ichip" data-val="adventure">🧗 Adventure</div>
+          <div class="ichip" data-val="nature">🌿 Nature</div>
+          <div class="ichip" data-val="spiritual">🙏 Spiritual</div>
+          <div class="ichip" data-val="honeymoon">💑 Romance</div>
+          <div class="ichip" data-val="shopping">🛍️ Shopping</div>
+          <div class="ichip" data-val="photography">📸 Photography</div>
+          <div class="ichip" data-val="wellness">🧘 Wellness</div>
+          <div class="ichip" data-val="nightlife">🌙 Nightlife</div>
+        </div>
+      </div>
+      <div class="frow">
+        <div class="ffield" style="margin-bottom:0">
+          <label class="flabel">Dietary</label>
+          <div class="cselect" style="flex-wrap:wrap">
+            <div class="ccard active" data-group="diet" data-val="none">No restriction</div>
+            <div class="ccard" data-group="diet" data-val="veg">🥗 Veg</div>
+            <div class="ccard" data-group="diet" data-val="vegan">🌱 Vegan</div>
+            <div class="ccard" data-group="diet" data-val="jain">Jain</div>
+            <div class="ccard" data-group="diet" data-val="halal">Halal</div>
+          </div>
+        </div>
+        <div class="ffield" style="margin-bottom:0">
+          <label class="flabel">Mobility</label>
+          <div class="cselect">
+            <div class="ccard active" data-group="mobility" data-val="full">Full mobility</div>
+            <div class="ccard" data-group="mobility" data-val="limited">Limited</div>
+          </div>
         </div>
       </div>
     </div>
+
     <button class="genbtn" id="gen-btn" onclick="generateItinerary()">✦ Generate my itinerary — free</button>
-    <div class="fnote">Free · No credit card · About 30 seconds</div>
+    <div class="fnote">Free · No credit card · About 10 seconds</div>
   </div>
 </div>
 
@@ -736,6 +754,11 @@ function openForm(dest) {
   var s = document.getElementById('form-section');
   s.classList.add('open');
   setTimeout(function(){ s.scrollIntoView({behavior:'smooth', block:'start'}); }, 50);
+}
+
+function toggleAdvanced(el) {
+  el.classList.toggle('open');
+  document.getElementById('adv-body').classList.toggle('open');
 }
 
 function closeForm() {
