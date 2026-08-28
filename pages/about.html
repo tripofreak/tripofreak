@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NFJ9L7W2TL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NFJ9L7W2TL');
+  </script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Tripofreak</title>
+  <meta name="description" content="Tripofreak has been in the making since 2014. A decade of restarts, failures, and persistence — now powered by AI.">
+  <link rel="canonical" href="https://tripofreak.com/pages/about.html">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <link rel="stylesheet" href="../css/main.css">
+  <style>
+    :root{--black:#0C0C0A;--gold:#E8C547;--terra:#C84B2A;--ivory:#F5F0E8;--cream:#FAF7F2;--muted:#7A6A52;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',sans-serif;--grotesk:'Space Grotesk',sans-serif;--border:rgba(122,106,82,0.15)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--cream);color:var(--black);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(12,12,10,0.95);backdrop-filter:blur(12px);border-bottom:0.5px solid rgba(232,197,71,0.1);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-family:var(--grotesk);color:#fff;font-size:16px;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:10px}
+    .nav-logo-mark{display:flex;flex-direction:column;gap:3px}
+    .nav-back{font-size:13px;color:rgba(255,255,255,0.5);text-decoration:none;display:flex;align-items:center;gap:4px;transition:color .2s}
+    .nav-back:hover{color:rgba(255,255,255,0.8)}
+
+    .about-wrap{max-width:720px;margin:0 auto;padding:100px 1.5rem 5rem}
+
+    /* Hero */
+    .ab-hero{margin-bottom:4rem;border-bottom:0.5px solid var(--border);padding-bottom:3rem}
+    .ab-eyebrow{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--terra);font-weight:700;margin-bottom:1.25rem}
+    .ab-h1{font-family:var(--serif);font-size:clamp(40px,6vw,64px);color:var(--black);line-height:1.05;letter-spacing:-1px;font-weight:600;margin-bottom:1.5rem}
+    .ab-h1 em{color:var(--terra);font-style:italic}
+    .ab-lead{font-size:16px;color:var(--muted);line-height:1.8;max-width:580px}
+
+    /* Timeline */
+    .ab-section{margin-bottom:3rem}
+    .ab-sh{font-family:var(--serif);font-size:26px;color:var(--black);font-weight:600;margin-bottom:1.5rem}
+    .timeline{display:flex;flex-direction:column;gap:0}
+    .tl-item{display:flex;gap:1.5rem;position:relative}
+    .tl-item:not(:last-child)::before{content:'';position:absolute;left:19px;top:40px;bottom:0;width:0.5px;background:var(--border)}
+    .tl-left{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding-top:6px}
+    .tl-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);margin-top:6px;flex-shrink:0}
+    .tl-right{padding:0 0 2.5rem 0}
+    .tl-year{font-family:var(--grotesk);font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+    .tl-title{font-family:var(--serif);font-size:20px;color:var(--black);font-weight:600;margin-bottom:8px}
+    .tl-desc{font-size:14px;color:var(--muted);line-height:1.8}
+
+    /* Mission */
+    .ab-mission{background:var(--black);border-radius:20px;padding:2.5rem;margin-bottom:3rem}
+    .ab-mission .ab-sh{color:#fff}
+    .ab-mission p{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.9;margin-bottom:1rem}
+    .ab-mission p:last-child{margin-bottom:0}
+    .ab-mission em{color:var(--gold);font-style:normal;font-weight:600}
+
+    /* Values */
+    .val-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:1.5rem}
+    .val-card{background:var(--ivory);border-radius:14px;padding:1.5rem;border:0.5px solid var(--border)}
+    .val-num{font-family:var(--serif);font-size:32px;color:var(--terra);font-weight:600;line-height:1;margin-bottom:8px}
+    .val-tit{font-size:14px;font-weight:600;color:var(--black);margin-bottom:6px}
+    .val-desc{font-size:13px;color:var(--muted);line-height:1.7}
+
+    /* Social */
+    .ab-social{display:flex;gap:10px;margin-top:2rem;flex-wrap:wrap}
+    .soc-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:100px;border:0.5px solid var(--border);color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;transition:all .2s;background:#fff}
+    .soc-btn:hover{border-color:var(--gold);color:var(--terra)}
+    .soc-btn i{font-size:16px}
+
+    /* CTA */
+    .ab-cta{text-align:center;padding:3rem 0 0;border-top:0.5px solid var(--border)}
+    .ab-cta-h{font-family:var(--serif);font-size:32px;color:var(--black);font-weight:600;margin-bottom:8px}
+    .ab-cta-sub{font-size:14px;color:var(--muted);margin-bottom:1.5rem}
+    .ab-cta-btn{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:13px 28px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;transition:opacity .2s;font-family:var(--grotesk)}
+    .ab-cta-btn:hover{opacity:0.88}
+
+    @media(max-width:600px){.val-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-mark">
+      <div style="width:6px;height:6px;border-radius:50%;background:#E8C547"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:rgba(232,197,71,0.4)"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:#C84B2A"></div>
+    </div>
+    Tripofreak
+  </a>
+  <a class="nav-back" href="/"><i class="ti ti-arrow-left"></i> Back to planner</a>
+</nav>
+
+<div class="about-wrap">
+
+  <!-- Hero -->
+  <div class="ab-hero">
+    <div class="ab-eyebrow">Our Story</div>
+    <h1 class="ab-h1">Ten years.<br>Three restarts.<br><em>One obsession.</em></h1>
+    <p class="ab-lead">Tripofreak didn't start with AI. It started with a frustration — that every travel tool tells you <em>what</em> to do, never <em>why</em>. We've been trying to fix that since 2014.</p>
+  </div>
+
+  <!-- Timeline -->
+  <div class="ab-section">
+    <h2 class="ab-sh">The journey</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-year">2014</div>
+          <div class="tl-title">The idea is born</div>
+          <div class="tl-desc">Tripofreak was conceived — a travel platform that thinks like a local, not a guidebook. The first version was built and quietly launched. No users, no traction. Shut down.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-year">2016</div>
+          <div class="tl-title">@tripofreak goes live on Instagram</div>
+          <div class="tl-desc">A second attempt — this time building the brand through content. The Instagram account was born. It worked for a while, then quietly faded again.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot"></div></div>
+        <div class="tl-right">
+          <div class="tl-year">2024–25</div>
+          <div class="tl-title">AI changes everything</div>
+          <div class="tl-desc">Large language models finally made it possible to build what we always imagined — a planner that doesn't just list places, but explains every decision. The third attempt began.</div>
+        </div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-left"><div class="tl-dot" style="background:var(--terra)"></div></div>
+        <div class="tl-right">
+          <div class="tl-year">2026</div>
+          <div class="tl-title">Tripofreak relaunches — for real this time</div>
+          <div class="tl-desc">Built from scratch. AI-powered. Free to use. Every itinerary explained, every risk flagged, every hidden gem surfaced. Persistency was always the key.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mission -->
+  <div class="ab-mission">
+    <h2 class="ab-sh">What we believe</h2>
+    <p>Most travel tools give you a list. Tripofreak gives you <em>a reason</em>. Every activity is grouped by proximity so you don't waste hours in transit. Every day is sequenced so crowds work in your favour. Every risk — scams, tourist traps, seasonal closures — is flagged before you leave home.</p>
+    <p>We call the unexpected finds <em>Freaky Finds</em>. The places most travellers miss because they never appear in any top-10 list. That's the heart of what Tripofreak has always been about.</p>
+    <p>We're not a booking platform. We're not paid to recommend hotels. We're just obsessively building the travel planner we always wished existed.</p>
+  </div>
+
+  <!-- Values -->
+  <div class="ab-section">
+    <h2 class="ab-sh">What makes us different</h2>
+    <div class="val-grid">
+      <div class="val-card">
+        <div class="val-num">01</div>
+        <div class="val-tit">Insider Logic</div>
+        <div class="val-desc">Every day is structured for a reason — proximity saved, crowds avoided, budget respected. We explain why.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-num">02</div>
+        <div class="val-tit">Freaky Finds</div>
+        <div class="val-desc">Hidden spots, local rituals, off-map experiences that most travellers never discover. Every itinerary has them.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-num">03</div>
+        <div class="val-tit">Honest Risk Flags</div>
+        <div class="val-desc">Scams, seasonal closures, tourist traps, safety warnings. We tell you before you go, not after.</div>
+      </div>
+      <div class="val-card">
+        <div class="val-num">04</div>
+        <div class="val-tit">Always Free</div>
+        <div class="val-desc">No paywalls, no forced sign-ups. Generate your first trip without creating an account.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social -->
+  <div class="ab-section">
+    <h2 class="ab-sh">Follow the journey</h2>
+    <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:0">We build in public. The wins, the failures, the restarts — all of it. Follow along.</p>
+    <div class="ab-social">
+      <a class="soc-btn" href="https://instagram.com/tripofreak" target="_blank"><i class="ti ti-brand-instagram"></i> @tripofreak</a>
+      <a class="soc-btn" href="https://x.com/iamtripofreak" target="_blank"><i class="ti ti-brand-x"></i> @iamtripofreak</a>
+      <a class="soc-btn" href="mailto:hello@tripofreak.com"><i class="ti ti-mail"></i> hello@tripofreak.com</a>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="ab-cta">
+    <div class="ab-cta-h">Ready to plan your trip?</div>
+    <div class="ab-cta-sub">Free. No sign-up required. Your itinerary in under 10 seconds.</div>
+    <a class="ab-cta-btn" href="/">Plan my trip →</a>
+  </div>
+
+</div>
+
+</body>
+</html>
