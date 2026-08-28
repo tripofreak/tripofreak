@@ -813,7 +813,8 @@ var TRENDING = [
 ];
 // Trip counter
 (function(){
-  fetch(API + '/api/stats/trips')
+  var _api = (typeof CONFIG !== 'undefined') ? CONFIG.API_URL : 'https://api.tripofreak.com';
+  fetch(_api + '/api/stats/trips')
     .then(function(r){ return r.json(); })
     .then(function(d){
       var target = d.count || 0;
