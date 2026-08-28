@@ -185,6 +185,8 @@
     .hero-search-btn{background:var(--gold);color:var(--black);border:none;padding:17px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap;transition:background .2s}
     .hero-search-btn:hover{background:#D4B030}
     .hero-hint{font-size:11px;color:rgba(255,255,255,0.5);margin-top:12px;letter-spacing:0.3px}
+    .hero-counter{font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px;letter-spacing:0.3px}
+    .hero-counter span{color:var(--gold);font-weight:700;font-family:var(--serif);font-size:15px}
     .hero-dots{display:flex;gap:6px;margin-top:1.75rem;justify-content:center}
     .hdot{width:24px;height:2px;border-radius:2px;background:rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;border:none;padding:0}
     .hdot.active{background:var(--gold);width:40px}
@@ -326,6 +328,10 @@
     .fcopy-l{display:flex;gap:16px}
     .fcopy-l a{font-size:11px;color:rgba(255,255,255,0.5);text-decoration:none;transition:color .2s;display:flex;align-items:center;gap:4px}
     .fcopy-l a:hover{color:var(--gold)}
+    .fsocial{display:flex;gap:10px;margin-bottom:2rem}
+    .fsoc-btn{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:100px;border:0.5px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.7);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:0.2px;transition:all .2s;background:rgba(255,255,255,0.04)}
+    .fsoc-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(232,197,71,0.06)}
+    .fsoc-btn i{font-size:16px}
 
     .loading-ov{position:fixed;inset:0;z-index:1000;background:#0C0C0A;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem;overflow:hidden}
     /* radial glow */
@@ -437,6 +443,7 @@
       <button class="hero-search-btn" type="submit">Plan my trip</button>
     </form>
     <div class="hero-hint">Jaipur · Tokyo · Kedarnath · Bali · Santorini · Ladakh · anywhere</div>
+    <div class="hero-counter"><span id="trip-count">—</span> trips planned &amp; counting</div>
     <div class="hero-dots">
       <button class="hdot active" onclick="goSlide(0)"></button>
       <button class="hdot" onclick="goSlide(1)"></button>
@@ -712,11 +719,16 @@
         </div>
         <div class="fcol">
           <div class="fcol-tit">Company</div>
+          <a href="pages/about.html">About</a>
           <a href="pages/terms.html">Terms</a>
           <a href="pages/privacy.html">Privacy</a>
           <a href="mailto:hello@tripofreak.com">Contact</a>
         </div>
       </div>
+    </div>
+    <div class="fsocial">
+      <a class="fsoc-btn" href="https://instagram.com/tripofreak" target="_blank"><i class="ti ti-brand-instagram"></i> @tripofreak</a>
+      <a class="fsoc-btn" href="https://x.com/iamtripofreak" target="_blank"><i class="ti ti-brand-x"></i> @iamtripofreak</a>
     </div>
     <div class="fdisc">Tripofreak is a travel planning tool, not a booking platform. All booking links redirect to independent third-party platforms. Tripofreak earns affiliate commission at no extra cost to you.</div>
     <div class="fcopy">
@@ -799,6 +811,25 @@ var TRENDING = [
   {flag:'🇦🇿',name:'Baku'},{flag:'🇹🇭',name:'Phuket'},{flag:'🇮🇳',name:'Darjeeling'},
   {flag:'🇮🇳',name:'Shimla'},{flag:'🇹🇭',name:'Krabi'},{flag:'🇮🇳',name:'Ranthambore'}
 ];
+// Trip counter
+(function(){
+  fetch(API + '/api/stats/trips')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      var target = d.count || 0;
+      if (!target) return;
+      var el = document.getElementById('trip-count');
+      var start = 0, duration = 1200;
+      var step = Math.ceil(target / (duration / 16));
+      var timer = setInterval(function(){
+        start = Math.min(start + step, target);
+        el.textContent = start.toLocaleString('en-IN');
+        if (start >= target) clearInterval(timer);
+      }, 16);
+    })
+    .catch(function(){});
+})();
+
 var track = document.getElementById('ticker-track');
 var items = TRENDING.concat(TRENDING).map(function(t){
   return '<div class="tick-item" onclick="setDest(\'' + t.name + '\')">' +
