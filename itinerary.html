@@ -1009,20 +1009,26 @@ function signInAndReturn() {
   TF_AUTH.showLoginModal();
 }
 
+function getShareUrl() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const id = urlParams.get('id');
+  return id ? `https://api.tripofreak.com/share/${id}` : window.location.href;
+}
+
 function shareWhatsApp() {
   const dest = itineraryData?.destination || 'my trip';
-  const text = `Check out my AI-planned itinerary for ${dest} on Tripofreak 🗺️\n\nEvery activity explained. Freaky Finds included.\n\n${window.location.href}`;
+  const text = `Check out my AI-planned itinerary for ${dest} on Tripofreak 🗺️\n\nEvery activity explained. Freaky Finds included.\n\n${getShareUrl()}`;
   window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 function shareX() {
   const dest = itineraryData?.destination || 'my trip';
-  const text = `Just planned my trip to ${dest} with @iamtripofreak AI 🗺️\n\nEvery activity explained. Every risk flagged.\n\n${window.location.href}\n\n#Tripofreak #TravelPlanning #AI`;
+  const text = `Just planned my trip to ${dest} with @iamtripofreak AI 🗺️\n\nEvery activity explained. Every risk flagged.\n\n${getShareUrl()}\n\n#Tripofreak #TravelPlanning #AI`;
   window.open(`https://x.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
 }
 
 function copyLink() {
-  navigator.clipboard.writeText(window.location.href).then(() => showToast('✓ Link copied to clipboard'));
+  navigator.clipboard.writeText(getShareUrl()).then(() => showToast('✓ Link copied to clipboard'));
 }
 
 // ── EMAIL SUBSCRIBE ───────────────────────────────────────────────────
