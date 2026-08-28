@@ -546,7 +546,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Animate destination name on loading screen
   (function() {
     var destEl = document.getElementById('lp-dest');
-    var cityName = 'Your destination';
+    var cityName = '';
     try {
       var sp = sessionStorage.getItem('tf_params');
       if (sp) { var p = JSON.parse(sp); if (p.destination) cityName = p.destination.split(',')[0].trim(); }
@@ -598,33 +598,16 @@ window.addEventListener('DOMContentLoaded', async () => {
 // ── FETCH BY ID ───────────────────────────────────────────────────────
 async function fetchAndRender(id) {
   try {
-    let token = sessionStorage.getItem('tf_token') || null;
-    if (!token && window.TF_AUTH) {
-      await TF_AUTH.init();
-      token = await TF_AUTH.getAccessToken(10, 600);
-      if (token) sessionStorage.setItem('tf_token', token);
-    }
-    if (!token) {
-      // Show login modal and retry after sign in
-      if (window.TF_AUTH) {
-        TF_AUTH.showLoginModal(async () => {
-          const t = await TF_AUTH.getAccessToken(10, 600);
-          if (t) { sessionStorage.setItem('tf_token', t); await fetchAndRender(id); }
-        });
-      } else {
-        showError('Please sign in to view this itinerary.');
-      }
-      return;
-    }
-    const res = await fetch(`${API_URL}/api/itinerary/${id}`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    // GET /:id is public — no auth needed
+    const res = await fetch(`${API_URL}/api/itinerary/${id}`);
     const data = await res.json();
     if (!data.success) throw new Error(data.error);
     itineraryData = data.itinerary;
     heroImageUrl = data.heroImage?.url || '';
     heroImageCredit = data.heroImage?.credit || null;
     moodImages = data.moodImages || [];
+    // Init auth so we can show save banner if not logged in
+    if (window.TF_AUTH) await TF_AUTH.init();
     renderItinerary();
   } catch (err) {
     showError(err.message);
