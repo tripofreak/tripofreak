@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-NFJ9L7W2TL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-NFJ9L7W2TL');
+  </script>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost? — Tripofreak</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--black:#0C0C0A;--gold:#E8C547;--terra:#C84B2A;--ivory:#F5F0E8;--cream:#FAF7F2;--muted:#7A6A52;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Inter',sans-serif;--grotesk:'Space Grotesk',sans-serif;--border:rgba(122,106,82,0.15)}
+    body{background:var(--black);color:#fff;font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;overflow:hidden}
+
+    /* Background glow */
+    body::before{content:'';position:fixed;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,197,71,0.06) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+
+    nav{position:fixed;top:0;left:0;right:0;padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+    .nav-logo{font-family:var(--grotesk);color:#fff;font-size:16px;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:10px}
+    .nav-logo-mark{display:flex;flex-direction:column;gap:3px}
+
+    .wrap{position:relative;z-index:2;max-width:520px}
+
+    .eyebrow{font-size:10px;letter-spacing:4px;text-transform:uppercase;color:rgba(232,197,71,0.6);font-weight:700;margin-bottom:1.5rem}
+
+    .big-num{font-family:var(--serif);font-size:clamp(100px,20vw,160px);color:rgba(255,255,255,0.04);font-weight:600;line-height:1;letter-spacing:-4px;position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);white-space:nowrap;pointer-events:none;user-select:none}
+
+    .compass{font-size:48px;margin-bottom:1.5rem;display:block;animation:spin 8s linear infinite}
+    @keyframes spin{0%{transform:rotate(0deg)}25%{transform:rotate(90deg)}50%{transform:rotate(180deg)}75%{transform:rotate(270deg)}100%{transform:rotate(360deg)}}
+
+    h1{font-family:var(--serif);font-size:clamp(32px,6vw,52px);font-weight:600;line-height:1.1;letter-spacing:-1px;margin-bottom:1rem}
+    h1 em{color:var(--terra);font-style:italic}
+
+    .sub{font-size:15px;color:rgba(255,255,255,0.45);line-height:1.8;margin-bottom:2.5rem;max-width:380px;margin-left:auto;margin-right:auto}
+
+    .actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .btn-primary{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:var(--black);padding:13px 28px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;font-family:var(--grotesk);transition:opacity .2s}
+    .btn-primary:hover{opacity:0.88}
+    .btn-ghost{display:inline-flex;align-items:center;gap:8px;border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.55);padding:13px 24px;border-radius:100px;font-size:14px;font-weight:500;text-decoration:none;transition:all .2s}
+    .btn-ghost:hover{border-color:rgba(255,255,255,0.35);color:#fff}
+
+    .destinations{margin-top:3rem;padding-top:2rem;border-top:0.5px solid rgba(255,255,255,0.07)}
+    .dest-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-bottom:1rem}
+    .dest-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+    .dest-chip{font-size:12px;color:rgba(255,255,255,0.4);border:0.5px solid rgba(255,255,255,0.08);padding:6px 14px;border-radius:100px;cursor:pointer;transition:all .2s;text-decoration:none}
+    .dest-chip:hover{color:var(--gold);border-color:rgba(232,197,71,0.3)}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">
+    <div class="nav-logo-mark">
+      <div style="width:6px;height:6px;border-radius:50%;background:#E8C547"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:rgba(232,197,71,0.4)"></div>
+      <div style="width:6px;height:6px;border-radius:50%;background:#C84B2A"></div>
+    </div>
+    Tripofreak
+  </a>
+</nav>
+
+<div class="wrap">
+  <div class="big-num">404</div>
+
+  <span class="compass">🧭</span>
+  <div class="eyebrow">You're off the map</div>
+  <h1>This page<br>doesn't <em>exist.</em></h1>
+  <p class="sub">Even the best travellers take a wrong turn. The page you're looking for has moved, or never existed. Let's get you somewhere good.</p>
+
+  <div class="actions">
+    <a class="btn-primary" href="/">Plan a trip instead →</a>
+    <a class="btn-ghost" href="javascript:history.back()"><i class="ti ti-arrow-left" style="font-size:14px"></i> Go back</a>
+  </div>
+
+  <div class="destinations">
+    <div class="dest-label">Or pick a destination</div>
+    <div class="dest-chips">
+      <a class="dest-chip" href="/?dest=Goa">🇮🇳 Goa</a>
+      <a class="dest-chip" href="/?dest=Bali">🇮🇩 Bali</a>
+      <a class="dest-chip" href="/?dest=Tokyo">🇯🇵 Tokyo</a>
+      <a class="dest-chip" href="/?dest=Jaipur">🇮🇳 Jaipur</a>
+      <a class="dest-chip" href="/?dest=Santorini">🇬🇷 Santorini</a>
+      <a class="dest-chip" href="/?dest=Ladakh">🇮🇳 Ladakh</a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
