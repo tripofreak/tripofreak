@@ -270,7 +270,7 @@ window.addEventListener('load', async () => {
   // 'load' fires after defer scripts — TF_AUTH guaranteed to exist
   if (window.TF_AUTH) {
     await TF_AUTH.init();
-    accessToken = await TF_AUTH.getAccessToken(10, 500);
+    accessToken = await TF_AUTH.getAccessToken(20, 500);
   }
   if (!accessToken) {
     // Show login modal — redirect after sign in
@@ -309,6 +309,13 @@ async function loadTrips() {
   } catch (err) {
     showError(err.message);
   }
+}
+
+async function retryLoad() {
+  accessToken = await TF_AUTH.getAccessToken(20, 500);
+  if (!accessToken) { location.reload(); return; }
+  showSkeletons();
+  await loadTrips();
 }
 
 // ── STATS ─────────────────────────────────────────────────────────────
@@ -498,7 +505,7 @@ function showError(msg) {
       <div class="empty-icon"><i class="ti ti-wifi-off"></i></div>
       <div class="empty-title">Couldn't load trips</div>
       <div class="empty-sub">${esc(msg)}</div>
-      <button class="empty-btn" onclick="location.reload()"><i class="ti ti-refresh"></i> Try again</button>
+      <button class="empty-btn" onclick="retryLoad()"><i class="ti ti-refresh"></i> Try again</button>
     </div>
   `;
 }
