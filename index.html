@@ -799,6 +799,12 @@ function goSlide(n) {
 renderCredit(0);
 timer = setInterval(function(){ goSlide((cur+1)%SLIDES.length); }, 5000);
 
+// Pre-fill destination from 404 page chip links (?dest=Goa)
+(function(){
+  var p = new URLSearchParams(window.location.search).get('dest');
+  if (p) { document.getElementById('dest-input').value = p; openForm(p); }
+})();
+
 window.addEventListener('scroll', function(){
   document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80);
 }, {passive:true});
