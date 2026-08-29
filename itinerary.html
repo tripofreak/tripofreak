@@ -851,7 +851,8 @@ function renderItinerary() {
   }).join('');
 
   // Page title
-  document.title = `${d.destination} Itinerary — Tripofreak`;
+  const numDays = (d.days || []).length;
+  document.title = `Your ${numDays}-Day ${d.destination} Itinerary · Tripofreak`;
 
   // Show page
   document.getElementById('loading-page').style.display = 'none';
