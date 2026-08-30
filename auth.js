@@ -67,7 +67,13 @@ function handleReturnToItinerary() {
     sessionStorage.setItem('tf_params', savedParams);
     localStorage.removeItem('tf_return_params');
   }
-  window.location.href = '/itinerary.html';
+  const claimId = localStorage.getItem('tf_claim_id');
+  if (claimId) {
+    localStorage.removeItem('tf_claim_id');
+    window.location.href = '/itinerary.html?id=' + claimId;
+  } else {
+    window.location.href = '/itinerary.html';
+  }
 }
 
 // ── Google Sign In ────────────────────────────────────────────────────
