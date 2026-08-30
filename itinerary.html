@@ -17,6 +17,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Your AI-planned travel itinerary from Tripofreak — every decision explained, every risk flagged.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Tripofreak">
+  <meta property="og:title" content="Your AI-Planned Itinerary · Tripofreak">
+  <meta property="og:description" content="AI-planned with Freaky Finds, budget breakdown & insider tips. Free to explore.">
+  <meta property="og:image" content="https://tripofreak.com/assets/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@iamtripofreak">
+  <meta name="twitter:title" content="Your AI-Planned Itinerary · Tripofreak">
+  <meta name="twitter:description" content="AI-planned with Freaky Finds, budget breakdown & insider tips. Free to explore.">
+  <meta name="twitter:image" content="https://tripofreak.com/assets/og-image.jpg">
   <title>Your Itinerary — Tripofreak</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
@@ -989,6 +1001,9 @@ function signInAndReturn() {
     localStorage.setItem('tf_return_itinerary', stored);
     if (storedParams) localStorage.setItem('tf_return_params', storedParams);
   }
+  // Save the ?id= from shared links so claim works after OAuth redirect
+  const sharedId = new URLSearchParams(window.location.search).get('id');
+  if (sharedId) localStorage.setItem('tf_claim_id', sharedId);
   localStorage.setItem('tf_return_to_itinerary', '1');
   TF_AUTH.showLoginModal();
 }
@@ -996,7 +1011,7 @@ function signInAndReturn() {
 function getShareUrl() {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
-  return id ? `https://api.tripofreak.com/share/${id}` : window.location.href;
+  return id ? `https://tripofreak.com/itinerary.html?id=${id}` : window.location.href;
 }
 
 function shareWhatsApp() {
