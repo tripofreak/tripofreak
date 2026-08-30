@@ -593,7 +593,14 @@ window.addEventListener('DOMContentLoaded', async () => {
       // No sessionStorage — shared link or bookmark, fetch from API
       await fetchAndRender(id);
     } else {
-      showError('No itinerary found. Please generate a new trip.');
+      // Fallback: if user just logged in from a shared link, claim_id may still be in localStorage
+      const claimId = localStorage.getItem('tf_claim_id');
+      if (claimId) {
+        localStorage.removeItem('tf_claim_id');
+        window.location.replace('/itinerary.html?id=' + claimId);
+      } else {
+        showError('No itinerary found. Please generate a new trip.');
+      }
     }
   } catch (err) {
     // stepTimer removed
