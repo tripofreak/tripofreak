@@ -19,6 +19,12 @@ async function initAuth() {
   const { data: { session } } = await _supabase.auth.getSession();
   currentUser = session?.user || null;
 
+  // Handle return-to-itinerary flag immediately after session load
+  if (currentUser && localStorage.getItem('tf_return_to_itinerary')) {
+    handleReturnToItinerary();
+    return currentUser;
+  }
+
   // Listen for auth state changes
   _supabase.auth.onAuthStateChange((event, session) => {
     currentUser = session?.user || null;
@@ -28,21 +34,8 @@ async function initAuth() {
     if (event === 'SIGNED_IN') {
       closeLoginModal();
 
-      // Return to itinerary if user signed in from the itinerary page
       if (localStorage.getItem('tf_return_to_itinerary')) {
-        localStorage.removeItem('tf_return_to_itinerary');
-        localStorage.setItem('tf_just_signed_in', '1');
-        const saved = localStorage.getItem('tf_return_itinerary');
-        const savedParams = localStorage.getItem('tf_return_params');
-        if (saved) {
-          sessionStorage.setItem('tf_itinerary', saved);
-          localStorage.removeItem('tf_return_itinerary');
-        }
-        if (savedParams) {
-          sessionStorage.setItem('tf_params', savedParams);
-          localStorage.removeItem('tf_return_params');
-        }
-        window.location.href = '/itinerary.html';
+        handleReturnToItinerary();
         return;
       }
 
@@ -59,6 +52,28 @@ async function initAuth() {
 
   updateNavUser(currentUser);
   return currentUser;
+}
+
+function handleReturnToItinerary() {
+  localStorage.removeItem('tf_return_to_itinerary');
+  localStorage.setItem('tf_just_signed_in', '1');
+  const saved = localStorage.getItem('tf_return_itinerary');
+  const savedParams = localStorage.getItem('tf_return_params');
+  if (saved) {
+    sessionStorage.setItem('tf_itinerary', saved);
+    localStorage.removeItem('tf_return_itinerary');
+  }
+  if (savedParams) {
+    sessionStorage.setItem('tf_params', savedParams);
+    localStorage.removeItem('tf_return_params');
+  }
+  const claimId = localStorage.getItem('tf_claim_id');
+  if (claimId) {
+    localStorage.removeItem('tf_claim_id');
+    window.location.href = '/itinerary.html?id=' + claimId;
+  } else {
+    window.location.href = '/itinerary.html';
+  }
 }
 
 // ── Google Sign In ────────────────────────────────────────────────────
