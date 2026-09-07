@@ -3,207 +3,281 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Itinerary PDF — Tripofreak</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>Itinerary — Tripofreak</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --black: #0C0C0A;
-      --gold:  #E8C547;
-      --terra: #C84B2A;
-      --forest:#2A5C3A;
-      --ivory: #F5F0E8;
-      --muted: #7A6A52;
-      --serif: 'Cormorant Garamond', Georgia, serif;
-      --sans:  'Inter', system-ui, sans-serif;
+      --black:  #0C0C0A;
+      --gold:   #E8C547;
+      --terra:  #C84B2A;
+      --forest: #2A5C3A;
+      --ivory:  #F5F0E8;
+      --cream:  #FAF7F2;
+      --muted:  #7A6A52;
+      --border: #E2D9CC;
+      --serif:  'Cormorant Garamond', Georgia, serif;
+      --sans:   'Inter', system-ui, sans-serif;
+      --grotesk:'Space Grotesk', system-ui, sans-serif;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 14px; }
-    body { font-family: var(--sans); background: #fff; color: var(--black); line-height: 1.6; padding: 2.5rem 3rem; max-width: 860px; margin: 0 auto; }
+    body { font-family: var(--sans); background: var(--cream); color: var(--black); line-height: 1.6; -webkit-font-smoothing: antialiased; }
 
-    /* ── SCREEN-ONLY: loading & print button ── */
-    .screen-only { display: block; }
-    .loading { text-align: center; padding: 4rem 2rem; font-size: 1rem; color: var(--muted); }
-    .print-bar { position: fixed; bottom: 1.5rem; right: 1.5rem; display: flex; gap: 0.75rem; z-index: 999; }
-    .print-btn { background: var(--black); color: var(--gold); border: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-family: var(--sans); font-size: 0.85rem; font-weight: 700; cursor: pointer; letter-spacing: 0.04em; box-shadow: 0 4px 16px rgba(0,0,0,0.2); }
-    .print-btn:hover { background: #1a1a14; }
-    .close-btn { background: rgba(0,0,0,0.08); color: var(--black); border: none; padding: 0.75rem 1.25rem; border-radius: 6px; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-    .close-btn:hover { background: rgba(0,0,0,0.14); }
+    /* ── PRINT BUTTON ── */
+    .print-bar { position: fixed; bottom: 1.5rem; right: 1.5rem; display: flex; gap: 0.6rem; z-index: 999; }
+    .print-btn { background: var(--gold); color: var(--black); border: none; padding: 0.75rem 1.5rem; border-radius: 4px; font-family: var(--grotesk); font-size: 0.82rem; font-weight: 700; cursor: pointer; letter-spacing: 0.05em; box-shadow: 0 4px 20px rgba(232,197,71,0.35); }
+    .print-btn:hover { opacity: 0.9; }
+    .close-btn { background: rgba(12,12,10,0.08); color: var(--black); border: none; padding: 0.75rem 1.2rem; border-radius: 4px; font-family: var(--grotesk); font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+    .close-btn:hover { background: rgba(12,12,10,0.14); }
 
-    /* ── HEADER ── */
-    .pdf-header { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 1.25rem; border-bottom: 2px solid var(--black); margin-bottom: 1.5rem; }
-    .pdf-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; color: var(--black); letter-spacing: -0.3px; }
-    .pdf-logo span { color: var(--terra); }
-    .pdf-url { font-size: 0.7rem; color: var(--muted); margin-top: 3px; }
-    .pdf-dest { text-align: right; }
-    .pdf-dest-name { font-family: var(--serif); font-size: 2.2rem; font-weight: 600; line-height: 1.1; color: var(--black); }
-    .pdf-dest-name em { font-style: italic; color: var(--terra); }
-    .pdf-dest-meta { font-size: 0.72rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.04em; text-transform: uppercase; }
+    /* ── LOADING ── */
+    .loading { text-align: center; padding: 5rem 2rem; font-size: 0.9rem; color: var(--muted); }
 
-    /* ── SUMMARY ROW ── */
-    .summary-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #e0e0e0; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; margin-bottom: 1.75rem; }
-    .sum-cell { background: #fff; padding: 0.9rem 0.75rem; text-align: center; }
-    .sum-n { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; color: var(--black); line-height: 1; }
-    .sum-l { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: 4px; font-weight: 600; }
+    /* ── PAGE WRAPPER ── */
+    .page { max-width: 860px; margin: 0 auto; background: #fff; box-shadow: 0 0 60px rgba(0,0,0,0.08); }
+
+    /* ── COVER HEADER ── */
+    .cover { background: var(--black); padding: 3rem 3rem 2.5rem; position: relative; overflow: hidden; }
+    .cover::before { content: ''; position: absolute; top: -60px; right: -60px; width: 280px; height: 280px; border-radius: 50%; background: rgba(232,197,71,0.04); }
+    .cover::after { content: ''; position: absolute; bottom: -40px; left: 40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(200,75,42,0.05); }
+    .cover-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; }
+    .cover-logo { display: flex; align-items: center; gap: 10px; }
+    .cover-logo-dots { display: flex; flex-direction: column; gap: 3px; }
+    .cover-logo-dots span { width: 5px; height: 5px; border-radius: 50%; display: block; }
+    .cover-logo-dots span:nth-child(1) { background: var(--gold); }
+    .cover-logo-dots span:nth-child(2) { background: rgba(232,197,71,0.3); }
+    .cover-logo-dots span:nth-child(3) { background: var(--terra); }
+    .cover-logo-sep { width: 1px; height: 16px; background: rgba(255,255,255,0.12); }
+    .cover-logo-name { font-family: var(--grotesk); font-size: 1rem; font-weight: 700; color: rgba(255,255,255,0.6); letter-spacing: 0.02em; }
+    .cover-badge { font-family: var(--grotesk); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); background: rgba(232,197,71,0.1); border: 1px solid rgba(232,197,71,0.2); padding: 4px 10px; border-radius: 2px; }
+    .cover-dest { position: relative; z-index: 1; }
+    .cover-eyebrow { font-family: var(--grotesk); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.5rem; }
+    .cover-title { font-family: var(--serif); font-size: clamp(2.8rem, 7vw, 4.5rem); font-weight: 600; color: #fff; line-height: 1.0; letter-spacing: -1px; margin-bottom: 0.75rem; }
+    .cover-title em { color: var(--gold); font-style: italic; }
+    .cover-season { font-size: 0.75rem; color: rgba(255,255,255,0.35); letter-spacing: 0.05em; margin-bottom: 1.5rem; }
+    .cover-chips { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .cover-chip { font-family: var(--grotesk); font-size: 0.68rem; font-weight: 500; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.1); border-radius: 2px; padding: 4px 10px; }
+    .cover-rule { height: 1px; background: linear-gradient(to right, rgba(232,197,71,0.4), transparent); margin-top: 2rem; }
+
+    /* ── SUMMARY STRIP ── */
+    .summary-strip { display: grid; grid-template-columns: repeat(4, 1fr); background: var(--black); border-top: 1px solid rgba(255,255,255,0.05); }
+    .sum-cell { padding: 1.25rem 1rem; text-align: center; border-right: 0.5px solid rgba(255,255,255,0.06); }
+    .sum-cell:last-child { border-right: none; }
+    .sum-n { font-family: var(--serif); font-size: 1.8rem; color: #fff; line-height: 1; margin-bottom: 4px; font-weight: 600; }
+    .sum-n.gold { color: var(--gold); }
+    .sum-l { font-family: var(--grotesk); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: rgba(255,255,255,0.25); font-weight: 700; }
+
+    /* ── BODY ── */
+    .body { padding: 2.5rem 3rem; }
 
     /* ── SECTION HEADING ── */
-    .sec-head { display: flex; align-items: center; gap: 0.75rem; margin: 1.75rem 0 0.75rem; }
-    .sec-head-line { flex: 1; height: 1px; background: #e8e8e8; }
-    .sec-head-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .sec-head { display: flex; align-items: center; gap: 1rem; margin: 2.5rem 0 1.2rem; }
+    .sec-head:first-child { margin-top: 0; }
+    .sec-eyebrow { font-family: var(--grotesk); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .sec-rule { flex: 1; height: 1px; background: var(--border); }
+    .sec-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
 
     /* ── FREAKY FINDS ── */
-    .ff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.75rem; }
-    .ff-card { border-radius: 5px; padding: 0.65rem 0.75rem; border-left: 3px solid; }
+    .ff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    .ff-card { border-radius: 4px; padding: 0.9rem 1rem; border-left: 3px solid; }
     .ff-g { background: rgba(42,92,58,0.06); border-color: var(--forest); }
-    .ff-a { background: rgba(232,197,71,0.08); border-color: var(--gold); }
-    .ff-r { background: rgba(200,75,42,0.07); border-color: var(--terra); }
-    .ff-title { font-size: 0.8rem; font-weight: 600; color: var(--black); margin-bottom: 2px; }
-    .ff-desc  { font-size: 0.75rem; color: #444; line-height: 1.5; }
+    .ff-a { background: rgba(232,197,71,0.07); border-color: var(--gold); }
+    .ff-r { background: rgba(200,75,42,0.06); border-color: var(--terra); }
+    .ff-title { font-family: var(--grotesk); font-size: 0.78rem; font-weight: 700; color: var(--black); margin-bottom: 4px; }
+    .ff-desc  { font-size: 0.75rem; color: #555; line-height: 1.55; }
 
     /* ── DAY BLOCK ── */
-    .day-block { margin-bottom: 1.5rem; page-break-inside: avoid; }
-    .day-label { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.6rem; }
-    .day-num { background: var(--black); color: var(--gold); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; border-radius: 3px; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .day-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 600; color: var(--black); }
-    .day-rule { flex: 1; height: 1px; background: #e8e8e8; }
+    .day-block { margin-bottom: 2rem; }
+    .day-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.9rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border); }
+    .day-num-badge { background: var(--black); color: var(--gold); font-family: var(--grotesk); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 5px 10px; border-radius: 2px; white-space: nowrap; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .day-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--black); line-height: 1.2; }
 
     /* ── TIME GROUP ── */
-    .time-group { margin-bottom: 0.5rem; }
-    .time-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; padding-left: 0.25rem; }
+    .time-group { margin-bottom: 0.75rem; }
+    .time-label { font-family: var(--grotesk); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; padding-left: 2px; }
 
-    /* ── ACTIVITY ROW ── */
-    .act-row { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.5rem 0.6rem; border-radius: 4px; margin-bottom: 2px; background: #fafafa; border: 1px solid #f0f0f0; }
-    .act-time-col { font-size: 0.7rem; color: var(--muted); white-space: nowrap; min-width: 52px; padding-top: 1px; font-weight: 500; }
+    /* ── ACTIVITY ── */
+    .act-row { display: flex; gap: 0.75rem; align-items: flex-start; padding: 0.6rem 0.75rem; border-radius: 3px; margin-bottom: 3px; border: 1px solid var(--border); background: #fff; }
+    .act-row:nth-child(odd) { background: var(--cream); }
+    .act-time-col { font-family: var(--grotesk); font-size: 0.65rem; color: var(--muted); white-space: nowrap; min-width: 56px; padding-top: 2px; font-weight: 500; }
     .act-body { flex: 1; }
     .act-name { font-size: 0.85rem; font-weight: 600; color: var(--black); margin-bottom: 2px; }
-    .act-desc { font-size: 0.75rem; color: #555; line-height: 1.5; }
-    .act-note { font-size: 0.72rem; color: var(--terra); margin-top: 3px; font-style: italic; }
-    .act-logic { font-size: 0.72rem; color: var(--forest); margin-top: 3px; }
-    .act-cost { font-size: 0.72rem; color: var(--muted); white-space: nowrap; background: #f0f0ee; padding: 2px 8px; border-radius: 3px; font-weight: 600; margin-top: 2px; align-self: flex-start; }
+    .act-desc { font-size: 0.74rem; color: #555; line-height: 1.5; }
+    .act-note { font-size: 0.7rem; color: var(--terra); margin-top: 3px; display: flex; gap: 4px; align-items: flex-start; }
+    .act-logic { font-size: 0.7rem; color: var(--forest); margin-top: 3px; }
+    .act-cost { font-family: var(--grotesk); font-size: 0.68rem; color: var(--muted); white-space: nowrap; background: var(--ivory); padding: 3px 9px; border-radius: 2px; font-weight: 600; align-self: flex-start; border: 1px solid var(--border); }
 
     /* ── BUDGET ── */
-    .budget-box { border: 1px solid #e8e8e8; border-radius: 6px; overflow: hidden; margin-bottom: 1.75rem; }
-    .budget-top { background: var(--black); padding: 0.9rem 1.2rem; display: flex; justify-content: space-between; align-items: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .budget-total { font-family: var(--serif); font-size: 1.8rem; color: var(--ivory); font-weight: 600; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .budget-label { font-size: 0.72rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.08em; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .budget-cats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #e8e8e8; }
-    .budget-cat { background: #fff; padding: 0.75rem; text-align: center; }
-    .budget-cat-n { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 3px; }
-    .budget-cat-l { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+    .budget-box { border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+    .budget-top { background: var(--black); padding: 1.4rem 1.75rem; display: flex; justify-content: space-between; align-items: flex-end; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .budget-eyebrow { font-family: var(--grotesk); font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 0.4rem; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .budget-total { font-family: var(--serif); font-size: 2.4rem; color: #fff; font-weight: 600; line-height: 1; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .budget-per { text-align: right; }
+    .budget-per-label { font-family: var(--grotesk); font-size: 0.6rem; color: rgba(255,255,255,0.3); margin-bottom: 3px; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .budget-per-val { font-family: var(--serif); font-size: 1.2rem; color: var(--gold); font-weight: 600; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .budget-cats { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .budget-cat { padding: 1rem 0.75rem; text-align: center; border-right: 1px solid var(--border); border-top: none; }
+    .budget-cat:last-child { border-right: none; }
+    .budget-cat-n { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; color: var(--black); margin-bottom: 3px; }
+    .budget-cat-l { font-family: var(--grotesk); font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 700; }
 
     /* ── FOOD ── */
-    .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1.75rem; }
-    .food-card { border: 1px solid #eee; border-radius: 5px; padding: 0.6rem 0.75rem; display: flex; gap: 0.6rem; align-items: flex-start; }
-    .food-emoji { font-size: 1.3rem; line-height: 1; }
-    .food-name { font-size: 0.82rem; font-weight: 600; color: var(--black); margin-bottom: 2px; }
-    .food-desc { font-size: 0.72rem; color: #555; line-height: 1.45; }
-    .food-meta { display: flex; gap: 0.5rem; margin-top: 4px; }
-    .food-price { font-size: 0.68rem; font-weight: 600; color: var(--forest); background: rgba(42,92,58,0.08); padding: 1px 6px; border-radius: 3px; }
+    .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+    .food-card { border: 1px solid var(--border); border-radius: 4px; padding: 0.75rem; display: flex; gap: 0.7rem; align-items: flex-start; background: #fff; }
+    .food-emoji { font-size: 1.5rem; line-height: 1; flex-shrink: 0; }
+    .food-name { font-size: 0.84rem; font-weight: 600; color: var(--black); margin-bottom: 2px; }
+    .food-desc { font-size: 0.72rem; color: #555; line-height: 1.5; }
+    .food-meta { display: flex; gap: 0.5rem; margin-top: 5px; align-items: center; }
+    .food-price { font-family: var(--grotesk); font-size: 0.65rem; font-weight: 700; color: var(--forest); background: rgba(42,92,58,0.08); padding: 2px 7px; border-radius: 2px; }
     .food-when  { font-size: 0.68rem; color: var(--muted); }
 
     /* ── PACKING ── */
-    .pack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3rem 1rem; margin-bottom: 1.75rem; }
-    .pack-item { font-size: 0.78rem; color: #333; display: flex; gap: 0.4rem; align-items: baseline; }
-    .pack-item::before { content: '✓'; color: var(--forest); font-weight: 700; font-size: 0.7rem; flex-shrink: 0; }
+    .pack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem 1.5rem; }
+    .pack-item { font-size: 0.78rem; color: #333; display: flex; gap: 0.5rem; align-items: baseline; line-height: 1.5; }
+    .pack-check { color: var(--forest); font-weight: 700; font-size: 0.7rem; flex-shrink: 0; }
 
     /* ── PHRASES ── */
-    .phrase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 1.75rem; }
-    .phrase-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.4rem 0.6rem; background: #fafafa; border-radius: 4px; border: 1px solid #f0f0f0; }
-    .phrase-eng { font-size: 0.78rem; color: var(--muted); }
-    .phrase-local { font-size: 0.82rem; font-weight: 600; color: var(--black); }
+    .phrase-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+    .phrase-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.5rem 0.75rem; background: var(--cream); border-radius: 3px; border: 1px solid var(--border); gap: 1rem; }
+    .phrase-eng { font-size: 0.76rem; color: var(--muted); }
+    .phrase-local { font-size: 0.82rem; font-weight: 600; color: var(--black); text-align: right; }
 
     /* ── FOOTER ── */
-    .pdf-footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 1px solid #e8e8e8; display: flex; justify-content: space-between; align-items: center; }
-    .pdf-footer-left { font-size: 0.7rem; color: var(--muted); line-height: 1.6; }
-    .pdf-footer-left strong { color: var(--black); }
-    .pdf-footer-right { font-size: 0.7rem; color: #ccc; text-align: right; }
+    .pdf-footer { background: var(--black); padding: 1.5rem 3rem; display: flex; justify-content: space-between; align-items: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pdf-footer-left { font-family: var(--grotesk); font-size: 0.7rem; color: rgba(255,255,255,0.3); line-height: 1.7; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pdf-footer-left strong { color: rgba(255,255,255,0.6); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pdf-footer-right { font-family: var(--grotesk); font-size: 0.65rem; color: rgba(255,255,255,0.2); text-align: right; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .footer-gold { color: var(--gold); font-weight: 700; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 
-    /* ── PRINT RULES ── */
+    /* ── PRINT ── */
     @media print {
-      body { padding: 1.5cm 1.8cm; font-size: 10pt; }
-      .screen-only, .print-bar { display: none !important; }
+      body { background: #fff; font-size: 10pt; }
+      .print-bar { display: none !important; }
+      .page { box-shadow: none; max-width: 100%; }
+      body { margin: 0; padding: 0; }
+      .body { padding: 1.5rem 2rem; }
+      .cover { padding: 2rem; }
       .day-block { page-break-inside: avoid; }
       .budget-box { page-break-inside: avoid; }
       .ff-grid { page-break-inside: avoid; }
-      .pdf-header { page-break-after: avoid; }
       * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
     }
   </style>
 </head>
 <body>
 
-  <!-- PRINT BUTTON (screen only) -->
-  <div class="print-bar screen-only">
+  <!-- PRINT BUTTON -->
+  <div class="print-bar">
     <button class="close-btn" onclick="window.close()">← Back</button>
     <button class="print-btn" onclick="window.print()">⬇ Save as PDF</button>
   </div>
 
   <div class="loading" id="loading">Preparing your itinerary…</div>
 
-  <div id="pdf-content" style="display:none">
+  <div id="pdf-content" style="display:none" class="page">
 
-    <!-- HEADER -->
-    <div class="pdf-header">
-      <div>
-        <div class="pdf-logo">Tripofreak<span>.</span></div>
-        <div class="pdf-url">tripofreak.com · AI-planned travel</div>
+    <!-- COVER -->
+    <div class="cover">
+      <div class="cover-top">
+        <div class="cover-logo">
+          <div class="cover-logo-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="cover-logo-sep"></div>
+          <div class="cover-logo-name">Tripofreak</div>
+        </div>
+        <div class="cover-badge">AI-Planned Itinerary</div>
       </div>
-      <div class="pdf-dest">
-        <div class="pdf-dest-name" id="pdf-dest-name">—</div>
-        <div class="pdf-dest-meta" id="pdf-dest-meta">—</div>
+
+      <div class="cover-dest">
+        <div class="cover-eyebrow">Your trip to</div>
+        <div class="cover-title" id="cover-title">—</div>
+        <div class="cover-season" id="cover-season"></div>
+        <div class="cover-chips" id="cover-chips"></div>
       </div>
+      <div class="cover-rule"></div>
     </div>
 
-    <!-- SUMMARY ROW -->
-    <div class="summary-row">
+    <!-- SUMMARY STRIP -->
+    <div class="summary-strip">
       <div class="sum-cell"><div class="sum-n" id="sum-days">—</div><div class="sum-l">Days</div></div>
-      <div class="sum-cell"><div class="sum-n" id="sum-total">—</div><div class="sum-l">Est. Total</div></div>
+      <div class="sum-cell"><div class="sum-n gold" id="sum-total">—</div><div class="sum-l">Est. Total</div></div>
       <div class="sum-cell"><div class="sum-n" id="sum-acts">—</div><div class="sum-l">Activities</div></div>
       <div class="sum-cell"><div class="sum-n" id="sum-ff">—</div><div class="sum-l">Freaky Finds</div></div>
     </div>
 
-    <!-- FREAKY FINDS -->
-    <div class="sec-head"><div class="sec-head-label">Freaky Finds · insider intel</div><div class="sec-head-line"></div></div>
-    <div class="ff-grid" id="ff-grid"></div>
+    <!-- BODY -->
+    <div class="body">
 
-    <!-- DAYS -->
-    <div class="sec-head"><div class="sec-head-label">Day-by-day itinerary</div><div class="sec-head-line"></div></div>
-    <div id="days-container"></div>
-
-    <!-- BUDGET -->
-    <div class="sec-head"><div class="sec-head-label">Budget breakdown</div><div class="sec-head-line"></div></div>
-    <div class="budget-box">
-      <div class="budget-top">
-        <div>
-          <div class="budget-total" id="budget-total">—</div>
-          <div class="budget-label">Estimated total for the trip</div>
-        </div>
-        <div id="budget-per" style="text-align:right"></div>
+      <!-- FREAKY FINDS -->
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-eyebrow">Freaky Finds · insider intel</div>
+        <div class="sec-rule"></div>
       </div>
-      <div class="budget-cats" id="budget-cats"></div>
-    </div>
+      <div class="ff-grid" id="ff-grid"></div>
 
-    <!-- FOOD -->
-    <div class="sec-head"><div class="sec-head-label">What to eat</div><div class="sec-head-line"></div></div>
-    <div class="food-grid" id="food-grid"></div>
+      <!-- DAYS -->
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-eyebrow">Day-by-day itinerary</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div id="days-container"></div>
 
-    <!-- PACKING -->
-    <div class="sec-head"><div class="sec-head-label">Packing list</div><div class="sec-head-line"></div></div>
-    <div class="pack-grid" id="pack-grid"></div>
+      <!-- BUDGET -->
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-eyebrow">Budget breakdown</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="budget-box">
+        <div class="budget-top">
+          <div>
+            <div class="budget-eyebrow">Estimated total for the trip</div>
+            <div class="budget-total" id="budget-total">—</div>
+          </div>
+          <div class="budget-per" id="budget-per"></div>
+        </div>
+        <div class="budget-cats" id="budget-cats"></div>
+      </div>
 
-    <!-- PHRASES -->
-    <div class="sec-head" id="phrases-head"><div class="sec-head-label" id="phrases-label">Useful phrases</div><div class="sec-head-line"></div></div>
-    <div class="phrase-grid" id="phrase-grid"></div>
+      <!-- FOOD -->
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-eyebrow">What to eat</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="food-grid" id="food-grid"></div>
+
+      <!-- PACKING -->
+      <div class="sec-head">
+        <div class="sec-dot"></div>
+        <div class="sec-eyebrow">Packing list</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="pack-grid" id="pack-grid"></div>
+
+      <!-- PHRASES -->
+      <div class="sec-head" id="phrases-head">
+        <div class="sec-dot"></div>
+        <div class="sec-eyebrow" id="phrases-label">Useful phrases</div>
+        <div class="sec-rule"></div>
+      </div>
+      <div class="phrase-grid" id="phrase-grid"></div>
+
+    </div><!-- /body -->
 
     <!-- FOOTER -->
     <div class="pdf-footer">
       <div class="pdf-footer-left">
         <strong>Tripofreak</strong> · AI-planned travel, free forever<br>
-        Plan your next trip at <strong>tripofreak.com</strong>
+        Plan your next trip at <span class="footer-gold">tripofreak.com</span>
       </div>
       <div class="pdf-footer-right" id="pdf-share-url"></div>
     </div>
 
-  </div><!-- /pdf-content -->
+  </div><!-- /page -->
 
 <script>
   const API_URL = 'https://api.tripofreak.com';
@@ -211,11 +285,6 @@
   function esc(s) {
     if (!s) return '';
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  function cap(s) {
-    if (!s) return '';
-    return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
   function calcPerPerson(total, groupSize) {
@@ -232,12 +301,10 @@
   async function init() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-
     if (!id) {
-      document.getElementById('loading').textContent = 'No itinerary ID found. Please open this from an itinerary page.';
+      document.getElementById('loading').textContent = 'No itinerary ID. Please open this from an itinerary page.';
       return;
     }
-
     try {
       const res = await fetch(`${API_URL}/api/itinerary/${id}`);
       const data = await res.json();
@@ -251,19 +318,22 @@
   function render(d, id) {
     const budget = d.budget_summary || {};
 
-    // Header
+    // Cover
     const parts = (d.destination || '').split(',');
-    document.getElementById('pdf-dest-name').innerHTML = parts.length > 1
-      ? `${esc(parts[0])}, <em>${esc(parts.slice(1).join(',').trim())}</em>`
+    document.getElementById('cover-title').innerHTML = parts.length > 1
+      ? `${esc(parts[0])},<br><em>${esc(parts.slice(1).join(',').trim())}</em>`
       : esc(d.destination || 'Your Trip');
-    const metaParts = [
-      d.days?.length ? `${d.days.length} days` : null,
-      d.season_note || null
-    ].filter(Boolean);
-    document.getElementById('pdf-dest-meta').textContent = metaParts.join(' · ');
+    document.getElementById('cover-season').textContent = d.season_note || '';
     document.title = `${d.destination} Itinerary — Tripofreak`;
 
-    // Summary
+    const chipData = [
+      d.days?.length ? `${d.days.length} Days` : null,
+      budget.total_estimated ? `Est. ${budget.total_estimated}` : null,
+    ].filter(Boolean);
+    document.getElementById('cover-chips').innerHTML = chipData.map(c =>
+      `<span class="cover-chip">${esc(c)}</span>`).join('');
+
+    // Summary strip
     document.getElementById('sum-days').textContent = (d.days || []).length || '—';
     document.getElementById('sum-total').textContent = budget.total_estimated || '—';
     const totalActs = (d.days || []).reduce((acc, day) =>
@@ -279,28 +349,26 @@
         <div class="ff-title">${esc(ff.title)}</div>
         <div class="ff-desc">${esc(ff.description)}</div>
       </div>`;
-    }).join('') || '<div style="color:#999;font-size:0.8rem;grid-column:1/-1">No Freaky Finds for this itinerary.</div>';
+    }).join('') || '<div style="color:var(--muted);font-size:0.8rem;grid-column:1/-1;padding:0.5rem 0">No Freaky Finds for this itinerary.</div>';
 
     // Days
+    const order = ['morning','mid-morning','afternoon','evening','night'];
     document.getElementById('days-container').innerHTML = (d.days || []).map(day => {
       const timeGroups = {};
       (day.sections || []).forEach(s => {
         if (!timeGroups[s.time_of_day]) timeGroups[s.time_of_day] = [];
         timeGroups[s.time_of_day].push(...(s.activities || []));
       });
-      const order = ['morning', 'afternoon', 'evening', 'night'];
-      const sortedGroups = Object.entries(timeGroups).sort(([a], [b]) => {
-        return (order.indexOf(a) === -1 ? 99 : order.indexOf(a)) -
-               (order.indexOf(b) === -1 ? 99 : order.indexOf(b));
-      });
+      const sorted = Object.entries(timeGroups).sort(([a],[b]) =>
+        (order.indexOf(a) === -1 ? 99 : order.indexOf(a)) -
+        (order.indexOf(b) === -1 ? 99 : order.indexOf(b)));
 
       return `<div class="day-block">
-        <div class="day-label">
-          <span class="day-num">Day ${day.day_number}</span>
+        <div class="day-header">
+          <span class="day-num-badge">Day ${day.day_number}</span>
           <span class="day-title">${esc(day.day_title)}</span>
-          <span class="day-rule"></span>
         </div>
-        ${sortedGroups.map(([tod, acts]) => `
+        ${sorted.map(([tod, acts]) => `
           <div class="time-group">
             <div class="time-label">${esc(tod)}</div>
             ${acts.map(act => `
@@ -323,13 +391,20 @@
     // Budget
     document.getElementById('budget-total').textContent = budget.total_estimated || '—';
     const pp = calcPerPerson(budget.total_estimated, 2);
-    if (pp) document.getElementById('budget-per').innerHTML = `<div style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-bottom:3px">Per person (2)</div><div style="font-size:1rem;font-weight:600;color:#fff">${esc(pp)}</div>`;
+    if (pp) {
+      document.getElementById('budget-per').innerHTML =
+        `<div class="budget-per-label">Per person (2 travellers)</div>
+         <div class="budget-per-val">${esc(pp)}</div>`;
+    }
     document.getElementById('budget-cats').innerHTML = [
       { n: budget.accommodation_per_night || '—', l: 'Stay / night' },
-      { n: budget.food_per_day || '—', l: 'Food / day' },
-      { n: budget.transport_per_day || '—', l: 'Transport' },
-      { n: budget.activities_total || '—', l: 'Activities' }
-    ].map(c => `<div class="budget-cat"><div class="budget-cat-n">${esc(c.n)}</div><div class="budget-cat-l">${c.l}</div></div>`).join('');
+      { n: budget.food_per_day           || '—', l: 'Food / day'   },
+      { n: budget.transport_per_day      || '—', l: 'Transport'    },
+      { n: budget.activities_total       || '—', l: 'Activities'   },
+    ].map(c => `<div class="budget-cat">
+      <div class="budget-cat-n">${esc(c.n)}</div>
+      <div class="budget-cat-l">${c.l}</div>
+    </div>`).join('');
 
     // Food
     document.getElementById('food-grid').innerHTML = (d.what_to_eat || []).map(f => `
@@ -343,32 +418,29 @@
             <span class="food-when">${esc(f.when)}</span>
           </div>
         </div>
-      </div>
-    `).join('');
+      </div>`).join('');
 
     // Packing
     document.getElementById('pack-grid').innerHTML = (d.packing_list || []).map(p =>
-      `<div class="pack-item">${esc(p.item)}</div>`
+      `<div class="pack-item"><span class="pack-check">✓</span>${esc(p.item)}</div>`
     ).join('');
 
     // Phrases
     if (d.local_phrases && d.local_phrases.length) {
       document.getElementById('phrases-label').textContent = d.language_note || 'Useful local phrases';
-      document.getElementById('phrase-grid').innerHTML = d.local_phrases.map(p => `
-        <div class="phrase-row">
+      document.getElementById('phrase-grid').innerHTML = d.local_phrases.map(p =>
+        `<div class="phrase-row">
           <span class="phrase-eng">${esc(p.english)}</span>
           <span class="phrase-local">${esc(p.local)}</span>
-        </div>
-      `).join('');
+        </div>`).join('');
     } else {
       document.getElementById('phrases-head').style.display = 'none';
       document.getElementById('phrase-grid').style.display = 'none';
     }
 
-    // Footer share URL
+    // Footer
     document.getElementById('pdf-share-url').textContent = `tripofreak.com/itinerary.html?id=${id}`;
 
-    // Show content
     document.getElementById('loading').style.display = 'none';
     document.getElementById('pdf-content').style.display = 'block';
   }
