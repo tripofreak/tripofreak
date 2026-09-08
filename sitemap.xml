@@ -16,6 +16,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://tripofreak.com/pages/blog/goa-3-day-itinerary.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://tripofreak.com/pages/blog/malaysia-what-nobody-tells-you.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
