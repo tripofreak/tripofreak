@@ -258,6 +258,17 @@
     .footer p { font-size: 11px; color: rgba(255,255,255,0.3); }
     .footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
 
+    /* FILTER BAR */
+    .filter-bar { background: #fff; border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: center; justify-content: center; }
+    .filter-group { display: flex; align-items: center; gap: .5rem; }
+    .filter-label { font-family: var(--grotesk); font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .filter-pills { display: flex; gap: .35rem; flex-wrap: wrap; }
+    .filter-pill { font-family: var(--grotesk); font-size: 11px; font-weight: 600; padding: .35rem .8rem; border-radius: 100px; border: 1.5px solid var(--border); background: transparent; color: var(--muted); cursor: pointer; transition: all .15s; white-space: nowrap; }
+    .filter-pill:hover { border-color: var(--black); color: var(--black); }
+    .filter-pill.active { background: var(--black); border-color: var(--black); color: var(--gold); }
+    .filter-divider { width: 1px; height: 20px; background: var(--border); }
+    .no-results { text-align: center; padding: 3rem 1rem; font-size: 14px; color: var(--muted); display: none; }
+
     /* RESPONSIVE */
     @media (max-width: 640px) {
       .post-featured { grid-template-columns: 1fr; }
@@ -265,6 +276,7 @@
       .post-featured-img-overlay { background: linear-gradient(to bottom, transparent 50%, var(--black)); }
       .post-featured-content { padding: 1.5rem; }
       .blog-section { padding: 2.5rem 1.2rem; }
+      .filter-bar { padding: .75rem 1rem; gap: .75rem; }
     }
   </style>
 </head>
@@ -290,12 +302,44 @@
   <p class="hero-sub">Real travel. Real insights. No sponsored fluff.</p>
 </div>
 
+<div class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">Region</span>
+    <div class="filter-pills" id="region-pills">
+      <button class="filter-pill active" data-region="all">All</button>
+      <button class="filter-pill" data-region="thailand">🇹🇭 Thailand</button>
+      <button class="filter-pill" data-region="india">🇮🇳 India</button>
+      <button class="filter-pill" data-region="malaysia">🇲🇾 Malaysia</button>
+    </div>
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Format</span>
+    <div class="filter-pills" id="format-pills">
+      <button class="filter-pill active" data-format="all">All</button>
+      <button class="filter-pill" data-format="scorecard">Scorecard</button>
+      <button class="filter-pill" data-format="nobody-tells-you">Nobody Tells You</button>
+      <button class="filter-pill" data-format="itinerary">Itinerary</button>
+      <button class="filter-pill" data-format="road-trip">Road Trip</button>
+    </div>
+  </div>
+  <div class="filter-divider"></div>
+  <div class="filter-group">
+    <span class="filter-label">Sort</span>
+    <div class="filter-pills" id="sort-pills">
+      <button class="filter-pill active" data-sort="newest">Newest</button>
+      <button class="filter-pill" data-sort="oldest">Oldest</button>
+    </div>
+  </div>
+</div>
+
 <div class="blog-section">
 
-  <div class="section-label">Latest Stories</div>
+  <div class="section-label" id="results-label">Latest Stories</div>
+  <p class="no-results" id="no-results">No posts match your filters. Try a different combination.</p>
 
   <!-- POST — BANGKOK -->
-  <a href="/pages/blog/bangkok-honest-scorecard.html" class="post-featured">
+  <a href="/pages/blog/bangkok-honest-scorecard.html" class="post-featured" data-region="thailand" data-format="scorecard" data-date="2026-09">
     <div class="post-featured-img">
       <img src="https://images.unsplash.com/photo-1573047330190-53467e8b9067?w=800&q=80" alt="Aerial view of Bangkok city skyline Thailand" loading="lazy" />
       <div class="post-featured-img-overlay"></div>
@@ -320,7 +364,7 @@
   </a>
 
   <!-- POST — KOH SAMUI -->
-  <a href="/pages/blog/koh-samui-what-nobody-tells-you.html" class="post-featured">
+  <a href="/pages/blog/koh-samui-what-nobody-tells-you.html" class="post-featured" data-region="thailand" data-format="nobody-tells-you" data-date="2026-09">
     <div class="post-featured-img">
       <img src="https://images.unsplash.com/photo-1579683670728-96c9abc7a088?w=800&q=80" alt="Aerial view of tropical island Koh Samui Thailand" loading="lazy" />
       <div class="post-featured-img-overlay"></div>
@@ -345,7 +389,7 @@
   </a>
 
   <!-- POST 1 — MALAYSIA -->
-  <a href="/pages/blog/malaysia-what-nobody-tells-you.html" class="post-featured">
+  <a href="/pages/blog/malaysia-what-nobody-tells-you.html" class="post-featured" data-region="malaysia" data-format="nobody-tells-you" data-date="2026-07">
     <div class="post-featured-img">
       <img src="/assets/blog/malaysia-hero.jpg" alt="Kuala Lumpur skyline Malaysia" loading="lazy" />
       <div class="post-featured-img-overlay"></div>
@@ -370,7 +414,7 @@
   </a>
 
   <!-- POST 2 — KRABI -->
-  <a href="/pages/blog/krabi-would-i-go-back.html" class="post-featured">
+  <a href="/pages/blog/krabi-would-i-go-back.html" class="post-featured" data-region="thailand" data-format="scorecard" data-date="2026-06">
     <div class="post-featured-img">
       <img src="/assets/blog/krabi-night-market.jpg" alt="Mango smoothies at Krabi night market" loading="lazy" />
       <div class="post-featured-img-overlay"></div>
@@ -395,7 +439,7 @@
   </a>
 
   <!-- POST 3 — INDIAN ROAD TRIPS -->
-  <a href="/pages/blog/indian-road-trips.html" class="post-featured">
+  <a href="/pages/blog/indian-road-trips.html" class="post-featured" data-region="india" data-format="road-trip" data-date="2026-09">
     <div class="post-featured-img">
       <img src="https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=800&q=80" alt="Mountain road through the Himalayas, India" loading="lazy" />
       <div class="post-featured-img-overlay"></div>
@@ -419,7 +463,7 @@
     </div>
   </a>
 
-  <a href="/pages/blog/goa-3-day-itinerary.html" class="post-featured">
+  <a href="/pages/blog/goa-3-day-itinerary.html" class="post-featured" data-region="india" data-format="itinerary" data-date="2026-09">
     <div class="post-featured-img">
       <img src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=800&q=80" alt="Goa beach with palm trees and golden sand" loading="lazy" />
       <div class="post-featured-img-overlay"></div>
@@ -443,26 +487,6 @@
     </div>
   </a>
 
-  <!-- COMING SOON -->
-  <div class="coming-strip">
-    <h3>More stories coming soon</h3>
-    <p>Honest accounts from Jaipur, Bangkok, Baku, Darjeeling and beyond.<br>No filler. No sponsored fluff. Just real travel.</p>
-    <div class="coming-topics">
-      <div class="coming-topic">🇮🇳 Jaipur deep-dive</div>
-      <div class="coming-topic">🇹🇭 Bangkok honest review</div>
-      <div class="coming-topic">🇦🇿 Baku — worth it?</div>
-      <div class="coming-topic">🏔️ Darjeeling scorecard</div>
-      <div class="coming-topic">🤖 AI planned my trip</div>
-    </div>
-    <div class="notify-wrap">
-      <div class="notify-label">Get notified when we publish</div>
-      <div class="notify-form">
-        <input class="notify-input" type="email" id="blog-email" placeholder="your@email.com">
-        <button class="notify-btn" onclick="notifyMe()">Notify me</button>
-      </div>
-      <div class="notify-note">One email per post. No spam.</div>
-    </div>
-  </div>
 
 </div>
 
@@ -471,6 +495,62 @@
 </footer>
 
 <script>
+let activeRegion = 'all', activeFormat = 'all', activeSort = 'newest';
+
+function applyFilters() {
+  const cards = Array.from(document.querySelectorAll('.post-featured'));
+  let visible = 0;
+
+  // filter
+  cards.forEach(card => {
+    const regionMatch = activeRegion === 'all' || card.dataset.region === activeRegion;
+    const formatMatch = activeFormat === 'all' || card.dataset.format === activeFormat;
+    card.style.display = (regionMatch && formatMatch) ? '' : 'none';
+    if (regionMatch && formatMatch) visible++;
+  });
+
+  // sort visible cards
+  const section = document.querySelector('.blog-section');
+  const coming = document.querySelector('.coming-strip');
+  const sorted = cards
+    .filter(c => c.style.display !== 'none')
+    .sort((a, b) => activeSort === 'newest'
+      ? b.dataset.date.localeCompare(a.dataset.date)
+      : a.dataset.date.localeCompare(b.dataset.date));
+  sorted.forEach(c => section.insertBefore(c, coming));
+
+  // no results
+  document.getElementById('no-results').style.display = visible === 0 ? 'block' : 'none';
+
+  // label
+  const count = visible === cards.length ? cards.length : `${visible} of ${cards.length}`;
+  document.getElementById('results-label').textContent = `${count} ${visible === 1 ? 'Story' : 'Stories'}`;
+}
+
+document.getElementById('region-pills').addEventListener('click', e => {
+  if (!e.target.dataset.region) return;
+  document.querySelectorAll('#region-pills .filter-pill').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  activeRegion = e.target.dataset.region;
+  applyFilters();
+});
+
+document.getElementById('format-pills').addEventListener('click', e => {
+  if (!e.target.dataset.format) return;
+  document.querySelectorAll('#format-pills .filter-pill').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  activeFormat = e.target.dataset.format;
+  applyFilters();
+});
+
+document.getElementById('sort-pills').addEventListener('click', e => {
+  if (!e.target.dataset.sort) return;
+  document.querySelectorAll('#sort-pills .filter-pill').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  activeSort = e.target.dataset.sort;
+  applyFilters();
+});
+
 function notifyMe() {
   const email = document.getElementById('blog-email').value.trim();
   if (!email || !email.includes('@')) return;
