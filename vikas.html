@@ -37,6 +37,9 @@
   <meta name="twitter:description" content="Plan your perfect trip in seconds with AI-powered itineraries.">
   <meta name="twitter:image" content="https://tripofreak.com/assets/og-image.jpg">
 
+  <link rel="preload" as="image" href="/assets/hero-1.webp"
+    imagesrcset="/assets/hero-1-mobile.webp 600w, /assets/hero-1.webp 1200w"
+    imagesizes="100vw" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@700&display=swap" media="print" onload="this.media='all'">
@@ -209,14 +212,15 @@
     .nav-r a:hover{color:#fff}
     .nav-cta{background:var(--gold)!important;color:var(--black)!important;padding:7px 16px;border-radius:4px;font-weight:700;font-size:12px}
 
-    .hero{position:relative;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+    .hero{position:relative;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0C0C0A}
     .hslide{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease,transform 6s ease;background-size:cover;background-position:center;transform:scale(1.08)}
     .hslide.active{opacity:1;transform:scale(1)}
-    .hs1{background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1400&q=80')}
-    .hs2{background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1400&q=80')}
-    .hs3{background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1400&q=80')}
-    .hs4{background-image:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1400&q=80')}
-    .hs5{background-image:url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1400&q=80')}
+    .hslide-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:inherit;will-change:transform}
+    .hs1{}
+    .hs2{background-image:url('/assets/hero-2.webp')}
+    .hs3{background-image:url('/assets/hero-3.webp')}
+    .hs4{background-image:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&q=75&fm=webp')}
+    .hs5{background-image:url('https://images.unsplash.com/photo-1501854140801-50d01698950b?w=1200&q=75&fm=webp')}
     .hero-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(12,12,10,0.85) 0%,rgba(12,12,10,0.5) 40%,rgba(12,12,10,0.15) 100%)}
     .hero-body{position:relative;z-index:2;text-align:center;padding:0 1.5rem;width:100%;max-width:680px}
     .hero-eyebrow{display:inline-flex;align-items:center;gap:8px;margin-bottom:1.25rem;justify-content:center}
@@ -239,6 +243,7 @@
     .hero-counter{font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px;letter-spacing:0.3px}
     .hero-counter span{color:var(--gold);font-weight:700;font-family:var(--serif);font-size:15px}
     .hero-dots{display:flex;gap:6px;margin-top:1.75rem;justify-content:center}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .hdot{width:24px;height:2px;border-radius:2px;background:rgba(255,255,255,0.2);cursor:pointer;transition:all .3s;border:none;padding:0}
     .hdot.active{background:var(--gold);width:40px}
 
@@ -480,7 +485,15 @@
 </nav>
 
 <section class="hero" id="hero">
-  <div class="hslide hs1 active"></div>
+  <div class="hslide hs1 active">
+    <img class="hslide-img"
+      src="/assets/hero-1.webp"
+      srcset="/assets/hero-1-mobile.webp 600w, /assets/hero-1.webp 1200w"
+      sizes="100vw"
+      alt="Ladakh travel landscape"
+      fetchpriority="high"
+      decoding="sync">
+  </div>
   <div class="hslide hs2"></div>
   <div class="hslide hs3"></div>
   <div class="hslide hs4"></div>
@@ -501,12 +514,12 @@
     </form>
     <div class="hero-hint">Jaipur · Tokyo · Kedarnath · Bali · Santorini · Ladakh · anywhere</div>
     <div class="hero-counter"><span id="trip-count">—</span> trips planned &amp; counting</div>
-    <div class="hero-dots">
-      <button class="hdot active" onclick="goSlide(0)"></button>
-      <button class="hdot" onclick="goSlide(1)"></button>
-      <button class="hdot" onclick="goSlide(2)"></button>
-      <button class="hdot" onclick="goSlide(3)"></button>
-      <button class="hdot" onclick="goSlide(4)"></button>
+    <div class="hero-dots" role="tablist" aria-label="Hero image slideshow">
+      <button class="hdot active" onclick="goSlide(0)" aria-label="Go to slide 1" aria-selected="true" role="tab"></button>
+      <button class="hdot" onclick="goSlide(1)" aria-label="Go to slide 2" aria-selected="false" role="tab"></button>
+      <button class="hdot" onclick="goSlide(2)" aria-label="Go to slide 3" aria-selected="false" role="tab"></button>
+      <button class="hdot" onclick="goSlide(3)" aria-label="Go to slide 4" aria-selected="false" role="tab"></button>
+      <button class="hdot" onclick="goSlide(4)" aria-label="Go to slide 5" aria-selected="false" role="tab"></button>
     </div>
   </div>
 </section>
@@ -557,7 +570,8 @@
 
       <div class="date-row">
         <span class="date-label">Start date</span>
-        <input type="date" class="finput" id="f-date">
+        <label for="f-date" class="sr-only">Start date</label>
+        <input type="date" class="finput" id="f-date" aria-label="Start date">
         <span style="font-size:12px;color:var(--muted)">(optional)</span>
       </div>
 
@@ -620,7 +634,7 @@
   <h2 class="sh2">See what Tripofreak<br><em>actually plans.</em></h2>
   <div class="ex-grid">
     <a class="ex-card" href="/itinerary.html?id=b73823af-b958-4b42-ba25-efb91df39ece" target="_blank">
-      <img class="ex-img" src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80" alt="Goa">
+      <img class="ex-img" src="https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?w=600&q=80" alt="Goa" loading="lazy">
       <div class="ex-body">
         <div class="ex-tag">India · Beach</div>
         <div class="ex-dest">Goa</div>
@@ -629,7 +643,7 @@
       </div>
     </a>
     <a class="ex-card" href="/itinerary.html?id=18f48e06-c0b4-49ae-bb25-7fe62cfb29ba" target="_blank">
-      <img class="ex-img" src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&q=80" alt="Jaipur">
+      <img class="ex-img" src="https://images.unsplash.com/photo-1599661046289-e31897846e41?w=600&q=80" alt="Jaipur" loading="lazy">
       <div class="ex-body">
         <div class="ex-tag">India · Heritage</div>
         <div class="ex-dest">Jaipur</div>
@@ -638,7 +652,7 @@
       </div>
     </a>
     <a class="ex-card" href="/itinerary.html?id=56431e41-54ff-48fe-b33b-b3e3756d04a8" target="_blank">
-      <img class="ex-img" src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Bali">
+      <img class="ex-img" src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&q=80" alt="Bali" loading="lazy">
       <div class="ex-body">
         <div class="ex-tag">Indonesia · Spiritual</div>
         <div class="ex-dest">Bali</div>
@@ -914,10 +928,34 @@ document.querySelectorAll('.ichip').forEach(function(c){
   c.addEventListener('click', function(){ c.classList.toggle('active'); });
 });
 
+function validateDestination(dest) {
+  if (!dest || dest.length < 2) return 'Please enter a destination.';
+  if (dest.length > 100) return 'Destination name is too long.';
+  if (/^\d+$/.test(dest)) return 'Please enter a valid destination name.';
+  if (/[^a-zA-Z0-9\s,.\-'àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿÀ-Ö×Ø-öø-ÿА-яЁёऀ-ॿ؀-ۿ]/.test(dest)) return 'Please enter a valid destination name.';
+  // Gibberish check: if consonant ratio > 80% it's likely not a real place
+  var letters = dest.replace(/[^a-zA-Z]/g, '');
+  if (letters.length >= 5) {
+    var vowels = (letters.match(/[aeiouAEIOU]/g) || []).length;
+    if (vowels / letters.length < 0.1) return 'That doesn\'t look like a real place. Try again.';
+  }
+  return null;
+}
+
+function showDestError(msg) {
+  var input = document.getElementById('dest-input');
+  input.style.borderColor = '#C84B2A';
+  input.placeholder = msg;
+  input.value = '';
+  input.focus();
+  setTimeout(function(){ input.style.borderColor = ''; input.placeholder = 'Any country, any city, any village...'; }, 3000);
+}
+
 function handleSearch(e) {
   if (e) e.preventDefault();
   var dest = document.getElementById('dest-input').value.trim();
-  if (!dest || dest.length < 2) { document.getElementById('dest-input').focus(); return; }
+  var err = validateDestination(dest);
+  if (err) { showDestError(err); return; }
   openForm(dest);
 }
 
@@ -980,7 +1018,8 @@ document.getElementById('nav-signin').addEventListener('click', function(e){
 
 async function generateItinerary() {
   var dest = document.getElementById('dest-input').value.trim();
-  if (!dest) return;
+  var err = validateDestination(dest);
+  if (err) { showDestError(err); return; }
 
   var params = {
     destination: dest,
