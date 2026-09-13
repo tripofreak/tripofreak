@@ -931,14 +931,21 @@ document.querySelectorAll('.ichip').forEach(function(c){
 function validateDestination(dest) {
   if (!dest || dest.length < 2) return 'Please enter a destination.';
   if (dest.length > 100) return 'Destination name is too long.';
-  if (/^\d+$/.test(dest)) return 'Please enter a valid destination name.';
-  if (/[^a-zA-Z0-9\s,.\-'àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿÀ-Ö×Ø-öø-ÿА-яЁёऀ-ॿ؀-ۿ]/.test(dest)) return 'Please enter a valid destination name.';
-  // Gibberish check: if consonant ratio > 80% it's likely not a real place
+  // Must have at least 2 actual letters
   var letters = dest.replace(/[^a-zA-Z]/g, '');
-  if (letters.length >= 5) {
+  if (letters.length < 2) return 'Please enter a valid destination name.';
+  // No special character spam
+  if (/[^a-zA-Z0-9\s,.\-'àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿÀ-Ö×Ø-öø-ÿА-яЁёऀ-ॿ؀-ۿ]/.test(dest)) return 'Please enter a valid destination name.';
+  // Must not be mostly numbers (e.g. "1adsd2" or "12345")
+  var digits = (dest.match(/\d/g) || []).length;
+  if (digits > 0 && digits >= dest.replace(/\s/g,'').length / 2) return 'Please enter a valid destination name.';
+  // Vowel ratio check — real place names have at least 25% vowels
+  if (letters.length >= 4) {
     var vowels = (letters.match(/[aeiouAEIOU]/g) || []).length;
-    if (vowels / letters.length < 0.2) return 'That doesn\'t look like a real place. Try again.';
+    if (vowels / letters.length < 0.25) return 'That doesn\'t look like a real place. Try again.';
   }
+  // Repeated character check — "aaaaaaa", "bbbbb"
+  if (/(.)\1{3,}/.test(dest)) return 'That doesn\'t look like a real place. Try again.';
   return null;
 }
 
