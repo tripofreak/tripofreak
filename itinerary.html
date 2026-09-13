@@ -663,6 +663,16 @@ function renderItinerary() {
   const d = itineraryData;
   if (!d) { showError('Itinerary data missing.'); return; }
 
+  // GA4 conversion event
+  if (typeof gtag === 'function') {
+    gtag('event', 'itinerary_generated', {
+      destination: d.destination || 'unknown',
+      country: d.country || 'unknown',
+      days: (d.days || []).length,
+      source: sessionStorage.getItem('tf_itinerary') ? 'generated' : 'shared_link'
+    });
+  }
+
   // Hero image
   const heroImg = document.getElementById('hero-img');
   if (heroImageUrl) {
