@@ -37,7 +37,10 @@
   <meta name="twitter:description" content="Plan your perfect trip in seconds with AI-powered itineraries.">
   <meta name="twitter:image" content="https://tripofreak.com/assets/og-image.jpg">
 
-  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=75&fm=webp" fetchpriority="high">
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=75&fm=webp"
+    imagesrcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=75&fm=webp 800w,
+                 https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=75&fm=webp 1200w"
+    imagesizes="100vw" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&family=Space+Grotesk:wght@700&display=swap" media="print" onload="this.media='all'">
@@ -213,7 +216,8 @@
     .hero{position:relative;height:100vh;min-height:600px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#0C0C0A}
     .hslide{position:absolute;inset:0;opacity:0;transition:opacity 1.8s ease,transform 6s ease;background-size:cover;background-position:center;transform:scale(1.08)}
     .hslide.active{opacity:1;transform:scale(1)}
-    .hs1{background-image:url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=75&fm=webp')}
+    .hslide-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transform:inherit;will-change:transform}
+    .hs1{}
     .hs2{background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=75&fm=webp')}
     .hs3{background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=75&fm=webp')}
     .hs4{background-image:url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=1200&q=75&fm=webp')}
@@ -481,7 +485,16 @@
 </nav>
 
 <section class="hero" id="hero">
-  <div class="hslide hs1 active"></div>
+  <div class="hslide hs1 active">
+    <img class="hslide-img"
+      src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=75&fm=webp"
+      srcset="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=75&fm=webp 800w,
+              https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=75&fm=webp 1200w"
+      sizes="100vw"
+      alt="Ladakh travel landscape"
+      fetchpriority="high"
+      decoding="sync">
+  </div>
   <div class="hslide hs2"></div>
   <div class="hslide hs3"></div>
   <div class="hslide hs4"></div>
