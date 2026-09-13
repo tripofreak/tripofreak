@@ -341,6 +341,81 @@
   <p class="no-results" id="no-results">No posts match your filters. Try a different combination.</p>
 
   <!-- POST — BALI -->
+  <!-- POST — OSAKA -->
+  <a href="/pages/blog/osaka-what-nobody-tells-you.html" class="post-featured" data-region="japan" data-format="nobody-tells-you" data-date="2026-09">
+    <div class="post-featured-img">
+      <img src="https://images.unsplash.com/photo-1589452271712-64b8a66c7b71?w=800&q=80" alt="Dotonbori canal at night with neon signs in Osaka Japan" loading="lazy" />
+      <div class="post-featured-img-overlay"></div>
+    </div>
+    <div class="post-featured-content">
+      <span class="post-tag">Osaka, Japan &nbsp;·&nbsp; Nobody Tells You</span>
+      <h2 class="post-featured-title"><em>Osaka:</em> What Nobody Tells You Before You Go</h2>
+      <div class="post-verdict">
+        <span class="verdict-dot"></span>
+        Louder, cheaper, and more delicious than Tokyo.
+      </div>
+      <p class="post-featured-excerpt">The escalator rule is reversed here. The food debate with Tokyo is real. And two days is never enough. Here's what nobody warns you about Japan's most underrated city.</p>
+      <div class="post-meta">
+        <span>10 min read</span>
+        <span class="post-meta-dot"></span>
+        <span>September 2026</span>
+        <span class="post-meta-dot"></span>
+        <span>First-time visitors</span>
+      </div>
+      <span class="read-link">Read the story →</span>
+    </div>
+  </a>
+
+  <!-- POST — JAPAN ITINERARY -->
+  <a href="/pages/blog/japan-10-day-itinerary.html" class="post-featured" data-region="japan" data-format="itinerary" data-date="2026-09">
+    <div class="post-featured-img">
+      <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Mount Fuji reflected in lake with cherry blossoms Japan" loading="lazy" />
+      <div class="post-featured-img-overlay"></div>
+    </div>
+    <div class="post-featured-content">
+      <span class="post-tag">Japan &nbsp;·&nbsp; Itinerary</span>
+      <h2 class="post-featured-title"><em>Japan</em> 10-Day Itinerary: Tokyo, Kyoto & Osaka</h2>
+      <div class="post-verdict">
+        <span class="verdict-dot"></span>
+        Tokyo → Hakone → Kyoto → Nara → Osaka
+      </div>
+      <p class="post-featured-excerpt">Day-by-day breakdown for your first Japan trip — what to do, where to eat, real costs in INR, and how to not waste a single day of your 10 days in Japan.</p>
+      <div class="post-meta">
+        <span>14 min read</span>
+        <span class="post-meta-dot"></span>
+        <span>September 2026</span>
+        <span class="post-meta-dot"></span>
+        <span>First-time visitors</span>
+      </div>
+      <span class="read-link">Read the story →</span>
+    </div>
+  </a>
+
+  <!-- POST — TOKYO -->
+  <a href="/pages/blog/tokyo-what-nobody-tells-you.html" class="post-featured" data-region="japan" data-format="nobody-tells-you" data-date="2026-09">
+    <div class="post-featured-img">
+      <img src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=800&q=80" alt="Busy street scene in Tokyo Japan with signs and pedestrians" loading="lazy" />
+      <div class="post-featured-img-overlay"></div>
+    </div>
+    <div class="post-featured-content">
+      <span class="post-tag">Tokyo, Japan &nbsp;·&nbsp; Nobody Tells You</span>
+      <h2 class="post-featured-title"><em>Tokyo:</em> What Nobody Tells You Before You Go</h2>
+      <div class="post-verdict">
+        <span class="verdict-dot"></span>
+        12 things that will genuinely surprise you.
+      </div>
+      <p class="post-featured-excerpt">The real Tokyo — not the Instagram version. From the 53-exit train station that will lose you on day one to the convenience store food that beats most restaurants, here's what to actually expect.</p>
+      <div class="post-meta">
+        <span>11 min read</span>
+        <span class="post-meta-dot"></span>
+        <span>September 2026</span>
+        <span class="post-meta-dot"></span>
+        <span>First-time visitors</span>
+      </div>
+      <span class="read-link">Read the story →</span>
+    </div>
+  </a>
+
   <!-- POST — JAPAN -->
   <a href="/pages/blog/japan-honest-scorecard.html" class="post-featured" data-region="japan" data-format="scorecard" data-date="2026-09">
     <div class="post-featured-img">
@@ -604,14 +679,35 @@ document.getElementById('sort-pills').addEventListener('click', e => {
   applyFilters();
 });
 
-function notifyMe() {
+async function notifyMe() {
   const email = document.getElementById('blog-email').value.trim();
   if (!email || !email.includes('@')) return;
   const btn = document.querySelector('.notify-btn');
-  btn.textContent = '✓ Done!';
-  btn.style.background = '#2A5C3A';
-  document.getElementById('blog-email').value = '';
-  setTimeout(() => { btn.textContent = 'Notify me'; btn.style.background = ''; }, 3000);
+  btn.textContent = 'Saving...';
+  btn.disabled = true;
+  try {
+    const res = await fetch('https://zzbmtijiqfunvngbrbso.supabase.co/rest/v1/subscribers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6Ym10aWppcWZ1bnZuZ2JyYnNvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ3MDIyNzUsImV4cCI6MjA2MDI3ODI3NX0.p0gQFTkCFBpO6j5WXnBwEeFtWMYJpFJJRO5hnXqB1rI',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ email, source: 'blog', destination: null })
+    });
+    if (res.ok || res.status === 409) {
+      btn.textContent = '✓ Done!';
+      btn.style.background = '#2A5C3A';
+      document.getElementById('blog-email').value = '';
+      setTimeout(() => { btn.textContent = 'Notify me'; btn.style.background = ''; btn.disabled = false; }, 3000);
+    } else {
+      throw new Error();
+    }
+  } catch {
+    btn.textContent = 'Try again';
+    btn.style.background = '#C84B2A';
+    setTimeout(() => { btn.textContent = 'Notify me'; btn.style.background = ''; btn.disabled = false; }, 3000);
+  }
 }
 </script>
 
