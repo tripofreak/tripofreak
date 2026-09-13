@@ -937,7 +937,7 @@ function validateDestination(dest) {
   var letters = dest.replace(/[^a-zA-Z]/g, '');
   if (letters.length >= 5) {
     var vowels = (letters.match(/[aeiouAEIOU]/g) || []).length;
-    if (vowels / letters.length < 0.1) return 'That doesn\'t look like a real place. Try again.';
+    if (vowels / letters.length < 0.2) return 'That doesn\'t look like a real place. Try again.';
   }
   return null;
 }
