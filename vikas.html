@@ -19,14 +19,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Primary SEO -->
-  <title>Tripofreak — AI Travel Itinerary Planner | Freaky Finds, Insider Logic</title>
-  <meta name="description" content="Plan your perfect trip in seconds. Tripofreak uses AI to build day-by-day travel itineraries with local insider tips, hidden gems, and freaky finds for any destination.">
+  <title>The Travel Planner Built for Indian Travellers — Tripofreak</title>
+  <meta name="description" content="Plan your trip in seconds with daily itineraries, real INR budgets, and practical insider tips built for Indian travellers">
   <meta name="keywords" content="AI travel planner, trip itinerary generator, travel itinerary AI, personalized travel plan, day trip planner">
   <link rel="canonical" href="https://tripofreak.com/">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Tripofreak — AI Travel Itinerary Planner">
-  <meta property="og:description" content="Plan your perfect trip in seconds with AI-powered itineraries, insider tips, and hidden gems.">
+  <meta property="og:title" content="The Travel Planner Built for Indian Travellers — Tripofreak">
+  <meta property="og:description" content="Plan your trip in seconds with daily itineraries, real INR budgets, and practical insider tips built for Indian travellers">
   <meta property="og:image" content="https://tripofreak.com/assets/og-image.jpg">
   <meta property="og:url" content="https://tripofreak.com">
   <meta property="og:type" content="website">
@@ -505,12 +505,12 @@
       <div class="hero-loc" id="hero-loc">Ladakh, India</div>
     </div>
     <div class="hero-credit" id="hero-credit"></div>
-    <h1 class="hero-h1">Plan any trip,<br><em>anywhere on earth.</em></h1>
-    <p class="hero-p">Tell us where. We explain why every day is structured the way it is — and what most travellers never find out.</p>
+    <h1 class="hero-h1">The Travel Planner Built for Indian Travellers</h1>
+    <p class="hero-p">Your daily itinerary, planned in seconds with practical insider tips</p>
     <form class="hero-search" onsubmit="handleSearch(event)">
       <i class="ti ti-search hero-search-icon" style="padding:0 12px 0 20px;color:#8B7D6A;font-size:17px;flex-shrink:0"></i>
       <input class="hero-search-input" id="dest-input" type="text" placeholder="Any country, any city, any village..." autocomplete="off">
-      <button class="hero-search-btn" type="submit">Plan my trip</button>
+      <button class="hero-search-btn" type="submit">Get my free itinerary</button>
     </form>
     <div class="hero-hint">Jaipur · Tokyo · Kedarnath · Bali · Santorini · Ladakh · anywhere</div>
     <div class="hero-counter"><span id="trip-count">—</span> trips planned &amp; counting</div>
@@ -931,21 +931,23 @@ document.querySelectorAll('.ichip').forEach(function(c){
 function validateDestination(dest) {
   if (!dest || dest.length < 2) return 'Please enter a destination.';
   if (dest.length > 100) return 'Destination name is too long.';
-  // Must have at least 2 actual letters
   var letters = dest.replace(/[^a-zA-Z]/g, '');
   if (letters.length < 2) return 'Please enter a valid destination name.';
   // No special character spam
   if (/[^a-zA-Z0-9\s,.\-'àáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿÀ-Ö×Ø-öø-ÿА-яЁёऀ-ॿ؀-ۿ]/.test(dest)) return 'Please enter a valid destination name.';
-  // Must not be mostly numbers (e.g. "1adsd2" or "12345")
+  // Mostly numbers
   var digits = (dest.match(/\d/g) || []).length;
-  if (digits > 0 && digits >= dest.replace(/\s/g,'').length / 2) return 'Please enter a valid destination name.';
-  // Vowel ratio check — real place names have at least 25% vowels
-  if (letters.length >= 4) {
-    var vowels = (letters.match(/[aeiouAEIOU]/g) || []).length;
-    if (vowels / letters.length < 0.25) return 'That doesn\'t look like a real place. Try again.';
-  }
-  // Repeated character check — "aaaaaaa", "bbbbb"
+  if (digits >= 3) return 'Please enter a valid destination name.';
+  // Repeated characters
   if (/(.)\1{3,}/.test(dest)) return 'That doesn\'t look like a real place. Try again.';
+  // 5+ consonants in a row — keyboard mashing pattern
+  if (/[^aeiouAEIOU\s,.\-'\d]{5,}/.test(dest)) return 'That doesn\'t look like a real place. Try again.';
+  // Alternating consonant pattern — dasdasd, sdfsdf, asdfgh
+  if (/^[^aeiouAEIOU\s]{1,2}([aeiouAEIOU][^aeiouAEIOU\s]{2,}){2,}$/.test(letters) && letters.length >= 6) {
+    // Allow known short words but flag long alternating gibberish
+    var uniqueChars = new Set(letters.toLowerCase()).size;
+    if (uniqueChars <= 4 && letters.length >= 6) return 'That doesn\'t look like a real place. Try again.';
+  }
   return null;
 }
 
