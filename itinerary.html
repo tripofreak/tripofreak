@@ -83,6 +83,8 @@
     .nav-back{font-size:13px;color:rgba(255,255,255,0.45);display:flex;align-items:center;gap:4px;transition:color .2s}
     .nav-back:hover{color:rgba(255,255,255,0.8)}
     .nav-share{background:var(--gold);color:var(--black);border:none;padding:7px 16px;border-radius:4px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;letter-spacing:0.3px}
+    .nav-icon-btn{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;width:34px;height:34px;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:background .2s}
+    .nav-icon-btn:hover{background:rgba(255,255,255,0.15);color:#fff}
 
     /* ── IN-APP BROWSER BANNER ── */
     .iab-banner{display:none;align-items:center;justify-content:space-between;gap:10px;background:#1a1a18;border-bottom:1px solid rgba(232,197,71,0.2);padding:10px 16px;flex-wrap:wrap}
@@ -208,8 +210,13 @@
 
     /* ── DAY SECTION ── */
     .day-block{margin-bottom:3rem}
-    .day-header{display:flex;align-items:center;gap:14px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:0.5px solid var(--border)}
-    .day-num{width:44px;height:44px;border-radius:12px;background:var(--black);color:var(--gold);font-family:var(--serif);font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .day-header{display:flex;align-items:center;gap:14px;padding-bottom:1rem;border-bottom:0.5px solid var(--border);cursor:pointer;user-select:none}
+    .day-header:hover .day-num{background:var(--forest)}
+    .day-num{width:44px;height:44px;border-radius:12px;background:var(--black);color:var(--gold);font-family:var(--serif);font-size:20px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s}
+    .day-chevron{margin-left:auto;color:var(--muted);font-size:18px;transition:transform .3s;flex-shrink:0}
+    .day-block.collapsed .day-chevron{transform:rotate(-90deg)}
+    .day-body{overflow:hidden;transition:max-height .35s ease,opacity .3s ease;max-height:5000px;opacity:1;margin-top:1rem}
+    .day-block.collapsed .day-body{max-height:0;opacity:0;margin-top:0}
     .day-info{}
     .day-title{font-family:var(--serif);font-size:28px;color:var(--black);font-weight:600;line-height:1.1;margin-bottom:3px}
     .day-reasoning{font-size:14px;color:var(--muted);line-height:1.7;font-style:italic;margin-bottom:1.25rem}
@@ -397,8 +404,8 @@
   </div>
 
   <!-- NAV -->
-  <!-- Save banner — shown to guests only -->
-  <div id="save-banner" style="display:none;background:var(--gold);padding:10px 1.5rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+  <!-- Save banner — shown to guests after scrolling past Day 1 -->
+  <div id="save-banner" style="display:none;background:var(--gold);padding:10px 1.5rem;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;position:sticky;top:0;z-index:90">
     <span style="font-size:13px;font-weight:600;color:var(--black)">Sign in to save this trip to your account</span>
     <button onclick="signInAndReturn()" style="background:var(--black);color:var(--gold);border:none;padding:8px 20px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);letter-spacing:0.5px;white-space:nowrap">Sign in free</button>
   </div>
@@ -416,6 +423,8 @@
     <div class="nav-r">
       <a href="/my-trips.html" class="nav-back" id="nav-mytrips" style="display:none">My Trips</a>
       <a href="/" class="nav-back"><i class="ti ti-arrow-left" style="font-size:13px"></i> New trip</a>
+      <button class="nav-icon-btn" onclick="copyLink()" title="Copy link"><i class="ti ti-link"></i></button>
+      <button class="nav-icon-btn" style="background:#25D366;color:#fff" onclick="shareWhatsApp()" title="Share on WhatsApp"><i class="ti ti-brand-whatsapp"></i></button>
       <button class="nav-share" onclick="shareWhatsApp()"><i class="ti ti-share" style="font-size:13px"></i> Share</button>
     </div>
   </nav>
@@ -960,7 +969,20 @@ function renderItinerary() {
   if (window.TF_AUTH && TF_AUTH.isLoggedIn()) {
     document.getElementById('nav-mytrips').style.display = 'inline-flex';
   } else {
-    document.getElementById('save-banner').style.display = 'flex';
+    // Delay save banner — show only after user scrolls past Day 1
+    var _bannerShown = false;
+    var _bannerObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting && !_bannerShown) {
+          _bannerShown = true;
+          document.getElementById('save-banner').style.display = 'flex';
+          _bannerObs.disconnect();
+        }
+      });
+    }, { threshold: 0.1 });
+    var _day2 = document.getElementById('day-1'); // day-1 = second day (0-indexed)
+    if (_day2) _bannerObs.observe(_day2);
+    else document.getElementById('save-banner').style.display = 'flex'; // fallback for 1-day trips
   }
 
   // Auto-save if user just signed in from itinerary page
@@ -989,6 +1011,11 @@ async function autoSaveTrip() {
 }
 
 // ── RENDER DAY ────────────────────────────────────────────────────────
+function toggleDay(headerEl) {
+  var block = headerEl.closest('.day-block');
+  block.classList.toggle('collapsed');
+}
+
 function renderDay(day, di) {
   const timeOfDayGroups = {};
   (day.sections || []).forEach(s => {
@@ -1006,16 +1033,20 @@ function renderDay(day, di) {
       ${timeOfDayGroups[t].map(act => renderActivity(act)).join('')}
     `).join('');
 
+  const isFirst = di === 0;
   return `
-    <div class="day-block reveal" id="day-${di}">
-      <div class="day-header">
+    <div class="day-block reveal${isFirst ? '' : ' collapsed'}" id="day-${di}">
+      <div class="day-header" onclick="toggleDay(this)">
         <div class="day-num">${day.day_number}</div>
         <div class="day-info">
           <div class="day-title">${esc(day.day_title)}</div>
         </div>
+        <i class="ti ti-chevron-down day-chevron"></i>
       </div>
-      ${day.day_reasoning ? `<p class="day-reasoning">${esc(day.day_reasoning)}</p>` : ''}
-      ${sectionsHtml}
+      <div class="day-body">
+        ${day.day_reasoning ? `<p class="day-reasoning">${esc(day.day_reasoning)}</p>` : ''}
+        ${sectionsHtml}
+      </div>
     </div>
   `;
 }
