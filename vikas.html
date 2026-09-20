@@ -547,6 +547,9 @@
           <div class="pill" data-group="days" data-val="3">3 days</div>
           <div class="pill" data-group="days" data-val="4">4 days</div>
           <div class="pill" data-group="days" data-val="5">5 days</div>
+          <div class="pill" data-group="days" data-val="6">6 days</div>
+          <div class="pill" data-group="days" data-val="7">7 days</div>
+          <div class="pill" data-group="days" data-val="8">8 days</div>
         </div>
       </div>
 
@@ -1106,6 +1109,15 @@ async function generateItinerary() {
 
     sessionStorage.setItem('tf_itinerary', JSON.stringify(data));
     sessionStorage.setItem('tf_params', JSON.stringify(params));
+    // Persist UTM params so itinerary.html can include them in the GA4 conversion event
+    var _usp = new URLSearchParams(window.location.search);
+    if (_usp.get('utm_source')) {
+      sessionStorage.setItem('tf_utm', JSON.stringify({
+        utm_source: _usp.get('utm_source') || '',
+        utm_medium: _usp.get('utm_medium') || '',
+        utm_campaign: _usp.get('utm_campaign') || ''
+      }));
+    }
     clearInterval(st);
     clearInterval(barInterval);
     loBarEl.style.transition = 'width .4s ease';
