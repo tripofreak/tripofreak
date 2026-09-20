@@ -204,6 +204,15 @@
 
     .nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:60px;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
     .nav.scrolled{background:rgba(12,12,10,0.96);backdrop-filter:blur(20px)}
+    .iab-banner{display:none;align-items:center;justify-content:space-between;gap:10px;background:#1a1a18;border-bottom:1px solid rgba(232,197,71,0.2);padding:10px 16px;flex-wrap:wrap}
+    .iab-banner.visible{display:flex}
+    .iab-banner-text{font-size:12px;color:rgba(255,255,255,0.55);flex:1;min-width:0}
+    .iab-banner-text strong{color:rgba(255,255,255,0.85)}
+    .iab-banner-btns{display:flex;gap:8px;flex-shrink:0}
+    .iab-btn{padding:7px 14px;border-radius:4px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap;display:flex;align-items:center;gap:5px;letter-spacing:0.3px}
+    .iab-btn-browser{background:var(--gold);color:var(--black)}
+    .iab-btn-wa{background:#25D366;color:#fff}
+    @media(max-width:480px){.iab-banner{flex-direction:column;align-items:flex-start}.iab-banner-btns{width:100%}.iab-btn{flex:1;justify-content:center}}
     .nav-logo{font-family:var(--grotesk);color:#fff;font-size:20px;font-weight:700;letter-spacing:-0.5px;display:flex;align-items:center;gap:10px;text-decoration:none}
     .nav-logo-mark{display:flex;flex-direction:column;gap:3px}
     .nav-logo-sep{width:1px;height:22px;background:rgba(255,255,255,0.15)}
@@ -466,6 +475,15 @@
   </style>
 </head>
 <body>
+
+<!-- IN-APP BROWSER BANNER -->
+<div class="iab-banner" id="iab-banner">
+  <span class="iab-banner-text"><strong>You're in an in-app browser.</strong> For the best experience, open in Safari or Chrome.</span>
+  <div class="iab-banner-btns">
+    <button class="iab-btn iab-btn-browser" onclick="openInBrowser()">🌐 Open in Browser</button>
+    <button class="iab-btn iab-btn-wa" onclick="shareToWhatsApp()">💬 Share to WhatsApp</button>
+  </div>
+</div>
 
 <nav class="nav" id="nav">
   <a href="/" class="nav-logo">
@@ -1117,6 +1135,40 @@ var obs = new IntersectionObserver(function(es){
   es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('visible'); });
 }, {threshold:0.1});
 document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
+
+// ── IN-APP BROWSER DETECTION ─────────────────────────────────────────
+(function() {
+  var ua = navigator.userAgent || '';
+  var isIAB = /Instagram|FBAN|FBAV|FB_IAB|LinkedInApp|Twitter|Snapchat|TikTok|Musical\.ly|Pinterest|Line\/|WhatsApp/.test(ua);
+  if (isIAB) {
+    var banner = document.getElementById('iab-banner');
+    if (banner) banner.classList.add('visible');
+  }
+})();
+
+function openInBrowser() {
+  var url = window.location.href;
+  var ua = navigator.userAgent || '';
+  if (/Android/.test(ua)) {
+    window.location.href = 'intent://' + url.replace(/^https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+  } else {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function() {
+        alert('Link copied! Paste it in Safari to open.');
+      }).catch(function() {
+        prompt('Copy this link and open in Safari or Chrome:', url);
+      });
+    } else {
+      prompt('Copy this link and open in Safari or Chrome:', url);
+    }
+  }
+}
+
+function shareToWhatsApp() {
+  var url = window.location.href;
+  var text = 'Plan your next trip for free with AI — ' + url;
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+}
 </script>
 
 <!-- GEO CONTENT: Crawlable by AI engines, hidden from visual users -->
