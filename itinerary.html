@@ -84,6 +84,17 @@
     .nav-back:hover{color:rgba(255,255,255,0.8)}
     .nav-share{background:var(--gold);color:var(--black);border:none;padding:7px 16px;border-radius:4px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:5px;letter-spacing:0.3px}
 
+    /* ── IN-APP BROWSER BANNER ── */
+    .iab-banner{display:none;align-items:center;justify-content:space-between;gap:10px;background:#1a1a18;border-bottom:1px solid rgba(232,197,71,0.2);padding:10px 16px;flex-wrap:wrap}
+    .iab-banner.visible{display:flex}
+    .iab-banner-text{font-size:12px;color:rgba(255,255,255,0.55);flex:1;min-width:0}
+    .iab-banner-text strong{color:rgba(255,255,255,0.85)}
+    .iab-banner-btns{display:flex;gap:8px;flex-shrink:0}
+    .iab-btn{padding:7px 14px;border-radius:4px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);white-space:nowrap;display:flex;align-items:center;gap:5px;letter-spacing:0.3px}
+    .iab-btn-browser{background:var(--gold);color:var(--black)}
+    .iab-btn-wa{background:#25D366;color:#fff}
+    @media(max-width:480px){.iab-banner{flex-direction:column;align-items:flex-start}.iab-banner-btns{width:100%}.iab-btn{flex:1;justify-content:center}}
+
     /* ── HERO ── */
     .hero-credit{position:absolute;bottom:8px;right:10px;font-size:10px;color:rgba(255,255,255,0.35);z-index:10;letter-spacing:0.3px}
     .hero-credit a{color:rgba(255,255,255,0.35);text-decoration:none}
@@ -287,7 +298,7 @@
     .share-x{background:#fff;color:#000}
     .share-copy{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);border:0.5px solid rgba(255,255,255,0.12)!important}
     .share-pdf{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.65);border:0.5px solid rgba(255,255,255,0.12)!important}
-    .share-new{background:var(--gold);color:var(--black)}
+    .share-new{background:var(--terra);color:#fff}
 
 
     /* ── EMAIL CAPTURE ── */
@@ -375,6 +386,15 @@
 
 <!-- MAIN PAGE -->
 <div id="main-page" style="display:none">
+
+  <!-- IN-APP BROWSER BANNER (Instagram / WhatsApp WebView) -->
+  <div class="iab-banner" id="iab-banner">
+    <span class="iab-banner-text"><strong>You're in an in-app browser.</strong> For the best experience, open in Safari or Chrome.</span>
+    <div class="iab-banner-btns">
+      <button class="iab-btn iab-btn-browser" onclick="openInBrowser()">🌐 Open in Browser</button>
+      <button class="iab-btn iab-btn-wa" onclick="shareWhatsApp()">💬 Share to WhatsApp</button>
+    </div>
+  </div>
 
   <!-- NAV -->
   <!-- Save banner — shown to guests only -->
@@ -552,7 +572,7 @@
         <button class="share-btn share-x" onclick="shareX()"><i class="ti ti-brand-x"></i>Post on X</button>
         <button class="share-btn share-copy" onclick="copyLink()"><i class="ti ti-link"></i>Copy link</button>
         <button class="share-btn share-pdf" onclick="downloadPDF()"><i class="ti ti-file-download"></i>Save as PDF</button>
-        <button class="share-btn share-new" onclick="window.location.href='/'"><i class="ti ti-plus"></i>New trip</button>
+        <button class="share-btn share-new" onclick="sessionStorage.removeItem('tf_utm');window.location.href='/'"><i class="ti ti-map-pin"></i>Plan a new trip</button>
       </div>
     </div>
 
@@ -665,11 +685,18 @@ function renderItinerary() {
 
   // GA4 conversion event
   if (typeof gtag === 'function') {
+    var _usp = new URLSearchParams(window.location.search);
+    var _ss = sessionStorage.getItem('tf_utm');
+    var _utm = {};
+    try { if (_ss) _utm = JSON.parse(_ss); } catch(e) {}
     gtag('event', 'itinerary_generated', {
       destination: d.destination || 'unknown',
       country: d.country || 'unknown',
       days: (d.days || []).length,
-      source: sessionStorage.getItem('tf_itinerary') ? 'generated' : 'shared_link'
+      source: sessionStorage.getItem('tf_itinerary') ? 'generated' : 'shared_link',
+      utm_source: _usp.get('utm_source') || _utm.utm_source || '(none)',
+      utm_medium: _usp.get('utm_medium') || _utm.utm_medium || '(none)',
+      utm_campaign: _usp.get('utm_campaign') || _utm.utm_campaign || '(none)'
     });
   }
 
@@ -1071,6 +1098,38 @@ function getShareUrl() {
   const urlParams = new URLSearchParams(window.location.search);
   const id = urlParams.get('id');
   return id ? `https://tripofreak.com/itinerary.html?id=${id}` : window.location.href;
+}
+
+// ── IN-APP BROWSER DETECTION ─────────────────────────────────────────
+(function() {
+  var ua = navigator.userAgent || '';
+  var isIAB = /Instagram|FBAN|FBAV|FB_IAB|LinkedInApp|Twitter|Snapchat|TikTok|Musical\.ly|Pinterest|Line\/|WhatsApp/.test(ua);
+  if (isIAB) {
+    var banner = document.getElementById('iab-banner');
+    if (banner) banner.classList.add('visible');
+  }
+})();
+
+function openInBrowser() {
+  var url = window.location.href;
+  // iOS: intent:// scheme doesn't work universally; best UX is to show the URL and prompt copy
+  // For most in-app browsers, window.open with _system or _blank triggers OS browser
+  var ua = navigator.userAgent || '';
+  if (/Android/.test(ua)) {
+    // Android: intent scheme opens default browser
+    window.location.href = 'intent://' + url.replace(/^https?:\/\//, '') + '#Intent;scheme=https;package=com.android.chrome;end';
+  } else {
+    // iOS fallback: copy URL to clipboard and show a nudge
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(url).then(function() {
+        alert('Link copied! Paste it in Safari to open.');
+      }).catch(function() {
+        prompt('Copy this link and open in Safari or Chrome:', url);
+      });
+    } else {
+      prompt('Copy this link and open in Safari or Chrome:', url);
+    }
+  }
 }
 
 function shareWhatsApp() {
