@@ -124,7 +124,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
     body { background: var(--cream); overflow-x: hidden; color: var(--text); font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.75; }
 
     #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--gold); width: 0%; z-index: 999; transition: width 0.1s linear; }
@@ -306,7 +306,7 @@
       .cta-block h3 { font-size: 1.5rem; }
       .intro-box { padding: 22px 20px; }
       .budget-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .budget-table { font-size: 0.78rem; min-width: 560px; }
+      .budget-table { font-size: 0.78rem; }
       .budget-table th, .budget-table td { padding: 9px 10px; }
     }
   </style>
