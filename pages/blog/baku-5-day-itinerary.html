@@ -288,7 +288,8 @@
     footer p { color: rgba(255,255,255,0.35); font-size: 12px; margin-top: 18px; }
 
     @media (max-width: 768px) {
-      .sidebar { display: none !important; }
+      .sidebar-sticky { position: static !important; }
+      .toc { display: none; }
       .layout { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px; }
       .sidebar-sticky { position: static; }
       .hero { height: 400px; }
@@ -305,8 +306,8 @@
       .cta-block { padding: 28px 20px; }
       .cta-block h3 { font-size: 1.5rem; }
       .intro-box { padding: 22px 20px; }
-      .budget-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-      .budget-table { font-size: 0.78rem; }
+      .budget-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
+      .budget-table { font-size: 0.78rem; min-width: 520px; }
       .budget-table th, .budget-table td { padding: 9px 10px; }
     }
   </style>
