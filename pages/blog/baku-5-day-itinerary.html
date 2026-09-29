@@ -130,11 +130,11 @@
     #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--gold); width: 0%; z-index: 999; transition: width 0.1s linear; }
 
     nav { position: fixed; top: 3px; left: 0; right: 0; z-index: 100; background: var(--black); padding: 14px 24px; display: flex; align-items: center; gap: 10px; }
-    .nav-dots { display: flex; align-items: center; gap: 6px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; }
-    .dot-1 { background: var(--gold); }
-    .dot-2 { background: rgba(232,197,71,0.4); }
-    .dot-3 { background: var(--terra); }
+    .nav-dots { display: flex; flex-direction: column; gap: 3px; }
+    .nav-dots span { width: 6px; height: 6px; border-radius: 50%; display: block; }
+    .nav-dots span:nth-child(1) { background: var(--gold); }
+    .nav-dots span:nth-child(2) { background: rgba(232,197,71,0.35); }
+    .nav-dots span:nth-child(3) { background: var(--terra); }
     .nav-divider { width: 1px; height: 16px; background: rgba(255,255,255,0.15); margin: 0 8px; }
     .nav-brand { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 15px; color: var(--gold); text-decoration: none; letter-spacing: 0.02em; }
     .nav-right { margin-left: auto; display: flex; gap: 20px; }
@@ -288,15 +288,26 @@
     footer p { color: rgba(255,255,255,0.35); font-size: 12px; margin-top: 18px; }
 
     @media (max-width: 768px) {
+      .sidebar { display: none !important; }
       .layout { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px; }
       .sidebar-sticky { position: static; }
       .hero { height: 400px; }
       .hero h1 { font-size: 1.9rem; }
+      .hero-meta { gap: 10px; }
+      .hero-meta span { font-size: 12px; }
       .quick-facts { grid-template-columns: repeat(2, 1fr); }
       .info-grid { grid-template-columns: 1fr; }
       .hotel-grid { grid-template-columns: 1fr; }
       .day-content { padding: 20px; }
       .day-header { padding: 16px 20px; }
+      .nav-right { display: none; }
+      .timeline-item { flex-direction: column; gap: 8px; }
+      .cta-block { padding: 28px 20px; }
+      .cta-block h3 { font-size: 1.5rem; }
+      .intro-box { padding: 22px 20px; }
+      .budget-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .budget-table { font-size: 0.78rem; min-width: 560px; }
+      .budget-table th, .budget-table td { padding: 9px 10px; }
     }
   </style>
 </head>
@@ -305,10 +316,10 @@
 <div id="progress-bar"></div>
 
 <nav>
-  <div class="nav-dots">
-    <div class="dot dot-1"></div>
-    <div class="dot dot-2"></div>
-    <div class="dot dot-3"></div>
+  <div class="nav-dots"><span></span><span></span><span></span>
+    
+    
+    
   </div>
   <div class="nav-divider"></div>
   <a href="https://tripofreak.com" class="nav-brand">Tripofreak</a>
@@ -713,7 +724,7 @@
     <h2>Full 5-Day Budget Breakdown (Per Person in INR)</h2>
     <p>Currency: <strong>1 AZN ≈ ₹50</strong>. All costs in INR. Flights are from India with one connection (Dubai or Istanbul).</p>
 
-    <table class="budget-table">
+    <div class="budget-table-wrap"><table class="budget-table">
       <thead>
         <tr>
           <th>Category</th>
@@ -784,7 +795,7 @@
           <td>Couples save on accommodation; groups split driver cost</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <!-- CTA 3 -->
     <div class="cta-block">
