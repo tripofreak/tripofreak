@@ -124,8 +124,8 @@
       --card:   #141412;
       --mid:    #3A3530;
     }
-    html { scroll-behavior: smooth; }
-    body { background: var(--cream); color: var(--black); font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.8; -webkit-font-smoothing: antialiased; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body { background: var(--cream); overflow-x: hidden; color: var(--black); font-family: 'Inter', sans-serif; font-size: 17px; line-height: 1.8; -webkit-font-smoothing: antialiased; }
 
     /* PROGRESS BAR */
     #progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--gold); width: 0%; z-index: 999; transition: width 0.1s linear; }
@@ -270,7 +270,7 @@
     .author-bio { font-size: 0.8rem; color: var(--muted); line-height: 1.6; font-weight: 400; }
 
     /* SIDEBAR */
-    .sidebar { position: sticky; top: 80px; display: flex; flex-direction: column; gap: 1.8rem; }
+    .sidebar-mobile-fix {  top: 80px; display: flex; flex-direction: column; gap: 1.8rem; }
     .sidebar-card { background: #fff; border: 1.5px solid var(--border); border-radius: 4px; padding: 1.4rem; }
     .sidebar-card h4 { font-family: 'Space Grotesk', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
     .quick-fact { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.5rem 0; border-bottom: 1px solid var(--border); gap: 0.5rem; font-size: 0.82rem; }
@@ -292,6 +292,8 @@
 
     /* RESPONSIVE */
     @media (max-width: 900px) {
+      .sidebar-sticky { position: static !important; }
+      .toc { display: none; }
       .layout { grid-template-columns: 1fr; gap: 2rem; }
       .sidebar { position: static; }
       .hero-content { padding: 2rem 1.5rem 2.5rem; }
