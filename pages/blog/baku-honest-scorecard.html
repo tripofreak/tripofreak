@@ -124,7 +124,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
 
     body {
       background: var(--cream);
@@ -427,17 +427,24 @@
     footer p { color: rgba(255,255,255,0.35); font-size: 12px; margin-top: 18px; }
 
     @media (max-width: 768px) {
+      .sidebar-sticky { position: static !important; }
+      .toc { display: none; }
       .layout { grid-template-columns: 1fr; gap: 32px; padding: 32px 16px; }
       .sidebar-sticky { position: static; }
       .hero { height: 400px; }
       .hero h1 { font-size: 1.9rem; }
+      .hero-meta { gap: 10px; }
+      .hero-meta span { font-size: 12px; }
       .score-grid { grid-template-columns: 1fr 1fr; }
       .pros-cons { grid-template-columns: 1fr; }
       .who-box { grid-template-columns: 1fr; }
       .info-grid { grid-template-columns: 1fr; }
-      .month-grid { grid-template-columns: repeat(4, 1fr); }
+      .month-grid { grid-template-columns: repeat(3, 1fr); }
       .overall-score { flex-direction: column; text-align: center; gap: 16px; }
       .overall-num { font-size: 3.5rem; }
+      .nav-right { display: none; }
+      .cta-block { padding: 28px 20px; }
+      .cta-block h3 { font-size: 1.5rem; }
     }
   </style>
 </head>
